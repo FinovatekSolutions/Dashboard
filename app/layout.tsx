@@ -11,7 +11,7 @@ import SessionProvider from '@/components/SessionProvider/SessionProvider';
 import { authOptions } from './api/auth/[...nextauth]/route';
 
 export const metadata = {
-  title: 'Titan',
+  title: 'Finovatek',
   description: 'I am using Mantine with Next.js!',
 };
 
