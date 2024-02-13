@@ -19,6 +19,12 @@ This template comes with the following features:
  - Next Auth
  - Vercel for Hosting
 
+### Vercel Hosting
+To manage Vercel's hosting of the capstone's project, you will need to access the [Vercel Dashboard](https://vercel.com/dashboard). You will need to use the Finovatek Solutions' google account to access the dashboard.
+
+### Google credentials
+To manage the Google Credentials, you will need to access the [Google Cloud Console](https://console.cloud.google.com/). You will need to use the Finovatek Solutions' google account to access the console.
+
 ## npm scripts
 
 ### Build and dev scripts
