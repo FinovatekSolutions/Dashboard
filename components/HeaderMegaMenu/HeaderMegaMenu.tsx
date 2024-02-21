@@ -35,6 +35,7 @@ import {
 } from '@tabler/icons-react';
 import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
+import Image from 'next/image';
 
 import classes from './HeaderMegaMenu.module.css';
 import { UserMenu } from '@/components/UserMenu/UserMenu';
@@ -103,10 +104,12 @@ export function HeaderMegaMenu() {
         <Group justify="space-between" h="100%">
           <Anchor href="/" component={Link} className={classes.linklogo}>
             <Group h="100%" gap={10}>
-              <IconPigMoney size={35} color={theme.colors.green[4]} stroke={2} />
-              <Text size="xl" fw={650} c="black">
-                Finovatek
-              </Text>
+              <Image
+                src="/trustmd-full-logo.webp"
+                alt="TrustMD Logo"
+                width={150} // Original width of the image
+                height={42} // Original height of the image
+              />
             </Group>
           </Anchor>
           <Group h="100%" gap={0} visibleFrom="sm">
@@ -123,7 +126,7 @@ export function HeaderMegaMenu() {
 
           <Group visibleFrom="sm">
             {!session && (
-              <Button color={theme.colors.green[6]} onClick={() => signIn()}>
+              <Button variant="default" onClick={() => signIn()}>
                 Sign in
               </Button>
             )}
