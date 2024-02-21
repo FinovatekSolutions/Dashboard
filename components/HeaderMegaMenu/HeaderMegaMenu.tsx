@@ -107,8 +107,8 @@ export function HeaderMegaMenu() {
               <Image
                 src="/trustmd-full-logo.webp"
                 alt="TrustMD Logo"
-                width={150} // Original width of the image
-                height={42} // Original height of the image
+                width={150} // Half original width of the image
+                height={42} // Half original height of the image
               />
             </Group>
           </Anchor>
