@@ -116,6 +116,9 @@ export function HeaderMegaMenu() {
             <Anchor href="/todos" component={Link} className={classes.link}>
               Todos
             </Anchor>
+            <Anchor href="/flask" component={Link} className={classes.link}>
+              Flask
+            </Anchor>
           </Group>
 
           <Group visibleFrom="sm">
