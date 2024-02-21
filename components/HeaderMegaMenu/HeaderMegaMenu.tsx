@@ -106,10 +106,9 @@ export function HeaderMegaMenu() {
             <Group h="100%" gap={10}>
               <Image
                 src="/trustmd-full-logo.webp"
-                alt="Description of the image"
-                width={190} // Original width of the image
-                height={30} // Original height of the image
-                layout="intrinsic"
+                alt="TrustMD Logo"
+                width={150} // Original width of the image
+                height={42} // Original height of the image
               />
             </Group>
           </Anchor>
@@ -127,7 +126,7 @@ export function HeaderMegaMenu() {
 
           <Group visibleFrom="sm">
             {!session && (
-              <Button color={theme.colors.green[6]} onClick={() => signIn()}>
+              <Button variant="default" onClick={() => signIn()}>
                 Sign in
               </Button>
             )}
