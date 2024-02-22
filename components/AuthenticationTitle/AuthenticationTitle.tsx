@@ -54,9 +54,10 @@ export function AuthenticationTitle({ providers }: LoginClientProps) {
                 {provider.id === 'google' && (
                   <Center>
                     <GoogleButton
-                      w="90%"
+                      w="95%"
                       mt="xl"
-                      variant="light"
+                      size="lg"
+                      variant="outline"
                       onClick={() => {
                         signIn(provider.id, { callbackUrl: '/' });
                       }}
