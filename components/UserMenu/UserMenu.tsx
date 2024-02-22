@@ -38,13 +38,13 @@ export function UserMenu() {
               src={session?.user?.image}
               alt={session?.user?.name || ''}
               radius="xl"
-              size={20}
+              size={30}
               imageProps={{ referrerPolicy: 'no-referrer' }}
             />
-            <Text fw={500} size="sm" lh={1} mr={3}>
+            <Text fw={500} size="md" lh={1} mr={3}>
               {session?.user?.name}
             </Text>
-            <IconChevronDown style={{ width: rem(12), height: rem(12) }} stroke={1.5} />
+            <IconChevronDown style={{ width: rem(24), height: rem(24) }} stroke={1.5} />
           </Group>
         </UnstyledButton>
       </Menu.Target>

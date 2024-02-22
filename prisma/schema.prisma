@@ -21,7 +21,20 @@ model Todo {
   updatedAt   DateTime @updatedAt
 }
 
-// Needed for NextAuth.js
+model User {
+// DO NOT EDIT BELOW, USED FOR AUTHENTICATION  
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+// DO NOT EDIT ABOVE, USED FOR AUTHENTICATION
+  
+}
+
+// DO NOT EDIT BELOW, USED FOR AUTHENTICATION
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -50,16 +63,6 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
-}
-
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
 }
 
 model VerificationToken {

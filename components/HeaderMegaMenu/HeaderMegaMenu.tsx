@@ -102,13 +102,14 @@ export function HeaderMegaMenu() {
     <Box pb={12}>
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
+        <Group h="100%" gap={30}>
           <Anchor href="/" component={Link} className={classes.linklogo}>
             <Group h="100%" gap={10}>
               <Image
                 src="/trustmd-full-logo.webp"
                 alt="TrustMD Logo"
-                width={150} // Half original width of the image
-                height={42} // Half original height of the image
+                width={225} // Half original width of the image
+                height={63} // Half original height of the image
               />
             </Group>
           </Anchor>
@@ -122,6 +123,7 @@ export function HeaderMegaMenu() {
             <Anchor href="/flask" component={Link} className={classes.link}>
               Flask
             </Anchor>
+            </Group>
           </Group>
 
           <Group visibleFrom="sm">
