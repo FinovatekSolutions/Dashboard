@@ -90,6 +90,7 @@ export function HeaderMegaMenu() {
               imageProps={{ referrerPolicy: 'no-referrer' }}
               onClick={toggleDrawer}
               hiddenFrom="sm"
+              className={classes.customavatarhover}
             />
           ) : (
             <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
