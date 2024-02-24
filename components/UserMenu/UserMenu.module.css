@@ -20,9 +20,7 @@
     color: light-dark(var(--mantine-color-dark-8), var(--mantine-color-dark-0));
   }
 
-  @media (max-width: $mantine-breakpoint-xs) {
-    display: none;
-  }
+  
 }
 
 .userActive {

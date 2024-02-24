@@ -22,9 +22,8 @@
     width: 100%;
   }
 
-  @mixin hover {
-    /* background-color: light-dark(#3E4A78, var(--mantine-color-dark-6)); */
-    color: #44C5F8
+  &:hover {
+    color: #44C5F8;
   }
 }
 
@@ -39,11 +38,12 @@
   font-weight: 500;
   font-size: var(--mantine-font-size-sm);
 
+  /* Adjust logo alignment and padding for mobile */
   @media (max-width: $mantine-breakpoint-sm) {
-    height: rem(42px);
-    width: 100%;
+    justify-content: center; /* Center logo if needed */
+    padding-left: var(--mantine-spacing-xs); /* Adjust if needed */
+    padding-right: var(--mantine-spacing-xs); /* Adjust if needed */
   }
-
 }
 
 .subLink {
@@ -51,7 +51,7 @@
   padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
   border-radius: var(--mantine-radius-md);
 
-  @mixin hover {
+  &:hover {
     background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7));
   }
 }
@@ -63,4 +63,14 @@
   padding: var(--mantine-spacing-md) calc(var(--mantine-spacing-md) * 2);
   padding-bottom: var(--mantine-spacing-xl);
   border-top: rem(1px) solid light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+}
+
+.customavatarhover {
+  transition: outline 0.1s ease; /* Smooth transition for the outline */
+}
+
+/* Applying hover effect directly without a media query for desktop */
+.customavatarhover:hover {
+  outline: 2px solid #E2E2E3; /* Example outline color */
+  outline-offset: 2px;
 }

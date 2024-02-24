@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import {
   HoverCard,
   Group,
@@ -18,128 +19,83 @@ import {
   ScrollArea,
   rem,
   useMantineTheme,
+  Avatar, // Make sure to import Avatar
+  MantineProvider,
 } from '@mantine/core';
-import { MantineLogo } from '@mantinex/mantine-logo';
-import { useDisclosure } from '@mantine/hooks';
-import {
-  IconNotification,
-  IconCode,
-  IconBook,
-  IconChartPie3,
-  IconFingerprint,
-  IconCoin,
-  IconChevronDown,
-  IconChartDots3,
-  IconReportMoney,
-  IconPigMoney,
-} from '@tabler/icons-react';
-import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { IconChevronDown } from '@tabler/icons-react';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 
 import classes from './HeaderMegaMenu.module.css';
 import { UserMenu } from '@/components/UserMenu/UserMenu';
 
-const mockdata = [
-  {
-    icon: IconCode,
-    title: 'Open source',
-    description: 'This Pokémon’s cry is very loud and distracting',
-  },
-  {
-    icon: IconCoin,
-    title: 'Free for everyone',
-    description: 'The fluid of Smeargle’s tail secretions changes',
-  },
-  {
-    icon: IconBook,
-    title: 'Documentation',
-    description: 'Yanma is capable of seeing 360 degrees without',
-  },
-  {
-    icon: IconFingerprint,
-    title: 'Security',
-    description: 'The shell’s rounded shape and the grooves on its.',
-  },
-  {
-    icon: IconChartPie3,
-    title: 'Analytics',
-    description: 'This Pokémon uses its flying ability to quickly chase',
-  },
-  {
-    icon: IconNotification,
-    title: 'Notifications',
-    description: 'Combusken battles with the intensely hot flames it spews',
-  },
-];
-
 export function HeaderMegaMenu() {
   const { data: session } = useSession();
-
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
-  const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const theme = useMantineTheme();
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`);
 
-  const links = mockdata.map((item) => (
-    <UnstyledButton className={classes.subLink} key={item.title}>
-      <Group wrap="nowrap" align="flex-start">
-        <ThemeIcon size={34} variant="default" radius="md">
-          <item.icon style={{ width: rem(22), height: rem(22) }} color={theme.colors.blue[6]} />
-        </ThemeIcon>
-        <div>
-          <Text size="sm" fw={500}>
-            {item.title}
-          </Text>
-          <Text size="xs" c="dimmed">
-            {item.description}
-          </Text>
-        </div>
-      </Group>
-    </UnstyledButton>
+  const navLinks = [
+    { href: '/', label: 'Home' },
+    { href: '/todos', label: 'Todos' },
+    { href: '/flask', label: 'Flask' },
+  ];
+
+  const renderLinks = navLinks.map((link) => (
+    <Anchor
+      key={link.label}
+      href={link.href}
+      component={Link}
+      className={classes.link}
+      onClick={closeDrawer}
+    >
+      {link.label}
+    </Anchor>
   ));
 
   return (
     <Box pb={12}>
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
-        <Group h="100%" gap={30}>
-          <Anchor href="/" component={Link} className={classes.linklogo}>
-            <Group h="100%" gap={10}>
-              <Image
-                src="/trustmd-full-logo.webp"
-                alt="TrustMD Logo"
-                width={225} // Half original width of the image
-                height={63} // Half original height of the image
-              />
-            </Group>
-          </Anchor>
-          <Group h="100%" gap={0} visibleFrom="sm">
-            <Anchor href="/" component={Link} className={classes.link}>
-              Home
+          <Group h="100%" gap={30}>
+            <Anchor href="/" component={Link} className={classes.linklogo}>
+              <Group h="100%" gap={10}>
+                <Image src="/trustmd-full-logo.webp" alt="TrustMD Logo" width={225} height={63} />
+              </Group>
             </Anchor>
-            <Anchor href="/todos" component={Link} className={classes.link}>
-              Todos
-            </Anchor>
-            <Anchor href="/flask" component={Link} className={classes.link}>
-              Flask
-            </Anchor>
+            <Group h="100%" gap={0} visibleFrom="sm">
+              {renderLinks}
             </Group>
           </Group>
 
           <Group visibleFrom="sm">
-            {!session && (
+            {!session ? (
               <Button variant="default" onClick={() => signIn()}>
                 Sign in
               </Button>
-            )}
-            {session && (
-              <Group>
-                <UserMenu />
-              </Group>
+            ) : (
+              <UserMenu />
             )}
           </Group>
 
-          <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
+          {/* Replace Burger with Avatar if session exists */}
+          {session ? (
+            <Avatar
+              src={session?.user?.image}
+              alt={session?.user?.name || ''}
+              radius="xl"
+              size={45}
+              mr={10}
+              imageProps={{ referrerPolicy: 'no-referrer' }}
+              onClick={toggleDrawer}
+              hiddenFrom="sm"
+              className={classes.customavatarhover}
+            />
+          ) : (
+            <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
+          )}
         </Group>
       </header>
 
@@ -150,38 +106,28 @@ export function HeaderMegaMenu() {
         padding="md"
         title="Navigation"
         hiddenFrom="sm"
-        zIndex={1000000}
+        zIndex={999999}
+        styles={{
+          header: {
+            backgroundColor: '#1A1C27',
+            color: theme.colors.gray[2],
+          },
+          body: {
+            backgroundColor: '#1A1C27',
+          },
+        }}
       >
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
-          <Divider my="sm" />
-
-          <a href="#" className={classes.link}>
-            Home
-          </a>
-          <UnstyledButton className={classes.link} onClick={toggleLinks}>
-            <Center inline>
-              <Box component="span" mr={5}>
-                Features
-              </Box>
-              <IconChevronDown
-                style={{ width: rem(16), height: rem(16) }}
-                color={theme.colors.blue[6]}
-              />
-            </Center>
-          </UnstyledButton>
-          <Collapse in={linksOpened}>{links}</Collapse>
-          <a href="#" className={classes.link}>
-            Learn
-          </a>
-          <a href="#" className={classes.link}>
-            Academy
-          </a>
-
-          <Divider my="sm" />
-
-          <Group justify="center" grow pb="xl" px="md">
-            <Button onClick={() => signIn()}>Sign in</Button>
-          </Group>
+          <Divider my="sm" color={theme.colors.gray[7]} />
+          {renderLinks}
+          <Divider my="sm" color={theme.colors.gray[7]} />
+          {!session ? (
+            <Button fullWidth onClick={() => signIn()}>
+              Sign in
+            </Button>
+          ) : (
+            <UserMenu />
+          )}
         </ScrollArea>
       </Drawer>
     </Box>
