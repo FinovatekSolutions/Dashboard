@@ -102,27 +102,27 @@ export function HeaderMegaMenu() {
     <Box pb={12}>
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
-        <Group h="100%" gap={30}>
-          <Anchor href="/" component={Link} className={classes.linklogo}>
-            <Group h="100%" gap={10}>
-              <Image
-                src="/trustmd-full-logo.webp"
-                alt="TrustMD Logo"
-                width={225} // Half original width of the image
-                height={63} // Half original height of the image
-              />
-            </Group>
-          </Anchor>
-          <Group h="100%" gap={0} visibleFrom="sm">
-            <Anchor href="/" component={Link} className={classes.link}>
-              Home
+          <Group h="100%" gap={30}>
+            <Anchor href="/" component={Link} className={classes.linklogo}>
+              <Group h="100%" gap={10}>
+                <Image
+                  src="/trustmd-full-logo.webp"
+                  alt="TrustMD Logo"
+                  width={225} // Half original width of the image
+                  height={63} // Half original height of the image
+                />
+              </Group>
             </Anchor>
-            <Anchor href="/todos" component={Link} className={classes.link}>
-              Todos
-            </Anchor>
-            <Anchor href="/flask" component={Link} className={classes.link}>
-              Flask
-            </Anchor>
+            <Group h="100%" gap={0} visibleFrom="sm">
+              <Anchor href="/" component={Link} className={classes.link}>
+                Home
+              </Anchor>
+              <Anchor href="/todos" component={Link} className={classes.link}>
+                Todos
+              </Anchor>
+              <Anchor href="/flask" component={Link} className={classes.link}>
+                Flask
+              </Anchor>
             </Group>
           </Group>
 

@@ -1,51 +1,39 @@
 'use client';
 
-import {
-  useMantineTheme,
-  TextInput,
-  PasswordInput,
-  Checkbox,
-  Anchor,
-  Paper,
-  Title,
-  Text,
-  Container,
-  Group,
-  Button,
-  Center,
-  Space,
-} from '@mantine/core';
+import React from 'react';
+import { useMantineTheme, Paper, Text, Container, Center, Space } from '@mantine/core';
 import { ClientSafeProvider, signIn } from 'next-auth/react';
 import Image from 'next/image';
-import { IconPigMoney } from '@tabler/icons-react';
-import classes from './AuthenticationTitle.module.css';
 import { GoogleButton } from '../GoogleButton/GoogleButton';
+import classes from './AuthenticationTitle.module.css'; // Make sure this path is correct
 
 interface LoginClientProps {
   providers: Record<string, ClientSafeProvider> | null;
 }
 
 export function AuthenticationTitle({ providers }: LoginClientProps) {
-  const theme = useMantineTheme(); // Access the theme
+  const theme = useMantineTheme();
 
   return (
     <>
-      <Container w="40%">
+      <Container className={classes.container}>
         <Paper
           withBorder
           shadow="md"
           p={30}
           mt={0}
           radius="md"
-          styles={{
-            root: {
-              backgroundColor: '#E2E2E3', // Use theme color or any valid CSS color
-            },
-          }}
+          style={{ backgroundColor: '#FFFFFF' }}
         >
           <Space h="xl" />
           <Center>
-            <Image src="/trustmd-full-logo-dark.png" alt="TrustMD Logo" width={390} height={106} />
+            <Image
+              src="/trustmd-full-logo-dark.png"
+              alt="TrustMD Logo"
+              layout="responsive"
+              width={390}
+              height={106}
+            />
           </Center>
           <Space h="xl" />
           {providers &&
@@ -54,13 +42,11 @@ export function AuthenticationTitle({ providers }: LoginClientProps) {
                 {provider.id === 'google' && (
                   <Center>
                     <GoogleButton
-                      w="95%"
+                      style={{ width: '100%', maxWidth: '300px' }}
                       mt="xl"
                       size="lg"
                       variant="outline"
-                      onClick={() => {
-                        signIn(provider.id, { callbackUrl: '/' });
-                      }}
+                      onClick={() => signIn(provider.id, { callbackUrl: '/' })}
                     >
                       Sign in with Google
                     </GoogleButton>
