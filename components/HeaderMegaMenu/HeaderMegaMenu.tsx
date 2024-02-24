@@ -106,7 +106,7 @@ export function HeaderMegaMenu() {
         padding="md"
         title="Navigation"
         hiddenFrom="sm"
-        zIndex={1000000}
+        zIndex={999999}
         styles={{
           header: {
             backgroundColor: '#1A1C27',

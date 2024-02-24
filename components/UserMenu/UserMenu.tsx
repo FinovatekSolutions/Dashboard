@@ -30,6 +30,7 @@ export function UserMenu() {
       onClose={() => setUserMenuOpened(false)}
       onOpen={() => setUserMenuOpened(true)}
       withinPortal
+      zIndex={1000000}
     >
       <Menu.Target>
         <UnstyledButton className={cx(classes.user, { [classes.userActive]: userMenuOpened })}>
