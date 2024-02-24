@@ -19,12 +19,14 @@ import {
   ScrollArea,
   rem,
   useMantineTheme,
+  Avatar, // Make sure to import Avatar
 } from '@mantine/core';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { IconChevronDown } from '@tabler/icons-react';
-import { useDisclosure } from '@mantine/hooks';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+
 import classes from './HeaderMegaMenu.module.css';
 import { UserMenu } from '@/components/UserMenu/UserMenu';
 
@@ -32,22 +34,21 @@ export function HeaderMegaMenu() {
   const { data: session } = useSession();
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const theme = useMantineTheme();
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`);
 
-  // Define the links in a single array for reuse
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/todos', label: 'Todos' },
     { href: '/flask', label: 'Flask' },
   ];
 
-  // Render links for both mobile and desktop
   const renderLinks = navLinks.map((link) => (
     <Anchor
       key={link.label}
       href={link.href}
       component={Link}
       className={classes.link}
-      onClick={closeDrawer} // Close the drawer when a link is clicked on mobile
+      onClick={closeDrawer}
     >
       {link.label}
     </Anchor>
@@ -78,7 +79,21 @@ export function HeaderMegaMenu() {
             )}
           </Group>
 
-          <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
+          {/* Replace Burger with Avatar if session exists */}
+          {session ? (
+            <Avatar
+              src={session?.user?.image}
+              alt={session?.user?.name || ''}
+              radius="xl"
+              size={45}
+              mr={10}
+              imageProps={{ referrerPolicy: 'no-referrer' }}
+              onClick={toggleDrawer}
+              hiddenFrom="sm"
+            />
+          ) : (
+            <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
+          )}
         </Group>
       </header>
 
