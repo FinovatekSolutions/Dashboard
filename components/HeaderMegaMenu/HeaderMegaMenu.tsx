@@ -20,6 +20,7 @@ import {
   rem,
   useMantineTheme,
   Avatar, // Make sure to import Avatar
+  MantineProvider,
 } from '@mantine/core';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -106,11 +107,20 @@ export function HeaderMegaMenu() {
         title="Navigation"
         hiddenFrom="sm"
         zIndex={1000000}
+        styles={{
+          header: {
+            backgroundColor: '#1A1C27',
+            color: theme.colors.gray[2],
+          },
+          body: {
+            backgroundColor: '#1A1C27',
+          },
+        }}
       >
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
-          <Divider my="sm" />
+          <Divider my="sm" color={theme.colors.gray[7]} />
           {renderLinks}
-          <Divider my="sm" />
+          <Divider my="sm" color={theme.colors.gray[7]} />
           {!session ? (
             <Button fullWidth onClick={() => signIn()}>
               Sign in
