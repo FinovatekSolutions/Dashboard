@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import {
   HoverCard,
   Group,
@@ -19,83 +20,37 @@ import {
   rem,
   useMantineTheme,
 } from '@mantine/core';
-import { MantineLogo } from '@mantinex/mantine-logo';
-import { useDisclosure } from '@mantine/hooks';
-import {
-  IconNotification,
-  IconCode,
-  IconBook,
-  IconChartPie3,
-  IconFingerprint,
-  IconCoin,
-  IconChevronDown,
-  IconChartDots3,
-  IconReportMoney,
-  IconPigMoney,
-} from '@tabler/icons-react';
-import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
-
+import Link from 'next/link';
+import { IconChevronDown } from '@tabler/icons-react';
+import { useDisclosure } from '@mantine/hooks';
 import classes from './HeaderMegaMenu.module.css';
 import { UserMenu } from '@/components/UserMenu/UserMenu';
 
-const mockdata = [
-  {
-    icon: IconCode,
-    title: 'Open source',
-    description: 'This Pokémon’s cry is very loud and distracting',
-  },
-  {
-    icon: IconCoin,
-    title: 'Free for everyone',
-    description: 'The fluid of Smeargle’s tail secretions changes',
-  },
-  {
-    icon: IconBook,
-    title: 'Documentation',
-    description: 'Yanma is capable of seeing 360 degrees without',
-  },
-  {
-    icon: IconFingerprint,
-    title: 'Security',
-    description: 'The shell’s rounded shape and the grooves on its.',
-  },
-  {
-    icon: IconChartPie3,
-    title: 'Analytics',
-    description: 'This Pokémon uses its flying ability to quickly chase',
-  },
-  {
-    icon: IconNotification,
-    title: 'Notifications',
-    description: 'Combusken battles with the intensely hot flames it spews',
-  },
-];
-
 export function HeaderMegaMenu() {
   const { data: session } = useSession();
-
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
-  const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const theme = useMantineTheme();
 
-  const links = mockdata.map((item) => (
-    <UnstyledButton className={classes.subLink} key={item.title}>
-      <Group wrap="nowrap" align="flex-start">
-        <ThemeIcon size={34} variant="default" radius="md">
-          <item.icon style={{ width: rem(22), height: rem(22) }} color={theme.colors.blue[6]} />
-        </ThemeIcon>
-        <div>
-          <Text size="sm" fw={500}>
-            {item.title}
-          </Text>
-          <Text size="xs" c="dimmed">
-            {item.description}
-          </Text>
-        </div>
-      </Group>
-    </UnstyledButton>
+  // Define the links in a single array for reuse
+  const navLinks = [
+    { href: '/', label: 'Home' },
+    { href: '/todos', label: 'Todos' },
+    { href: '/flask', label: 'Flask' },
+  ];
+
+  // Render links for both mobile and desktop
+  const renderLinks = navLinks.map((link) => (
+    <Anchor
+      key={link.label}
+      href={link.href}
+      component={Link}
+      className={classes.link}
+      onClick={closeDrawer} // Close the drawer when a link is clicked on mobile
+    >
+      {link.label}
+    </Anchor>
   ));
 
   return (
@@ -105,37 +60,21 @@ export function HeaderMegaMenu() {
           <Group h="100%" gap={30}>
             <Anchor href="/" component={Link} className={classes.linklogo}>
               <Group h="100%" gap={10}>
-                <Image
-                  src="/trustmd-full-logo.webp"
-                  alt="TrustMD Logo"
-                  width={225} // Half original width of the image
-                  height={63} // Half original height of the image
-                />
+                <Image src="/trustmd-full-logo.webp" alt="TrustMD Logo" width={225} height={63} />
               </Group>
             </Anchor>
             <Group h="100%" gap={0} visibleFrom="sm">
-              <Anchor href="/" component={Link} className={classes.link}>
-                Home
-              </Anchor>
-              <Anchor href="/todos" component={Link} className={classes.link}>
-                Todos
-              </Anchor>
-              <Anchor href="/flask" component={Link} className={classes.link}>
-                Flask
-              </Anchor>
+              {renderLinks}
             </Group>
           </Group>
 
           <Group visibleFrom="sm">
-            {!session && (
+            {!session ? (
               <Button variant="default" onClick={() => signIn()}>
                 Sign in
               </Button>
-            )}
-            {session && (
-              <Group>
-                <UserMenu />
-              </Group>
+            ) : (
+              <UserMenu />
             )}
           </Group>
 
@@ -154,34 +93,15 @@ export function HeaderMegaMenu() {
       >
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
           <Divider my="sm" />
-
-          <a href="#" className={classes.link}>
-            Home
-          </a>
-          <UnstyledButton className={classes.link} onClick={toggleLinks}>
-            <Center inline>
-              <Box component="span" mr={5}>
-                Features
-              </Box>
-              <IconChevronDown
-                style={{ width: rem(16), height: rem(16) }}
-                color={theme.colors.blue[6]}
-              />
-            </Center>
-          </UnstyledButton>
-          <Collapse in={linksOpened}>{links}</Collapse>
-          <a href="#" className={classes.link}>
-            Learn
-          </a>
-          <a href="#" className={classes.link}>
-            Academy
-          </a>
-
+          {renderLinks}
           <Divider my="sm" />
-
-          <Group justify="center" grow pb="xl" px="md">
-            <Button onClick={() => signIn()}>Sign in</Button>
-          </Group>
+          {!session ? (
+            <Button fullWidth onClick={() => signIn()}>
+              Sign in
+            </Button>
+          ) : (
+            <UserMenu />
+          )}
         </ScrollArea>
       </Drawer>
     </Box>
