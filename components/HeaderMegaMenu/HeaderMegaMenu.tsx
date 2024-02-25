@@ -23,6 +23,7 @@ import {
   MantineProvider,
   Flex,
   Stack,
+  Space,
 } from '@mantine/core';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -95,7 +96,13 @@ export function HeaderMegaMenu() {
               className={classes.customavatarhover}
             />
           ) : (
-            <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
+            <Burger
+              opened={drawerOpened}
+              onClick={toggleDrawer}
+              hiddenFrom="sm"
+              color={theme.colors.gray[2]}
+              size="md"
+            />
           )}
         </Group>
       </header>
@@ -122,6 +129,7 @@ export function HeaderMegaMenu() {
           <Stack h={`calc(100vh - ${rem(80)})`} justify="space-between">
             <Box>
               <Divider my="sm" color={theme.colors.gray[7]} />
+              <Space h="md" />
               {renderLinks}
             </Box>
             <Box>

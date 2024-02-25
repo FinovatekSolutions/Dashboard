@@ -21,7 +21,7 @@
     height: rem(42px);
     width: 100%;
     display: block; /* or inline-block */
-    text-align: center; /* TO CENTER THE DAMNED TEXT :) */
+    /* text-align: center; TO CENTER THE DAMNED TEXT :) */
   }
 
   &:hover {
@@ -31,7 +31,7 @@
 @media (max-width: $mantine-breakpoint-sm) {
   .link + .link {
     /* Targets every .link that follows another .link */
-    margin-top: var(--mantine-spacing-sm); /* Adds space between links */
+    margin-top: var(--mantine-spacing-md); /* Adds space between links */
   }
 }
 .linklogo {
