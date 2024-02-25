@@ -17,14 +17,20 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 
 import classes from './UserMenu.module.css';
 
-export function UserMenu() {
+// Define the props with TypeScript
+interface UserMenuProps {
+  fullWidth?: boolean; // Optional prop
+  closeDrawer?: () => void; // Optional function prop
+}
+
+export function UserMenu({ fullWidth = false, closeDrawer }: UserMenuProps) {
   const { data: session } = useSession();
   const theme = useMantineTheme();
   const [userMenuOpened, setUserMenuOpened] = useState(false);
 
   return (
     <Menu
-      width={260}
+      width={fullWidth ? '100%' : 260}
       position="bottom-end"
       transitionProps={{ transition: 'pop-top-right' }}
       onClose={() => setUserMenuOpened(false)}
@@ -33,7 +39,10 @@ export function UserMenu() {
       zIndex={1000000}
     >
       <Menu.Target>
-        <UnstyledButton className={cx(classes.user, { [classes.userActive]: userMenuOpened })}>
+        <UnstyledButton
+          className={cx(classes.user, { [classes.userActive]: userMenuOpened })}
+          style={{ width: fullWidth ? '100%' : 'auto' }}
+        >
           <Group gap={7}>
             <Avatar
               src={session?.user?.image}
@@ -60,6 +69,7 @@ export function UserMenu() {
             />
           }
           component={Link}
+          onClick={() => closeDrawer && closeDrawer()}
           href="/my-documents"
         >
           My Documents
@@ -69,13 +79,17 @@ export function UserMenu() {
         <Menu.Item
           leftSection={<IconUser style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
           component={Link}
+          onClick={() => closeDrawer && closeDrawer()}
           href="/profile"
         >
           Profile
         </Menu.Item>
 
         <Menu.Item
-          onClick={() => signOut()}
+          onClick={async () => {
+            await signOut();
+            if (closeDrawer) closeDrawer();
+          }}
           leftSection={<IconLogout style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
         >
           Logout

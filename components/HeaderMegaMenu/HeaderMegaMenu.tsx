@@ -35,7 +35,6 @@ export function HeaderMegaMenu() {
   const { data: session } = useSession();
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const theme = useMantineTheme();
-  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`);
 
   const navLinks = [
     { href: '/', label: 'Home' },
@@ -126,7 +125,7 @@ export function HeaderMegaMenu() {
               Sign in
             </Button>
           ) : (
-            <UserMenu />
+            <UserMenu fullWidth closeDrawer={closeDrawer} />
           )}
         </ScrollArea>
       </Drawer>
