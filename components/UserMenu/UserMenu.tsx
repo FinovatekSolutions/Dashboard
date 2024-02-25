@@ -15,7 +15,7 @@ import {
 } from '@tabler/icons-react';
 import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
-
+import { useRouter } from 'next/navigation';
 import classes from './UserMenu.module.css';
 
 // Define the props with TypeScript
@@ -28,6 +28,7 @@ export function UserMenu({ fullWidth = false, closeDrawer }: UserMenuProps) {
   const { data: session } = useSession();
   const theme = useMantineTheme();
   const [userMenuOpened, setUserMenuOpened] = useState(false);
+  const router = useRouter();
 
   return (
     <Menu
@@ -92,8 +93,9 @@ export function UserMenu({ fullWidth = false, closeDrawer }: UserMenuProps) {
 
         <Menu.Item
           onClick={async () => {
-            await signOut();
+            await signOut({ redirect: false });
             if (closeDrawer) closeDrawer();
+            router.push('/');
           }}
           leftSection={<IconLogout style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
         >
