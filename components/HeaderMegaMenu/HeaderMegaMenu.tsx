@@ -136,7 +136,7 @@ export function HeaderMegaMenu() {
               <Divider my="sm" color={theme.colors.gray[7]} />
               <Center>
                 {!session ? (
-                  <Button fullWidth variant="default" w="95%" onClick={() => signIn()}>
+                  <Button fullWidth size="md" variant="default" w="95%" onClick={() => signIn()}>
                     Sign in
                   </Button>
                 ) : (
