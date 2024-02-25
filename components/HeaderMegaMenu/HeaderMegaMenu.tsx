@@ -21,6 +21,8 @@ import {
   useMantineTheme,
   Avatar, // Make sure to import Avatar
   MantineProvider,
+  Flex,
+  Stack,
 } from '@mantine/core';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -35,7 +37,6 @@ export function HeaderMegaMenu() {
   const { data: session } = useSession();
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const theme = useMantineTheme();
-  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`);
 
   const navLinks = [
     { href: '/', label: 'Home' },
@@ -118,16 +119,24 @@ export function HeaderMegaMenu() {
         }}
       >
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
-          <Divider my="sm" color={theme.colors.gray[7]} />
-          {renderLinks}
-          <Divider my="sm" color={theme.colors.gray[7]} />
-          {!session ? (
-            <Button fullWidth onClick={() => signIn()}>
-              Sign in
-            </Button>
-          ) : (
-            <UserMenu />
-          )}
+          <Stack h={`calc(100vh - ${rem(80)})`} justify="space-between">
+            <Box>
+              <Divider my="sm" color={theme.colors.gray[7]} />
+              {renderLinks}
+            </Box>
+            <Box>
+              <Divider my="sm" color={theme.colors.gray[7]} />
+              <Center>
+                {!session ? (
+                  <Button fullWidth variant="default" w="95%" onClick={() => signIn()}>
+                    Sign in
+                  </Button>
+                ) : (
+                  <UserMenu fullWidth closeDrawer={closeDrawer} />
+                )}
+              </Center>
+            </Box>
+          </Stack>
         </ScrollArea>
       </Drawer>
     </Box>
