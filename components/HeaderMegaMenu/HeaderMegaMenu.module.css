@@ -3,7 +3,7 @@
   padding-left: var(--mantine-spacing-md);
   padding-right: var(--mantine-spacing-md);
   border-bottom: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
-  background-color: #1A1C27;
+  background-color: #1a1c27;
 }
 
 .link {
@@ -20,13 +20,20 @@
   @media (max-width: $mantine-breakpoint-sm) {
     height: rem(42px);
     width: 100%;
+    display: block; /* or inline-block */
+    text-align: center; /* TO CENTER THE DAMNED TEXT :) */
   }
 
   &:hover {
-    color: #44C5F8;
+    color: #44c5f8;
   }
 }
-
+@media (max-width: $mantine-breakpoint-sm) {
+  .link + .link {
+    /* Targets every .link that follows another .link */
+    margin-top: var(--mantine-spacing-sm); /* Adds space between links */
+  }
+}
 .linklogo {
   display: flex;
   align-items: center;
@@ -71,6 +78,6 @@
 
 /* Applying hover effect directly without a media query for desktop */
 .customavatarhover:hover {
-  outline: 2px solid #E2E2E3; /* Example outline color */
+  outline: 2px solid #e2e2e3; /* Example outline color */
   outline-offset: 2px;
 }
