@@ -11,6 +11,7 @@ import {
   IconTrash,
   IconSwitchHorizontal,
   IconChevronDown,
+  IconChevronUp,
 } from '@tabler/icons-react';
 import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
@@ -30,9 +31,9 @@ export function UserMenu({ fullWidth = false, closeDrawer }: UserMenuProps) {
 
   return (
     <Menu
-      width={fullWidth ? '100%' : 260}
+      width={fullWidth ? '95%' : 260}
       position="bottom-end"
-      transitionProps={{ transition: 'pop-top-right' }}
+      transitionProps={{ transition: fullWidth ? 'pop-bottom-left' : 'pop-top-right' }}
       onClose={() => setUserMenuOpened(false)}
       onOpen={() => setUserMenuOpened(true)}
       withinPortal
@@ -41,7 +42,7 @@ export function UserMenu({ fullWidth = false, closeDrawer }: UserMenuProps) {
       <Menu.Target>
         <UnstyledButton
           className={cx(classes.user, { [classes.userActive]: userMenuOpened })}
-          style={{ width: fullWidth ? '100%' : 'auto' }}
+          style={{ width: fullWidth ? '95%' : 'auto' }}
         >
           <Group gap={7}>
             <Avatar
@@ -54,7 +55,11 @@ export function UserMenu({ fullWidth = false, closeDrawer }: UserMenuProps) {
             <Text fw={500} size="md" lh={1} mr={3}>
               {session?.user?.name}
             </Text>
-            <IconChevronDown style={{ width: rem(24), height: rem(24) }} stroke={1.5} />
+            {fullWidth ? (
+              <IconChevronUp style={{ width: rem(24), height: rem(24) }} stroke={1.5} />
+            ) : (
+              <IconChevronDown style={{ width: rem(24), height: rem(24) }} stroke={1.5} />
+            )}
           </Group>
         </UnstyledButton>
       </Menu.Target>
