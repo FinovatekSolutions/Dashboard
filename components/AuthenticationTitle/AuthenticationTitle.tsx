@@ -19,7 +19,7 @@ export function AuthenticationTitle({ providers }: LoginClientProps) {
       <Container className={classes.container}>
         <Paper
           withBorder
-          shadow="md"
+          shadow="xl"
           p={30}
           mt={0}
           radius="md"
@@ -44,7 +44,7 @@ export function AuthenticationTitle({ providers }: LoginClientProps) {
                     <GoogleButton
                       style={{ width: '100%', maxWidth: '300px' }}
                       mt="xl"
-                      size="lg"
+                      size="md"
                       variant="outline"
                       onClick={() => signIn(provider.id, { callbackUrl: '/' })}
                     >
