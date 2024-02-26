@@ -5,11 +5,11 @@ import { HeaderMegaMenu } from '@/components/HeaderMegaMenu/HeaderMegaMenu';
 import { authOptions } from '../api/auth/[...nextauth]/route';
 
 export default async function HomeLayout({ children }: { children: any }) {
-  // const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions);
 
-  // if (!session) {
-  //   redirect('/login');
-  // }
+  if (!session) {
+    redirect('/login');
+  }
 
   return (
     <>
