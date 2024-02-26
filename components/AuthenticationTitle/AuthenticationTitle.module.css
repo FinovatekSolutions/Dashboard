@@ -17,19 +17,19 @@
 
 @media (min-width: 768px) {
   .container {
-    width: 70%;
+    width: 60%;
   }
 }
 
 @media (min-width: 992px) {
   .container {
-    width: 70%;
+    width: 50%;
   }
 }
 
 @media (min-width: 1200px) {
   .container {
-    width: 50%;
+    width: 40%;
   }
 }
 

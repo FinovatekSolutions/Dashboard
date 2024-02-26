@@ -28,7 +28,7 @@ export function AuthenticationTitle({ providers }: LoginClientProps) {
           <Space h="xl" />
           <Center>
             <Image
-              src="/trustmd-full-logo-dark.png"
+              src="/trustmd-full-logo-dark-hd.png"
               alt="TrustMD Logo"
               layout="responsive"
               width={390}
