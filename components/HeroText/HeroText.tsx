@@ -12,7 +12,7 @@ export default function HeroText() {
 
       <div className={classes.inner}>
         <Title className={classes.title}>
-          Automated AI{' '}
+          Wilson AI{' '}
           <Text component="span" className={classes.highlight} inherit>
             code reviews
           </Text>{' '}
