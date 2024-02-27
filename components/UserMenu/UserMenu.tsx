@@ -65,22 +65,6 @@ export function UserMenu({ fullWidth = false, closeDrawer }: UserMenuProps) {
         </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Label>General</Menu.Label>
-        <Menu.Item
-          leftSection={
-            <IconFiles
-              style={{ width: rem(16), height: rem(16) }}
-              color={theme.colors.blue[6]}
-              stroke={1.5}
-            />
-          }
-          component={Link}
-          onClick={() => closeDrawer && closeDrawer()}
-          href="/my-documents"
-        >
-          My Documents
-        </Menu.Item>
-        <Menu.Divider />
         <Menu.Label>Settings</Menu.Label>
         <Menu.Item
           leftSection={<IconUser style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
