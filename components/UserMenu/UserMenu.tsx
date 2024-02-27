@@ -93,9 +93,8 @@ export function UserMenu({ fullWidth = false, closeDrawer }: UserMenuProps) {
 
         <Menu.Item
           onClick={async () => {
-            await signOut({ redirect: false });
+            await signOut();
             if (closeDrawer) closeDrawer();
-            router.push('/');
           }}
           leftSection={<IconLogout style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
         >

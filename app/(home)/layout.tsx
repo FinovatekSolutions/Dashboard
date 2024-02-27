@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { HeaderMegaMenu } from '@/components/HeaderMegaMenu/HeaderMegaMenu';
 import { authOptions } from '../api/auth/[...nextauth]/route';
+import { LockWhenSignedOut } from '@/components/LockWhenSignedOut/LockWhenSignedOut';
 
 export default async function HomeLayout({ children }: { children: any }) {
   const session = await getServerSession(authOptions);
@@ -13,6 +14,7 @@ export default async function HomeLayout({ children }: { children: any }) {
 
   return (
     <>
+      <LockWhenSignedOut />
       <HeaderMegaMenu />
       {children}
     </>
