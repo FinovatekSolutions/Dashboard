@@ -36,91 +36,91 @@ model User {
 }
 
 model Client {
-  id        String   @id @default(cuid())
-  
+  id String @id @default(cuid())
+
   /// @zod.string.min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" })
-  name      String
-  
+  name String
+
   /// @zod.string.min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" })
-  company   String
-  
+  company String
+
   /// @zod.string().email({ message: 'Invalid email address' })
-  email     String
-  
+  email String
+
   /// @zod.string().regex(/^\d{3}-\d{3}-\d{4}$/, { message: 'Invalid phone number format. Required format: 787-555-4444' })
-  phone     String
-  
+  phone String
+
   /// @zod.string().min(1, { message: "Address cannot be empty." })
-  address   String
-  
+  address String
+
   /// @zod.string().min(1, { message: "City cannot be empty." })
-  city      String
-  
+  city String
+
   /// @zod.string().min(2, { message: "State must be at least 2 characters." }).max(100, { message: "State must be at most 100 characters" })
-  state     String
-  
+  state String
+
   /// @zod.string().regex(/^\d{5}(-\d{4})?$/, { message: 'Invalid ZIP code format. Required format: 12345 or 12345-6789' })
-  zip       String
-  
+  zip String
+
   /// @zod.string().min(2, { message: "Country must be at least 2 characters." }).max(100, { message: "Country must be at most 100 characters" })
-  country   String
-  
+  country String
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
-  reviews   Review[]
+
+  reviews Review[]
 }
 
 model Review {
-  id              String          @id @default(cuid())
-  
-  /// @zod.string().min(1, { message: "Name cannot be empty." })
-  name    String
+  id String @id @default(cuid())
 
-  userId          String
-  user            User            @relation(fields: [userId], references: [id])
-  
-  clientId        String
-  client          Client          @relation(fields: [clientId], references: [id])
-  
-  bankTypeId      String
-  bankType        BankType        @relation(fields: [bankTypeId], references: [id])
+  /// @zod.string().min(1, { message: "Name cannot be empty." })
+  name String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id])
+
+  bankTypeId String
+  bankType   BankType @relation(fields: [bankTypeId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  transactions    Transaction[]
-  bankStatements  BankStatement[]
+  transactions   Transaction[]
+  bankStatements BankStatement[]
 }
 
 model Transaction {
-  id            String    @id @default(cuid())
-  
+  id String @id @default(cuid())
+
   /// @zod.date()
-  date          DateTime
-  
+  date DateTime
+
   /// @zod.string().min(1, { message: "Description cannot be empty." })
-  description   String
-  
+  description String
+
   /// @zod.number()
-  amount        Float
-  
-  reviewId      String
-  review        Review    @relation(fields: [reviewId], references: [id])
-  
-  categoryId    String
-  category      Category  @relation(fields: [categoryId], references: [id])
+  amount Float
+
+  reviewId String
+  review   Review @relation(fields: [reviewId], references: [id])
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model BankType {
-  id      String   @id @default(cuid())
-  
+  id String @id @default(cuid())
+
   /// @zod.string().min(1, { message: "Name cannot be empty." })
-  name    String
-  
+  name String
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -128,12 +128,12 @@ model BankType {
 }
 
 model BankStatement {
-  id       String @id @default(cuid())
-  
-  /// @zod.string().min(1, { message: "Name cannot be empty." })
-  name     String
+  id String @id @default(cuid())
 
-  file     Bytes // This field will store the binary data of the file
+  /// @zod.string().min(1, { message: "Name cannot be empty." })
+  name String
+
+  file Bytes // This field will store the binary data of the file
 
   reviewId String
   review   Review @relation(fields: [reviewId], references: [id])
@@ -143,11 +143,11 @@ model BankStatement {
 }
 
 model Category {
-  id           String        @id @default(cuid())
+  id String @id @default(cuid())
 
   /// @zod.string().min(1, { message: "Name cannot be empty." })
-  name         String
-  
+  name String
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
