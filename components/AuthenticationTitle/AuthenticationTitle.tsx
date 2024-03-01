@@ -1,18 +1,23 @@
 'use client';
 
-import React from 'react';
-import { useMantineTheme, Paper, Text, Container, Center, Space } from '@mantine/core';
+import React, { useState } from 'react';
+import { Paper, Text, Container, Center, Space } from '@mantine/core';
 import { ClientSafeProvider, signIn } from 'next-auth/react';
 import Image from 'next/image';
 import { GoogleButton } from '../GoogleButton/GoogleButton';
-import classes from './AuthenticationTitle.module.css'; // Make sure this path is correct
+import classes from './AuthenticationTitle.module.css';
 
 interface LoginClientProps {
   providers: Record<string, ClientSafeProvider> | null;
 }
 
 export function AuthenticationTitle({ providers }: LoginClientProps) {
-  const theme = useMantineTheme();
+  const [loading, setLoading] = useState(false);
+
+  const handleSignIn = (providerId: string) => {
+    setLoading(true);
+    signIn(providerId, { callbackUrl: '/' });
+  };
 
   return (
     <>
@@ -46,7 +51,8 @@ export function AuthenticationTitle({ providers }: LoginClientProps) {
                       mt="xl"
                       size="md"
                       variant="outline"
-                      onClick={() => signIn(provider.id, { callbackUrl: '/' })}
+                      loading={loading}
+                      onClick={() => handleSignIn(provider.id)}
                     >
                       Sign in with Google
                     </GoogleButton>
