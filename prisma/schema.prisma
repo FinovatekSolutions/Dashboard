@@ -1,6 +1,6 @@
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
@@ -22,7 +22,7 @@ model Todo {
 }
 
 model User {
-// DO NOT EDIT BELOW, USED FOR AUTHENTICATION  
+  // DO NOT EDIT BELOW, USED FOR AUTHENTICATION  
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
@@ -30,68 +30,127 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-// DO NOT EDIT ABOVE, USED FOR AUTHENTICATION
-  
-  reviews       Review[]
+  // DO NOT EDIT ABOVE, USED FOR AUTHENTICATION
+
+  reviews Review[]
 }
 
 model Client {
-  id            String    @id @default(cuid())
-  name          String
-  company          String
-  email         String
-  phone         String
-  address       String
-  city          String
-  state         String
-  zip           String
-  country       String
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  reviews       Review[]
+  id        String   @id @default(cuid())
+  
+  /// @zod.string.min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" })
+  name      String
+  
+  /// @zod.string.min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" })
+  company   String
+  
+  /// @zod.string().email({ message: 'Invalid email address' })
+  email     String
+  
+  /// @zod.string().regex(/^\d{3}-\d{3}-\d{4}$/, { message: 'Invalid phone number format. Required format: 787-555-4444' })
+  phone     String
+  
+  /// @zod.string().min(1, { message: "Address cannot be empty." })
+  address   String
+  
+  /// @zod.string().min(1, { message: "City cannot be empty." })
+  city      String
+  
+  /// @zod.string().min(2, { message: "State must be at least 2 characters." }).max(100, { message: "State must be at most 100 characters" })
+  state     String
+  
+  /// @zod.string().regex(/^\d{5}(-\d{4})?$/, { message: 'Invalid ZIP code format. Required format: 12345 or 12345-6789' })
+  zip       String
+  
+  /// @zod.string().min(2, { message: "Country must be at least 2 characters." }).max(100, { message: "Country must be at most 100 characters" })
+  country   String
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  reviews   Review[]
 }
 
 model Review {
-  id              String             @id @default(cuid())
+  id              String          @id @default(cuid())
+  
+  /// @zod.string().min(1, { message: "Name cannot be empty." })
+  name    String
+
   userId          String
+  user            User            @relation(fields: [userId], references: [id])
+  
   clientId        String
+  client          Client          @relation(fields: [clientId], references: [id])
+  
   bankTypeId      String
+  bankType        BankType        @relation(fields: [bankTypeId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   transactions    Transaction[]
   bankStatements  BankStatement[]
-  user            User            @relation(fields: [userId], references: [id])
-  client          Client          @relation(fields: [clientId], references: [id])
-  bankType        BankType        @relation(fields: [bankTypeId], references: [id])
 }
 
 model Transaction {
-  id          String       @id @default(cuid())
-  date        DateTime
-  description String
-  amount      Float
-  reviewId    String
-  categoryId  String
-  review      Review    @relation(fields: [reviewId], references: [id])
-  category    Category  @relation(fields: [categoryId], references: [id])
+  id            String    @id @default(cuid())
+  
+  /// @zod.date()
+  date          DateTime
+  
+  /// @zod.string().min(1, { message: "Description cannot be empty." })
+  description   String
+  
+  /// @zod.number()
+  amount        Float
+  
+  reviewId      String
+  review        Review    @relation(fields: [reviewId], references: [id])
+  
+  categoryId    String
+  category      Category  @relation(fields: [categoryId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-
 model BankType {
-  id      String      @id @default(cuid())
+  id      String   @id @default(cuid())
+  
+  /// @zod.string().min(1, { message: "Name cannot be empty." })
   name    String
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   reviews Review[]
 }
 
 model BankStatement {
-  id       String     @id @default(cuid())
-  reviewId String
+  id       String @id @default(cuid())
+  
+  /// @zod.string().min(1, { message: "Name cannot be empty." })
   name     String
-  file     Bytes    // This field will store the binary data of the file
-  review   Review  @relation(fields: [reviewId], references: [id])
+
+  file     Bytes // This field will store the binary data of the file
+
+  reviewId String
+  review   Review @relation(fields: [reviewId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Category {
-  id           String           @id @default(cuid())
+  id           String        @id @default(cuid())
+
+  /// @zod.string().min(1, { message: "Name cannot be empty." })
   name         String
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   transactions Transaction[]
 }
 
