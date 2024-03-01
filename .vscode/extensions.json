@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-typescript-next",
+    "prisma.prisma",
+    "vunguyentuan.vscode-postcss",
+    "vunguyentuan.vscode-css-variables",
+    "ecmel.vscode-html-css",
+    "firsttris.vscode-jest-runner",
+    "jock.svg"
+  ]
+}

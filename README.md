@@ -43,6 +43,10 @@ The latest in automated financial management.
 - **[Tabler Icons](https://tabler-icons-react.vercel.app)** – A collection of popular icons to React projects
 - **[PostCSS](https://postcss.org/)** – Transform CSS with the power of JavaScript
 
+### Hooks
+
+- **[React-Use](https://github.com/streamich/react-use)** – Collection of essential React Hooks
+
 ### Tests
 
 - **[Jest](https://jestjs.io)** – A delightful JavaScript Testing Framework with a focus on simplicity
