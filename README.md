@@ -45,7 +45,7 @@ The latest in automated financial management.
 
 ### Hooks
 
-- **[react-use](https://github.com/streamich/react-use)** – Collection of essential React Hooks
+- **[React-Use](https://github.com/streamich/react-use)** – Collection of essential React Hooks
 
 ### Tests
 
