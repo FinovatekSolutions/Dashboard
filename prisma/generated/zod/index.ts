@@ -18,13 +18,13 @@ export const UserScalarFieldEnumSchema = z.enum(['id','name','email','emailVerif
 
 export const ClientScalarFieldEnumSchema = z.enum(['id','name','company','email','phone','address','city','state','zip','country','createdAt','updatedAt']);
 
-export const ReviewScalarFieldEnumSchema = z.enum(['id','name','userId','clientId','bankTypeId','createdAt','updatedAt']);
+export const ReviewScalarFieldEnumSchema = z.enum(['id','name','userId','clientId','createdAt','updatedAt']);
 
 export const TransactionScalarFieldEnumSchema = z.enum(['id','date','description','amount','reviewId','categoryId','createdAt','updatedAt']);
 
 export const BankTypeScalarFieldEnumSchema = z.enum(['id','name','createdAt','updatedAt']);
 
-export const BankStatementScalarFieldEnumSchema = z.enum(['id','name','file','reviewId','createdAt','updatedAt']);
+export const BankStatementScalarFieldEnumSchema = z.enum(['id','name','file','reviewId','bankTypeId','createdAt','updatedAt']);
 
 export const CategoryScalarFieldEnumSchema = z.enum(['id','name','createdAt','updatedAt']);
 
@@ -101,7 +101,6 @@ export const ReviewSchema = z.object({
   name: z.string().min(1, { message: "Name cannot be empty." }),
   userId: z.string(),
   clientId: z.string(),
-  bankTypeId: z.string(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
 })
@@ -147,6 +146,7 @@ export const BankStatementSchema = z.object({
   name: z.string().min(1, { message: "Name cannot be empty." }),
   file: z.instanceof(Buffer),
   reviewId: z.string(),
+  bankTypeId: z.string(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
 })
@@ -308,7 +308,6 @@ export const ClientSelectSchema: z.ZodType<Prisma.ClientSelect> = z.object({
 export const ReviewIncludeSchema: z.ZodType<Prisma.ReviewInclude> = z.object({
   user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
   client: z.union([z.boolean(),z.lazy(() => ClientArgsSchema)]).optional(),
-  bankType: z.union([z.boolean(),z.lazy(() => BankTypeArgsSchema)]).optional(),
   transactions: z.union([z.boolean(),z.lazy(() => TransactionFindManyArgsSchema)]).optional(),
   bankStatements: z.union([z.boolean(),z.lazy(() => BankStatementFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => ReviewCountOutputTypeArgsSchema)]).optional(),
@@ -333,12 +332,10 @@ export const ReviewSelectSchema: z.ZodType<Prisma.ReviewSelect> = z.object({
   name: z.boolean().optional(),
   userId: z.boolean().optional(),
   clientId: z.boolean().optional(),
-  bankTypeId: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
   user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
   client: z.union([z.boolean(),z.lazy(() => ClientArgsSchema)]).optional(),
-  bankType: z.union([z.boolean(),z.lazy(() => BankTypeArgsSchema)]).optional(),
   transactions: z.union([z.boolean(),z.lazy(() => TransactionFindManyArgsSchema)]).optional(),
   bankStatements: z.union([z.boolean(),z.lazy(() => BankStatementFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => ReviewCountOutputTypeArgsSchema)]).optional(),
@@ -374,7 +371,7 @@ export const TransactionSelectSchema: z.ZodType<Prisma.TransactionSelect> = z.ob
 //------------------------------------------------------
 
 export const BankTypeIncludeSchema: z.ZodType<Prisma.BankTypeInclude> = z.object({
-  reviews: z.union([z.boolean(),z.lazy(() => ReviewFindManyArgsSchema)]).optional(),
+  bankStatements: z.union([z.boolean(),z.lazy(() => BankStatementFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => BankTypeCountOutputTypeArgsSchema)]).optional(),
 }).strict()
 
@@ -388,7 +385,7 @@ export const BankTypeCountOutputTypeArgsSchema: z.ZodType<Prisma.BankTypeCountOu
 }).strict();
 
 export const BankTypeCountOutputTypeSelectSchema: z.ZodType<Prisma.BankTypeCountOutputTypeSelect> = z.object({
-  reviews: z.boolean().optional(),
+  bankStatements: z.boolean().optional(),
 }).strict();
 
 export const BankTypeSelectSchema: z.ZodType<Prisma.BankTypeSelect> = z.object({
@@ -396,7 +393,7 @@ export const BankTypeSelectSchema: z.ZodType<Prisma.BankTypeSelect> = z.object({
   name: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
-  reviews: z.union([z.boolean(),z.lazy(() => ReviewFindManyArgsSchema)]).optional(),
+  bankStatements: z.union([z.boolean(),z.lazy(() => BankStatementFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => BankTypeCountOutputTypeArgsSchema)]).optional(),
 }).strict()
 
@@ -405,6 +402,7 @@ export const BankTypeSelectSchema: z.ZodType<Prisma.BankTypeSelect> = z.object({
 
 export const BankStatementIncludeSchema: z.ZodType<Prisma.BankStatementInclude> = z.object({
   review: z.union([z.boolean(),z.lazy(() => ReviewArgsSchema)]).optional(),
+  bankType: z.union([z.boolean(),z.lazy(() => BankTypeArgsSchema)]).optional(),
 }).strict()
 
 export const BankStatementArgsSchema: z.ZodType<Prisma.BankStatementDefaultArgs> = z.object({
@@ -417,9 +415,11 @@ export const BankStatementSelectSchema: z.ZodType<Prisma.BankStatementSelect> = 
   name: z.boolean().optional(),
   file: z.boolean().optional(),
   reviewId: z.boolean().optional(),
+  bankTypeId: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
   review: z.union([z.boolean(),z.lazy(() => ReviewArgsSchema)]).optional(),
+  bankType: z.union([z.boolean(),z.lazy(() => BankTypeArgsSchema)]).optional(),
 }).strict()
 
 // CATEGORY
@@ -743,12 +743,10 @@ export const ReviewWhereInputSchema: z.ZodType<Prisma.ReviewWhereInput> = z.obje
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   userId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   clientId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  bankTypeId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   user: z.union([ z.lazy(() => UserRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
   client: z.union([ z.lazy(() => ClientRelationFilterSchema),z.lazy(() => ClientWhereInputSchema) ]).optional(),
-  bankType: z.union([ z.lazy(() => BankTypeRelationFilterSchema),z.lazy(() => BankTypeWhereInputSchema) ]).optional(),
   transactions: z.lazy(() => TransactionListRelationFilterSchema).optional(),
   bankStatements: z.lazy(() => BankStatementListRelationFilterSchema).optional()
 }).strict();
@@ -758,12 +756,10 @@ export const ReviewOrderByWithRelationInputSchema: z.ZodType<Prisma.ReviewOrderB
   name: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
   clientId: z.lazy(() => SortOrderSchema).optional(),
-  bankTypeId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   user: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
   client: z.lazy(() => ClientOrderByWithRelationInputSchema).optional(),
-  bankType: z.lazy(() => BankTypeOrderByWithRelationInputSchema).optional(),
   transactions: z.lazy(() => TransactionOrderByRelationAggregateInputSchema).optional(),
   bankStatements: z.lazy(() => BankStatementOrderByRelationAggregateInputSchema).optional()
 }).strict();
@@ -779,12 +775,10 @@ export const ReviewWhereUniqueInputSchema: z.ZodType<Prisma.ReviewWhereUniqueInp
   name: z.union([ z.lazy(() => StringFilterSchema),z.string().min(1, { message: "Name cannot be empty." }) ]).optional(),
   userId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   clientId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  bankTypeId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   user: z.union([ z.lazy(() => UserRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
   client: z.union([ z.lazy(() => ClientRelationFilterSchema),z.lazy(() => ClientWhereInputSchema) ]).optional(),
-  bankType: z.union([ z.lazy(() => BankTypeRelationFilterSchema),z.lazy(() => BankTypeWhereInputSchema) ]).optional(),
   transactions: z.lazy(() => TransactionListRelationFilterSchema).optional(),
   bankStatements: z.lazy(() => BankStatementListRelationFilterSchema).optional()
 }).strict());
@@ -794,7 +788,6 @@ export const ReviewOrderByWithAggregationInputSchema: z.ZodType<Prisma.ReviewOrd
   name: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
   clientId: z.lazy(() => SortOrderSchema).optional(),
-  bankTypeId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   _count: z.lazy(() => ReviewCountOrderByAggregateInputSchema).optional(),
@@ -810,7 +803,6 @@ export const ReviewScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Review
   name: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   userId: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   clientId: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
-  bankTypeId: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
 }).strict();
@@ -901,7 +893,7 @@ export const BankTypeWhereInputSchema: z.ZodType<Prisma.BankTypeWhereInput> = z.
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
-  reviews: z.lazy(() => ReviewListRelationFilterSchema).optional()
+  bankStatements: z.lazy(() => BankStatementListRelationFilterSchema).optional()
 }).strict();
 
 export const BankTypeOrderByWithRelationInputSchema: z.ZodType<Prisma.BankTypeOrderByWithRelationInput> = z.object({
@@ -909,7 +901,7 @@ export const BankTypeOrderByWithRelationInputSchema: z.ZodType<Prisma.BankTypeOr
   name: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
-  reviews: z.lazy(() => ReviewOrderByRelationAggregateInputSchema).optional()
+  bankStatements: z.lazy(() => BankStatementOrderByRelationAggregateInputSchema).optional()
 }).strict();
 
 export const BankTypeWhereUniqueInputSchema: z.ZodType<Prisma.BankTypeWhereUniqueInput> = z.object({
@@ -923,7 +915,7 @@ export const BankTypeWhereUniqueInputSchema: z.ZodType<Prisma.BankTypeWhereUniqu
   name: z.union([ z.lazy(() => StringFilterSchema),z.string().min(1, { message: "Name cannot be empty." }) ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
-  reviews: z.lazy(() => ReviewListRelationFilterSchema).optional()
+  bankStatements: z.lazy(() => BankStatementListRelationFilterSchema).optional()
 }).strict());
 
 export const BankTypeOrderByWithAggregationInputSchema: z.ZodType<Prisma.BankTypeOrderByWithAggregationInput> = z.object({
@@ -954,9 +946,11 @@ export const BankStatementWhereInputSchema: z.ZodType<Prisma.BankStatementWhereI
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   file: z.union([ z.lazy(() => BytesFilterSchema),z.instanceof(Buffer) ]).optional(),
   reviewId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  bankTypeId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   review: z.union([ z.lazy(() => ReviewRelationFilterSchema),z.lazy(() => ReviewWhereInputSchema) ]).optional(),
+  bankType: z.union([ z.lazy(() => BankTypeRelationFilterSchema),z.lazy(() => BankTypeWhereInputSchema) ]).optional(),
 }).strict();
 
 export const BankStatementOrderByWithRelationInputSchema: z.ZodType<Prisma.BankStatementOrderByWithRelationInput> = z.object({
@@ -964,9 +958,11 @@ export const BankStatementOrderByWithRelationInputSchema: z.ZodType<Prisma.BankS
   name: z.lazy(() => SortOrderSchema).optional(),
   file: z.lazy(() => SortOrderSchema).optional(),
   reviewId: z.lazy(() => SortOrderSchema).optional(),
+  bankTypeId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
-  review: z.lazy(() => ReviewOrderByWithRelationInputSchema).optional()
+  review: z.lazy(() => ReviewOrderByWithRelationInputSchema).optional(),
+  bankType: z.lazy(() => BankTypeOrderByWithRelationInputSchema).optional()
 }).strict();
 
 export const BankStatementWhereUniqueInputSchema: z.ZodType<Prisma.BankStatementWhereUniqueInput> = z.object({
@@ -980,9 +976,11 @@ export const BankStatementWhereUniqueInputSchema: z.ZodType<Prisma.BankStatement
   name: z.union([ z.lazy(() => StringFilterSchema),z.string().min(1, { message: "Name cannot be empty." }) ]).optional(),
   file: z.union([ z.lazy(() => BytesFilterSchema),z.instanceof(Buffer) ]).optional(),
   reviewId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  bankTypeId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   review: z.union([ z.lazy(() => ReviewRelationFilterSchema),z.lazy(() => ReviewWhereInputSchema) ]).optional(),
+  bankType: z.union([ z.lazy(() => BankTypeRelationFilterSchema),z.lazy(() => BankTypeWhereInputSchema) ]).optional(),
 }).strict());
 
 export const BankStatementOrderByWithAggregationInputSchema: z.ZodType<Prisma.BankStatementOrderByWithAggregationInput> = z.object({
@@ -990,6 +988,7 @@ export const BankStatementOrderByWithAggregationInputSchema: z.ZodType<Prisma.Ba
   name: z.lazy(() => SortOrderSchema).optional(),
   file: z.lazy(() => SortOrderSchema).optional(),
   reviewId: z.lazy(() => SortOrderSchema).optional(),
+  bankTypeId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   _count: z.lazy(() => BankStatementCountOrderByAggregateInputSchema).optional(),
@@ -1005,6 +1004,7 @@ export const BankStatementScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma
   name: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   file: z.union([ z.lazy(() => BytesWithAggregatesFilterSchema),z.instanceof(Buffer) ]).optional(),
   reviewId: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  bankTypeId: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
 }).strict();
@@ -1524,7 +1524,6 @@ export const ReviewCreateInputSchema: z.ZodType<Prisma.ReviewCreateInput> = z.ob
   updatedAt: z.coerce.date().optional(),
   user: z.lazy(() => UserCreateNestedOneWithoutReviewsInputSchema),
   client: z.lazy(() => ClientCreateNestedOneWithoutReviewsInputSchema),
-  bankType: z.lazy(() => BankTypeCreateNestedOneWithoutReviewsInputSchema),
   transactions: z.lazy(() => TransactionCreateNestedManyWithoutReviewInputSchema).optional(),
   bankStatements: z.lazy(() => BankStatementCreateNestedManyWithoutReviewInputSchema).optional()
 }).strict();
@@ -1534,7 +1533,6 @@ export const ReviewUncheckedCreateInputSchema: z.ZodType<Prisma.ReviewUncheckedC
   name: z.string().min(1, { message: "Name cannot be empty." }),
   userId: z.string(),
   clientId: z.string(),
-  bankTypeId: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   transactions: z.lazy(() => TransactionUncheckedCreateNestedManyWithoutReviewInputSchema).optional(),
@@ -1548,7 +1546,6 @@ export const ReviewUpdateInputSchema: z.ZodType<Prisma.ReviewUpdateInput> = z.ob
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutReviewsNestedInputSchema).optional(),
   client: z.lazy(() => ClientUpdateOneRequiredWithoutReviewsNestedInputSchema).optional(),
-  bankType: z.lazy(() => BankTypeUpdateOneRequiredWithoutReviewsNestedInputSchema).optional(),
   transactions: z.lazy(() => TransactionUpdateManyWithoutReviewNestedInputSchema).optional(),
   bankStatements: z.lazy(() => BankStatementUpdateManyWithoutReviewNestedInputSchema).optional()
 }).strict();
@@ -1558,7 +1555,6 @@ export const ReviewUncheckedUpdateInputSchema: z.ZodType<Prisma.ReviewUncheckedU
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   clientId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  bankTypeId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   transactions: z.lazy(() => TransactionUncheckedUpdateManyWithoutReviewNestedInputSchema).optional(),
@@ -1570,7 +1566,6 @@ export const ReviewCreateManyInputSchema: z.ZodType<Prisma.ReviewCreateManyInput
   name: z.string().min(1, { message: "Name cannot be empty." }),
   userId: z.string(),
   clientId: z.string(),
-  bankTypeId: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional()
 }).strict();
@@ -1587,7 +1582,6 @@ export const ReviewUncheckedUpdateManyInputSchema: z.ZodType<Prisma.ReviewUnchec
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   clientId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  bankTypeId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
@@ -1672,7 +1666,7 @@ export const BankTypeCreateInputSchema: z.ZodType<Prisma.BankTypeCreateInput> = 
   name: z.string().min(1, { message: "Name cannot be empty." }),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
-  reviews: z.lazy(() => ReviewCreateNestedManyWithoutBankTypeInputSchema).optional()
+  bankStatements: z.lazy(() => BankStatementCreateNestedManyWithoutBankTypeInputSchema).optional()
 }).strict();
 
 export const BankTypeUncheckedCreateInputSchema: z.ZodType<Prisma.BankTypeUncheckedCreateInput> = z.object({
@@ -1680,7 +1674,7 @@ export const BankTypeUncheckedCreateInputSchema: z.ZodType<Prisma.BankTypeUnchec
   name: z.string().min(1, { message: "Name cannot be empty." }),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
-  reviews: z.lazy(() => ReviewUncheckedCreateNestedManyWithoutBankTypeInputSchema).optional()
+  bankStatements: z.lazy(() => BankStatementUncheckedCreateNestedManyWithoutBankTypeInputSchema).optional()
 }).strict();
 
 export const BankTypeUpdateInputSchema: z.ZodType<Prisma.BankTypeUpdateInput> = z.object({
@@ -1688,7 +1682,7 @@ export const BankTypeUpdateInputSchema: z.ZodType<Prisma.BankTypeUpdateInput> = 
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-  reviews: z.lazy(() => ReviewUpdateManyWithoutBankTypeNestedInputSchema).optional()
+  bankStatements: z.lazy(() => BankStatementUpdateManyWithoutBankTypeNestedInputSchema).optional()
 }).strict();
 
 export const BankTypeUncheckedUpdateInputSchema: z.ZodType<Prisma.BankTypeUncheckedUpdateInput> = z.object({
@@ -1696,7 +1690,7 @@ export const BankTypeUncheckedUpdateInputSchema: z.ZodType<Prisma.BankTypeUnchec
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-  reviews: z.lazy(() => ReviewUncheckedUpdateManyWithoutBankTypeNestedInputSchema).optional()
+  bankStatements: z.lazy(() => BankStatementUncheckedUpdateManyWithoutBankTypeNestedInputSchema).optional()
 }).strict();
 
 export const BankTypeCreateManyInputSchema: z.ZodType<Prisma.BankTypeCreateManyInput> = z.object({
@@ -1726,7 +1720,8 @@ export const BankStatementCreateInputSchema: z.ZodType<Prisma.BankStatementCreat
   file: z.instanceof(Buffer),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
-  review: z.lazy(() => ReviewCreateNestedOneWithoutBankStatementsInputSchema)
+  review: z.lazy(() => ReviewCreateNestedOneWithoutBankStatementsInputSchema),
+  bankType: z.lazy(() => BankTypeCreateNestedOneWithoutBankStatementsInputSchema)
 }).strict();
 
 export const BankStatementUncheckedCreateInputSchema: z.ZodType<Prisma.BankStatementUncheckedCreateInput> = z.object({
@@ -1734,6 +1729,7 @@ export const BankStatementUncheckedCreateInputSchema: z.ZodType<Prisma.BankState
   name: z.string().min(1, { message: "Name cannot be empty." }),
   file: z.instanceof(Buffer),
   reviewId: z.string(),
+  bankTypeId: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional()
 }).strict();
@@ -1744,7 +1740,8 @@ export const BankStatementUpdateInputSchema: z.ZodType<Prisma.BankStatementUpdat
   file: z.union([ z.instanceof(Buffer),z.lazy(() => BytesFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-  review: z.lazy(() => ReviewUpdateOneRequiredWithoutBankStatementsNestedInputSchema).optional()
+  review: z.lazy(() => ReviewUpdateOneRequiredWithoutBankStatementsNestedInputSchema).optional(),
+  bankType: z.lazy(() => BankTypeUpdateOneRequiredWithoutBankStatementsNestedInputSchema).optional()
 }).strict();
 
 export const BankStatementUncheckedUpdateInputSchema: z.ZodType<Prisma.BankStatementUncheckedUpdateInput> = z.object({
@@ -1752,6 +1749,7 @@ export const BankStatementUncheckedUpdateInputSchema: z.ZodType<Prisma.BankState
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   file: z.union([ z.instanceof(Buffer),z.lazy(() => BytesFieldUpdateOperationsInputSchema) ]).optional(),
   reviewId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  bankTypeId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
@@ -1761,6 +1759,7 @@ export const BankStatementCreateManyInputSchema: z.ZodType<Prisma.BankStatementC
   name: z.string().min(1, { message: "Name cannot be empty." }),
   file: z.instanceof(Buffer),
   reviewId: z.string(),
+  bankTypeId: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional()
 }).strict();
@@ -1778,6 +1777,7 @@ export const BankStatementUncheckedUpdateManyInputSchema: z.ZodType<Prisma.BankS
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   file: z.union([ z.instanceof(Buffer),z.lazy(() => BytesFieldUpdateOperationsInputSchema) ]).optional(),
   reviewId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  bankTypeId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
@@ -2296,11 +2296,6 @@ export const ClientRelationFilterSchema: z.ZodType<Prisma.ClientRelationFilter> 
   isNot: z.lazy(() => ClientWhereInputSchema).optional()
 }).strict();
 
-export const BankTypeRelationFilterSchema: z.ZodType<Prisma.BankTypeRelationFilter> = z.object({
-  is: z.lazy(() => BankTypeWhereInputSchema).optional(),
-  isNot: z.lazy(() => BankTypeWhereInputSchema).optional()
-}).strict();
-
 export const TransactionListRelationFilterSchema: z.ZodType<Prisma.TransactionListRelationFilter> = z.object({
   every: z.lazy(() => TransactionWhereInputSchema).optional(),
   some: z.lazy(() => TransactionWhereInputSchema).optional(),
@@ -2326,7 +2321,6 @@ export const ReviewCountOrderByAggregateInputSchema: z.ZodType<Prisma.ReviewCoun
   name: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
   clientId: z.lazy(() => SortOrderSchema).optional(),
-  bankTypeId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
@@ -2336,7 +2330,6 @@ export const ReviewMaxOrderByAggregateInputSchema: z.ZodType<Prisma.ReviewMaxOrd
   name: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
   clientId: z.lazy(() => SortOrderSchema).optional(),
-  bankTypeId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
@@ -2346,7 +2339,6 @@ export const ReviewMinOrderByAggregateInputSchema: z.ZodType<Prisma.ReviewMinOrd
   name: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
   clientId: z.lazy(() => SortOrderSchema).optional(),
-  bankTypeId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
@@ -2457,11 +2449,17 @@ export const BytesFilterSchema: z.ZodType<Prisma.BytesFilter> = z.object({
   not: z.union([ z.instanceof(Buffer),z.lazy(() => NestedBytesFilterSchema) ]).optional(),
 }).strict();
 
+export const BankTypeRelationFilterSchema: z.ZodType<Prisma.BankTypeRelationFilter> = z.object({
+  is: z.lazy(() => BankTypeWhereInputSchema).optional(),
+  isNot: z.lazy(() => BankTypeWhereInputSchema).optional()
+}).strict();
+
 export const BankStatementCountOrderByAggregateInputSchema: z.ZodType<Prisma.BankStatementCountOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   file: z.lazy(() => SortOrderSchema).optional(),
   reviewId: z.lazy(() => SortOrderSchema).optional(),
+  bankTypeId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
@@ -2471,6 +2469,7 @@ export const BankStatementMaxOrderByAggregateInputSchema: z.ZodType<Prisma.BankS
   name: z.lazy(() => SortOrderSchema).optional(),
   file: z.lazy(() => SortOrderSchema).optional(),
   reviewId: z.lazy(() => SortOrderSchema).optional(),
+  bankTypeId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
@@ -2480,6 +2479,7 @@ export const BankStatementMinOrderByAggregateInputSchema: z.ZodType<Prisma.BankS
   name: z.lazy(() => SortOrderSchema).optional(),
   file: z.lazy(() => SortOrderSchema).optional(),
   reviewId: z.lazy(() => SortOrderSchema).optional(),
+  bankTypeId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
@@ -2844,12 +2844,6 @@ export const ClientCreateNestedOneWithoutReviewsInputSchema: z.ZodType<Prisma.Cl
   connect: z.lazy(() => ClientWhereUniqueInputSchema).optional()
 }).strict();
 
-export const BankTypeCreateNestedOneWithoutReviewsInputSchema: z.ZodType<Prisma.BankTypeCreateNestedOneWithoutReviewsInput> = z.object({
-  create: z.union([ z.lazy(() => BankTypeCreateWithoutReviewsInputSchema),z.lazy(() => BankTypeUncheckedCreateWithoutReviewsInputSchema) ]).optional(),
-  connectOrCreate: z.lazy(() => BankTypeCreateOrConnectWithoutReviewsInputSchema).optional(),
-  connect: z.lazy(() => BankTypeWhereUniqueInputSchema).optional()
-}).strict();
-
 export const TransactionCreateNestedManyWithoutReviewInputSchema: z.ZodType<Prisma.TransactionCreateNestedManyWithoutReviewInput> = z.object({
   create: z.union([ z.lazy(() => TransactionCreateWithoutReviewInputSchema),z.lazy(() => TransactionCreateWithoutReviewInputSchema).array(),z.lazy(() => TransactionUncheckedCreateWithoutReviewInputSchema),z.lazy(() => TransactionUncheckedCreateWithoutReviewInputSchema).array() ]).optional(),
   connectOrCreate: z.union([ z.lazy(() => TransactionCreateOrConnectWithoutReviewInputSchema),z.lazy(() => TransactionCreateOrConnectWithoutReviewInputSchema).array() ]).optional(),
@@ -2892,14 +2886,6 @@ export const ClientUpdateOneRequiredWithoutReviewsNestedInputSchema: z.ZodType<P
   upsert: z.lazy(() => ClientUpsertWithoutReviewsInputSchema).optional(),
   connect: z.lazy(() => ClientWhereUniqueInputSchema).optional(),
   update: z.union([ z.lazy(() => ClientUpdateToOneWithWhereWithoutReviewsInputSchema),z.lazy(() => ClientUpdateWithoutReviewsInputSchema),z.lazy(() => ClientUncheckedUpdateWithoutReviewsInputSchema) ]).optional(),
-}).strict();
-
-export const BankTypeUpdateOneRequiredWithoutReviewsNestedInputSchema: z.ZodType<Prisma.BankTypeUpdateOneRequiredWithoutReviewsNestedInput> = z.object({
-  create: z.union([ z.lazy(() => BankTypeCreateWithoutReviewsInputSchema),z.lazy(() => BankTypeUncheckedCreateWithoutReviewsInputSchema) ]).optional(),
-  connectOrCreate: z.lazy(() => BankTypeCreateOrConnectWithoutReviewsInputSchema).optional(),
-  upsert: z.lazy(() => BankTypeUpsertWithoutReviewsInputSchema).optional(),
-  connect: z.lazy(() => BankTypeWhereUniqueInputSchema).optional(),
-  update: z.union([ z.lazy(() => BankTypeUpdateToOneWithWhereWithoutReviewsInputSchema),z.lazy(() => BankTypeUpdateWithoutReviewsInputSchema),z.lazy(() => BankTypeUncheckedUpdateWithoutReviewsInputSchema) ]).optional(),
 }).strict();
 
 export const TransactionUpdateManyWithoutReviewNestedInputSchema: z.ZodType<Prisma.TransactionUpdateManyWithoutReviewNestedInput> = z.object({
@@ -2994,52 +2980,58 @@ export const CategoryUpdateOneRequiredWithoutTransactionsNestedInputSchema: z.Zo
   update: z.union([ z.lazy(() => CategoryUpdateToOneWithWhereWithoutTransactionsInputSchema),z.lazy(() => CategoryUpdateWithoutTransactionsInputSchema),z.lazy(() => CategoryUncheckedUpdateWithoutTransactionsInputSchema) ]).optional(),
 }).strict();
 
-export const ReviewCreateNestedManyWithoutBankTypeInputSchema: z.ZodType<Prisma.ReviewCreateNestedManyWithoutBankTypeInput> = z.object({
-  create: z.union([ z.lazy(() => ReviewCreateWithoutBankTypeInputSchema),z.lazy(() => ReviewCreateWithoutBankTypeInputSchema).array(),z.lazy(() => ReviewUncheckedCreateWithoutBankTypeInputSchema),z.lazy(() => ReviewUncheckedCreateWithoutBankTypeInputSchema).array() ]).optional(),
-  connectOrCreate: z.union([ z.lazy(() => ReviewCreateOrConnectWithoutBankTypeInputSchema),z.lazy(() => ReviewCreateOrConnectWithoutBankTypeInputSchema).array() ]).optional(),
-  createMany: z.lazy(() => ReviewCreateManyBankTypeInputEnvelopeSchema).optional(),
-  connect: z.union([ z.lazy(() => ReviewWhereUniqueInputSchema),z.lazy(() => ReviewWhereUniqueInputSchema).array() ]).optional(),
+export const BankStatementCreateNestedManyWithoutBankTypeInputSchema: z.ZodType<Prisma.BankStatementCreateNestedManyWithoutBankTypeInput> = z.object({
+  create: z.union([ z.lazy(() => BankStatementCreateWithoutBankTypeInputSchema),z.lazy(() => BankStatementCreateWithoutBankTypeInputSchema).array(),z.lazy(() => BankStatementUncheckedCreateWithoutBankTypeInputSchema),z.lazy(() => BankStatementUncheckedCreateWithoutBankTypeInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => BankStatementCreateOrConnectWithoutBankTypeInputSchema),z.lazy(() => BankStatementCreateOrConnectWithoutBankTypeInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => BankStatementCreateManyBankTypeInputEnvelopeSchema).optional(),
+  connect: z.union([ z.lazy(() => BankStatementWhereUniqueInputSchema),z.lazy(() => BankStatementWhereUniqueInputSchema).array() ]).optional(),
 }).strict();
 
-export const ReviewUncheckedCreateNestedManyWithoutBankTypeInputSchema: z.ZodType<Prisma.ReviewUncheckedCreateNestedManyWithoutBankTypeInput> = z.object({
-  create: z.union([ z.lazy(() => ReviewCreateWithoutBankTypeInputSchema),z.lazy(() => ReviewCreateWithoutBankTypeInputSchema).array(),z.lazy(() => ReviewUncheckedCreateWithoutBankTypeInputSchema),z.lazy(() => ReviewUncheckedCreateWithoutBankTypeInputSchema).array() ]).optional(),
-  connectOrCreate: z.union([ z.lazy(() => ReviewCreateOrConnectWithoutBankTypeInputSchema),z.lazy(() => ReviewCreateOrConnectWithoutBankTypeInputSchema).array() ]).optional(),
-  createMany: z.lazy(() => ReviewCreateManyBankTypeInputEnvelopeSchema).optional(),
-  connect: z.union([ z.lazy(() => ReviewWhereUniqueInputSchema),z.lazy(() => ReviewWhereUniqueInputSchema).array() ]).optional(),
+export const BankStatementUncheckedCreateNestedManyWithoutBankTypeInputSchema: z.ZodType<Prisma.BankStatementUncheckedCreateNestedManyWithoutBankTypeInput> = z.object({
+  create: z.union([ z.lazy(() => BankStatementCreateWithoutBankTypeInputSchema),z.lazy(() => BankStatementCreateWithoutBankTypeInputSchema).array(),z.lazy(() => BankStatementUncheckedCreateWithoutBankTypeInputSchema),z.lazy(() => BankStatementUncheckedCreateWithoutBankTypeInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => BankStatementCreateOrConnectWithoutBankTypeInputSchema),z.lazy(() => BankStatementCreateOrConnectWithoutBankTypeInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => BankStatementCreateManyBankTypeInputEnvelopeSchema).optional(),
+  connect: z.union([ z.lazy(() => BankStatementWhereUniqueInputSchema),z.lazy(() => BankStatementWhereUniqueInputSchema).array() ]).optional(),
 }).strict();
 
-export const ReviewUpdateManyWithoutBankTypeNestedInputSchema: z.ZodType<Prisma.ReviewUpdateManyWithoutBankTypeNestedInput> = z.object({
-  create: z.union([ z.lazy(() => ReviewCreateWithoutBankTypeInputSchema),z.lazy(() => ReviewCreateWithoutBankTypeInputSchema).array(),z.lazy(() => ReviewUncheckedCreateWithoutBankTypeInputSchema),z.lazy(() => ReviewUncheckedCreateWithoutBankTypeInputSchema).array() ]).optional(),
-  connectOrCreate: z.union([ z.lazy(() => ReviewCreateOrConnectWithoutBankTypeInputSchema),z.lazy(() => ReviewCreateOrConnectWithoutBankTypeInputSchema).array() ]).optional(),
-  upsert: z.union([ z.lazy(() => ReviewUpsertWithWhereUniqueWithoutBankTypeInputSchema),z.lazy(() => ReviewUpsertWithWhereUniqueWithoutBankTypeInputSchema).array() ]).optional(),
-  createMany: z.lazy(() => ReviewCreateManyBankTypeInputEnvelopeSchema).optional(),
-  set: z.union([ z.lazy(() => ReviewWhereUniqueInputSchema),z.lazy(() => ReviewWhereUniqueInputSchema).array() ]).optional(),
-  disconnect: z.union([ z.lazy(() => ReviewWhereUniqueInputSchema),z.lazy(() => ReviewWhereUniqueInputSchema).array() ]).optional(),
-  delete: z.union([ z.lazy(() => ReviewWhereUniqueInputSchema),z.lazy(() => ReviewWhereUniqueInputSchema).array() ]).optional(),
-  connect: z.union([ z.lazy(() => ReviewWhereUniqueInputSchema),z.lazy(() => ReviewWhereUniqueInputSchema).array() ]).optional(),
-  update: z.union([ z.lazy(() => ReviewUpdateWithWhereUniqueWithoutBankTypeInputSchema),z.lazy(() => ReviewUpdateWithWhereUniqueWithoutBankTypeInputSchema).array() ]).optional(),
-  updateMany: z.union([ z.lazy(() => ReviewUpdateManyWithWhereWithoutBankTypeInputSchema),z.lazy(() => ReviewUpdateManyWithWhereWithoutBankTypeInputSchema).array() ]).optional(),
-  deleteMany: z.union([ z.lazy(() => ReviewScalarWhereInputSchema),z.lazy(() => ReviewScalarWhereInputSchema).array() ]).optional(),
+export const BankStatementUpdateManyWithoutBankTypeNestedInputSchema: z.ZodType<Prisma.BankStatementUpdateManyWithoutBankTypeNestedInput> = z.object({
+  create: z.union([ z.lazy(() => BankStatementCreateWithoutBankTypeInputSchema),z.lazy(() => BankStatementCreateWithoutBankTypeInputSchema).array(),z.lazy(() => BankStatementUncheckedCreateWithoutBankTypeInputSchema),z.lazy(() => BankStatementUncheckedCreateWithoutBankTypeInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => BankStatementCreateOrConnectWithoutBankTypeInputSchema),z.lazy(() => BankStatementCreateOrConnectWithoutBankTypeInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => BankStatementUpsertWithWhereUniqueWithoutBankTypeInputSchema),z.lazy(() => BankStatementUpsertWithWhereUniqueWithoutBankTypeInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => BankStatementCreateManyBankTypeInputEnvelopeSchema).optional(),
+  set: z.union([ z.lazy(() => BankStatementWhereUniqueInputSchema),z.lazy(() => BankStatementWhereUniqueInputSchema).array() ]).optional(),
+  disconnect: z.union([ z.lazy(() => BankStatementWhereUniqueInputSchema),z.lazy(() => BankStatementWhereUniqueInputSchema).array() ]).optional(),
+  delete: z.union([ z.lazy(() => BankStatementWhereUniqueInputSchema),z.lazy(() => BankStatementWhereUniqueInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => BankStatementWhereUniqueInputSchema),z.lazy(() => BankStatementWhereUniqueInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => BankStatementUpdateWithWhereUniqueWithoutBankTypeInputSchema),z.lazy(() => BankStatementUpdateWithWhereUniqueWithoutBankTypeInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => BankStatementUpdateManyWithWhereWithoutBankTypeInputSchema),z.lazy(() => BankStatementUpdateManyWithWhereWithoutBankTypeInputSchema).array() ]).optional(),
+  deleteMany: z.union([ z.lazy(() => BankStatementScalarWhereInputSchema),z.lazy(() => BankStatementScalarWhereInputSchema).array() ]).optional(),
 }).strict();
 
-export const ReviewUncheckedUpdateManyWithoutBankTypeNestedInputSchema: z.ZodType<Prisma.ReviewUncheckedUpdateManyWithoutBankTypeNestedInput> = z.object({
-  create: z.union([ z.lazy(() => ReviewCreateWithoutBankTypeInputSchema),z.lazy(() => ReviewCreateWithoutBankTypeInputSchema).array(),z.lazy(() => ReviewUncheckedCreateWithoutBankTypeInputSchema),z.lazy(() => ReviewUncheckedCreateWithoutBankTypeInputSchema).array() ]).optional(),
-  connectOrCreate: z.union([ z.lazy(() => ReviewCreateOrConnectWithoutBankTypeInputSchema),z.lazy(() => ReviewCreateOrConnectWithoutBankTypeInputSchema).array() ]).optional(),
-  upsert: z.union([ z.lazy(() => ReviewUpsertWithWhereUniqueWithoutBankTypeInputSchema),z.lazy(() => ReviewUpsertWithWhereUniqueWithoutBankTypeInputSchema).array() ]).optional(),
-  createMany: z.lazy(() => ReviewCreateManyBankTypeInputEnvelopeSchema).optional(),
-  set: z.union([ z.lazy(() => ReviewWhereUniqueInputSchema),z.lazy(() => ReviewWhereUniqueInputSchema).array() ]).optional(),
-  disconnect: z.union([ z.lazy(() => ReviewWhereUniqueInputSchema),z.lazy(() => ReviewWhereUniqueInputSchema).array() ]).optional(),
-  delete: z.union([ z.lazy(() => ReviewWhereUniqueInputSchema),z.lazy(() => ReviewWhereUniqueInputSchema).array() ]).optional(),
-  connect: z.union([ z.lazy(() => ReviewWhereUniqueInputSchema),z.lazy(() => ReviewWhereUniqueInputSchema).array() ]).optional(),
-  update: z.union([ z.lazy(() => ReviewUpdateWithWhereUniqueWithoutBankTypeInputSchema),z.lazy(() => ReviewUpdateWithWhereUniqueWithoutBankTypeInputSchema).array() ]).optional(),
-  updateMany: z.union([ z.lazy(() => ReviewUpdateManyWithWhereWithoutBankTypeInputSchema),z.lazy(() => ReviewUpdateManyWithWhereWithoutBankTypeInputSchema).array() ]).optional(),
-  deleteMany: z.union([ z.lazy(() => ReviewScalarWhereInputSchema),z.lazy(() => ReviewScalarWhereInputSchema).array() ]).optional(),
+export const BankStatementUncheckedUpdateManyWithoutBankTypeNestedInputSchema: z.ZodType<Prisma.BankStatementUncheckedUpdateManyWithoutBankTypeNestedInput> = z.object({
+  create: z.union([ z.lazy(() => BankStatementCreateWithoutBankTypeInputSchema),z.lazy(() => BankStatementCreateWithoutBankTypeInputSchema).array(),z.lazy(() => BankStatementUncheckedCreateWithoutBankTypeInputSchema),z.lazy(() => BankStatementUncheckedCreateWithoutBankTypeInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => BankStatementCreateOrConnectWithoutBankTypeInputSchema),z.lazy(() => BankStatementCreateOrConnectWithoutBankTypeInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => BankStatementUpsertWithWhereUniqueWithoutBankTypeInputSchema),z.lazy(() => BankStatementUpsertWithWhereUniqueWithoutBankTypeInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => BankStatementCreateManyBankTypeInputEnvelopeSchema).optional(),
+  set: z.union([ z.lazy(() => BankStatementWhereUniqueInputSchema),z.lazy(() => BankStatementWhereUniqueInputSchema).array() ]).optional(),
+  disconnect: z.union([ z.lazy(() => BankStatementWhereUniqueInputSchema),z.lazy(() => BankStatementWhereUniqueInputSchema).array() ]).optional(),
+  delete: z.union([ z.lazy(() => BankStatementWhereUniqueInputSchema),z.lazy(() => BankStatementWhereUniqueInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => BankStatementWhereUniqueInputSchema),z.lazy(() => BankStatementWhereUniqueInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => BankStatementUpdateWithWhereUniqueWithoutBankTypeInputSchema),z.lazy(() => BankStatementUpdateWithWhereUniqueWithoutBankTypeInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => BankStatementUpdateManyWithWhereWithoutBankTypeInputSchema),z.lazy(() => BankStatementUpdateManyWithWhereWithoutBankTypeInputSchema).array() ]).optional(),
+  deleteMany: z.union([ z.lazy(() => BankStatementScalarWhereInputSchema),z.lazy(() => BankStatementScalarWhereInputSchema).array() ]).optional(),
 }).strict();
 
 export const ReviewCreateNestedOneWithoutBankStatementsInputSchema: z.ZodType<Prisma.ReviewCreateNestedOneWithoutBankStatementsInput> = z.object({
   create: z.union([ z.lazy(() => ReviewCreateWithoutBankStatementsInputSchema),z.lazy(() => ReviewUncheckedCreateWithoutBankStatementsInputSchema) ]).optional(),
   connectOrCreate: z.lazy(() => ReviewCreateOrConnectWithoutBankStatementsInputSchema).optional(),
   connect: z.lazy(() => ReviewWhereUniqueInputSchema).optional()
+}).strict();
+
+export const BankTypeCreateNestedOneWithoutBankStatementsInputSchema: z.ZodType<Prisma.BankTypeCreateNestedOneWithoutBankStatementsInput> = z.object({
+  create: z.union([ z.lazy(() => BankTypeCreateWithoutBankStatementsInputSchema),z.lazy(() => BankTypeUncheckedCreateWithoutBankStatementsInputSchema) ]).optional(),
+  connectOrCreate: z.lazy(() => BankTypeCreateOrConnectWithoutBankStatementsInputSchema).optional(),
+  connect: z.lazy(() => BankTypeWhereUniqueInputSchema).optional()
 }).strict();
 
 export const BytesFieldUpdateOperationsInputSchema: z.ZodType<Prisma.BytesFieldUpdateOperationsInput> = z.object({
@@ -3052,6 +3044,14 @@ export const ReviewUpdateOneRequiredWithoutBankStatementsNestedInputSchema: z.Zo
   upsert: z.lazy(() => ReviewUpsertWithoutBankStatementsInputSchema).optional(),
   connect: z.lazy(() => ReviewWhereUniqueInputSchema).optional(),
   update: z.union([ z.lazy(() => ReviewUpdateToOneWithWhereWithoutBankStatementsInputSchema),z.lazy(() => ReviewUpdateWithoutBankStatementsInputSchema),z.lazy(() => ReviewUncheckedUpdateWithoutBankStatementsInputSchema) ]).optional(),
+}).strict();
+
+export const BankTypeUpdateOneRequiredWithoutBankStatementsNestedInputSchema: z.ZodType<Prisma.BankTypeUpdateOneRequiredWithoutBankStatementsNestedInput> = z.object({
+  create: z.union([ z.lazy(() => BankTypeCreateWithoutBankStatementsInputSchema),z.lazy(() => BankTypeUncheckedCreateWithoutBankStatementsInputSchema) ]).optional(),
+  connectOrCreate: z.lazy(() => BankTypeCreateOrConnectWithoutBankStatementsInputSchema).optional(),
+  upsert: z.lazy(() => BankTypeUpsertWithoutBankStatementsInputSchema).optional(),
+  connect: z.lazy(() => BankTypeWhereUniqueInputSchema).optional(),
+  update: z.union([ z.lazy(() => BankTypeUpdateToOneWithWhereWithoutBankStatementsInputSchema),z.lazy(() => BankTypeUpdateWithoutBankStatementsInputSchema),z.lazy(() => BankTypeUncheckedUpdateWithoutBankStatementsInputSchema) ]).optional(),
 }).strict();
 
 export const TransactionCreateNestedManyWithoutCategoryInputSchema: z.ZodType<Prisma.TransactionCreateNestedManyWithoutCategoryInput> = z.object({
@@ -3416,7 +3416,6 @@ export const ReviewCreateWithoutUserInputSchema: z.ZodType<Prisma.ReviewCreateWi
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   client: z.lazy(() => ClientCreateNestedOneWithoutReviewsInputSchema),
-  bankType: z.lazy(() => BankTypeCreateNestedOneWithoutReviewsInputSchema),
   transactions: z.lazy(() => TransactionCreateNestedManyWithoutReviewInputSchema).optional(),
   bankStatements: z.lazy(() => BankStatementCreateNestedManyWithoutReviewInputSchema).optional()
 }).strict();
@@ -3425,7 +3424,6 @@ export const ReviewUncheckedCreateWithoutUserInputSchema: z.ZodType<Prisma.Revie
   id: z.string().cuid().optional(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
   clientId: z.string(),
-  bankTypeId: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   transactions: z.lazy(() => TransactionUncheckedCreateNestedManyWithoutReviewInputSchema).optional(),
@@ -3526,7 +3524,6 @@ export const ReviewScalarWhereInputSchema: z.ZodType<Prisma.ReviewScalarWhereInp
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   userId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   clientId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  bankTypeId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
 }).strict();
@@ -3537,7 +3534,6 @@ export const ReviewCreateWithoutClientInputSchema: z.ZodType<Prisma.ReviewCreate
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   user: z.lazy(() => UserCreateNestedOneWithoutReviewsInputSchema),
-  bankType: z.lazy(() => BankTypeCreateNestedOneWithoutReviewsInputSchema),
   transactions: z.lazy(() => TransactionCreateNestedManyWithoutReviewInputSchema).optional(),
   bankStatements: z.lazy(() => BankStatementCreateNestedManyWithoutReviewInputSchema).optional()
 }).strict();
@@ -3546,7 +3542,6 @@ export const ReviewUncheckedCreateWithoutClientInputSchema: z.ZodType<Prisma.Rev
   id: z.string().cuid().optional(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
   userId: z.string(),
-  bankTypeId: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   transactions: z.lazy(() => TransactionUncheckedCreateNestedManyWithoutReviewInputSchema).optional(),
@@ -3639,25 +3634,6 @@ export const ClientCreateOrConnectWithoutReviewsInputSchema: z.ZodType<Prisma.Cl
   create: z.union([ z.lazy(() => ClientCreateWithoutReviewsInputSchema),z.lazy(() => ClientUncheckedCreateWithoutReviewsInputSchema) ]),
 }).strict();
 
-export const BankTypeCreateWithoutReviewsInputSchema: z.ZodType<Prisma.BankTypeCreateWithoutReviewsInput> = z.object({
-  id: z.string().cuid().optional(),
-  name: z.string().min(1, { message: "Name cannot be empty." }),
-  createdAt: z.coerce.date().optional(),
-  updatedAt: z.coerce.date().optional()
-}).strict();
-
-export const BankTypeUncheckedCreateWithoutReviewsInputSchema: z.ZodType<Prisma.BankTypeUncheckedCreateWithoutReviewsInput> = z.object({
-  id: z.string().cuid().optional(),
-  name: z.string().min(1, { message: "Name cannot be empty." }),
-  createdAt: z.coerce.date().optional(),
-  updatedAt: z.coerce.date().optional()
-}).strict();
-
-export const BankTypeCreateOrConnectWithoutReviewsInputSchema: z.ZodType<Prisma.BankTypeCreateOrConnectWithoutReviewsInput> = z.object({
-  where: z.lazy(() => BankTypeWhereUniqueInputSchema),
-  create: z.union([ z.lazy(() => BankTypeCreateWithoutReviewsInputSchema),z.lazy(() => BankTypeUncheckedCreateWithoutReviewsInputSchema) ]),
-}).strict();
-
 export const TransactionCreateWithoutReviewInputSchema: z.ZodType<Prisma.TransactionCreateWithoutReviewInput> = z.object({
   id: z.string().cuid().optional(),
   date: z.coerce.date(),
@@ -3693,13 +3669,15 @@ export const BankStatementCreateWithoutReviewInputSchema: z.ZodType<Prisma.BankS
   name: z.string().min(1, { message: "Name cannot be empty." }),
   file: z.instanceof(Buffer),
   createdAt: z.coerce.date().optional(),
-  updatedAt: z.coerce.date().optional()
+  updatedAt: z.coerce.date().optional(),
+  bankType: z.lazy(() => BankTypeCreateNestedOneWithoutBankStatementsInputSchema)
 }).strict();
 
 export const BankStatementUncheckedCreateWithoutReviewInputSchema: z.ZodType<Prisma.BankStatementUncheckedCreateWithoutReviewInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
   file: z.instanceof(Buffer),
+  bankTypeId: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional()
 }).strict();
@@ -3786,31 +3764,6 @@ export const ClientUncheckedUpdateWithoutReviewsInputSchema: z.ZodType<Prisma.Cl
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
-export const BankTypeUpsertWithoutReviewsInputSchema: z.ZodType<Prisma.BankTypeUpsertWithoutReviewsInput> = z.object({
-  update: z.union([ z.lazy(() => BankTypeUpdateWithoutReviewsInputSchema),z.lazy(() => BankTypeUncheckedUpdateWithoutReviewsInputSchema) ]),
-  create: z.union([ z.lazy(() => BankTypeCreateWithoutReviewsInputSchema),z.lazy(() => BankTypeUncheckedCreateWithoutReviewsInputSchema) ]),
-  where: z.lazy(() => BankTypeWhereInputSchema).optional()
-}).strict();
-
-export const BankTypeUpdateToOneWithWhereWithoutReviewsInputSchema: z.ZodType<Prisma.BankTypeUpdateToOneWithWhereWithoutReviewsInput> = z.object({
-  where: z.lazy(() => BankTypeWhereInputSchema).optional(),
-  data: z.union([ z.lazy(() => BankTypeUpdateWithoutReviewsInputSchema),z.lazy(() => BankTypeUncheckedUpdateWithoutReviewsInputSchema) ]),
-}).strict();
-
-export const BankTypeUpdateWithoutReviewsInputSchema: z.ZodType<Prisma.BankTypeUpdateWithoutReviewsInput> = z.object({
-  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-}).strict();
-
-export const BankTypeUncheckedUpdateWithoutReviewsInputSchema: z.ZodType<Prisma.BankTypeUncheckedUpdateWithoutReviewsInput> = z.object({
-  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-}).strict();
-
 export const TransactionUpsertWithWhereUniqueWithoutReviewInputSchema: z.ZodType<Prisma.TransactionUpsertWithWhereUniqueWithoutReviewInput> = z.object({
   where: z.lazy(() => TransactionWhereUniqueInputSchema),
   update: z.union([ z.lazy(() => TransactionUpdateWithoutReviewInputSchema),z.lazy(() => TransactionUncheckedUpdateWithoutReviewInputSchema) ]),
@@ -3865,6 +3818,7 @@ export const BankStatementScalarWhereInputSchema: z.ZodType<Prisma.BankStatement
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   file: z.union([ z.lazy(() => BytesFilterSchema),z.instanceof(Buffer) ]).optional(),
   reviewId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  bankTypeId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
 }).strict();
@@ -3876,7 +3830,6 @@ export const ReviewCreateWithoutTransactionsInputSchema: z.ZodType<Prisma.Review
   updatedAt: z.coerce.date().optional(),
   user: z.lazy(() => UserCreateNestedOneWithoutReviewsInputSchema),
   client: z.lazy(() => ClientCreateNestedOneWithoutReviewsInputSchema),
-  bankType: z.lazy(() => BankTypeCreateNestedOneWithoutReviewsInputSchema),
   bankStatements: z.lazy(() => BankStatementCreateNestedManyWithoutReviewInputSchema).optional()
 }).strict();
 
@@ -3885,7 +3838,6 @@ export const ReviewUncheckedCreateWithoutTransactionsInputSchema: z.ZodType<Pris
   name: z.string().min(1, { message: "Name cannot be empty." }),
   userId: z.string(),
   clientId: z.string(),
-  bankTypeId: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   bankStatements: z.lazy(() => BankStatementUncheckedCreateNestedManyWithoutReviewInputSchema).optional()
@@ -3933,7 +3885,6 @@ export const ReviewUpdateWithoutTransactionsInputSchema: z.ZodType<Prisma.Review
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutReviewsNestedInputSchema).optional(),
   client: z.lazy(() => ClientUpdateOneRequiredWithoutReviewsNestedInputSchema).optional(),
-  bankType: z.lazy(() => BankTypeUpdateOneRequiredWithoutReviewsNestedInputSchema).optional(),
   bankStatements: z.lazy(() => BankStatementUpdateManyWithoutReviewNestedInputSchema).optional()
 }).strict();
 
@@ -3942,7 +3893,6 @@ export const ReviewUncheckedUpdateWithoutTransactionsInputSchema: z.ZodType<Pris
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   clientId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  bankTypeId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   bankStatements: z.lazy(() => BankStatementUncheckedUpdateManyWithoutReviewNestedInputSchema).optional()
@@ -3973,52 +3923,48 @@ export const CategoryUncheckedUpdateWithoutTransactionsInputSchema: z.ZodType<Pr
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
-export const ReviewCreateWithoutBankTypeInputSchema: z.ZodType<Prisma.ReviewCreateWithoutBankTypeInput> = z.object({
+export const BankStatementCreateWithoutBankTypeInputSchema: z.ZodType<Prisma.BankStatementCreateWithoutBankTypeInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
+  file: z.instanceof(Buffer),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
-  user: z.lazy(() => UserCreateNestedOneWithoutReviewsInputSchema),
-  client: z.lazy(() => ClientCreateNestedOneWithoutReviewsInputSchema),
-  transactions: z.lazy(() => TransactionCreateNestedManyWithoutReviewInputSchema).optional(),
-  bankStatements: z.lazy(() => BankStatementCreateNestedManyWithoutReviewInputSchema).optional()
+  review: z.lazy(() => ReviewCreateNestedOneWithoutBankStatementsInputSchema)
 }).strict();
 
-export const ReviewUncheckedCreateWithoutBankTypeInputSchema: z.ZodType<Prisma.ReviewUncheckedCreateWithoutBankTypeInput> = z.object({
+export const BankStatementUncheckedCreateWithoutBankTypeInputSchema: z.ZodType<Prisma.BankStatementUncheckedCreateWithoutBankTypeInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
-  userId: z.string(),
-  clientId: z.string(),
+  file: z.instanceof(Buffer),
+  reviewId: z.string(),
   createdAt: z.coerce.date().optional(),
-  updatedAt: z.coerce.date().optional(),
-  transactions: z.lazy(() => TransactionUncheckedCreateNestedManyWithoutReviewInputSchema).optional(),
-  bankStatements: z.lazy(() => BankStatementUncheckedCreateNestedManyWithoutReviewInputSchema).optional()
+  updatedAt: z.coerce.date().optional()
 }).strict();
 
-export const ReviewCreateOrConnectWithoutBankTypeInputSchema: z.ZodType<Prisma.ReviewCreateOrConnectWithoutBankTypeInput> = z.object({
-  where: z.lazy(() => ReviewWhereUniqueInputSchema),
-  create: z.union([ z.lazy(() => ReviewCreateWithoutBankTypeInputSchema),z.lazy(() => ReviewUncheckedCreateWithoutBankTypeInputSchema) ]),
+export const BankStatementCreateOrConnectWithoutBankTypeInputSchema: z.ZodType<Prisma.BankStatementCreateOrConnectWithoutBankTypeInput> = z.object({
+  where: z.lazy(() => BankStatementWhereUniqueInputSchema),
+  create: z.union([ z.lazy(() => BankStatementCreateWithoutBankTypeInputSchema),z.lazy(() => BankStatementUncheckedCreateWithoutBankTypeInputSchema) ]),
 }).strict();
 
-export const ReviewCreateManyBankTypeInputEnvelopeSchema: z.ZodType<Prisma.ReviewCreateManyBankTypeInputEnvelope> = z.object({
-  data: z.union([ z.lazy(() => ReviewCreateManyBankTypeInputSchema),z.lazy(() => ReviewCreateManyBankTypeInputSchema).array() ]),
+export const BankStatementCreateManyBankTypeInputEnvelopeSchema: z.ZodType<Prisma.BankStatementCreateManyBankTypeInputEnvelope> = z.object({
+  data: z.union([ z.lazy(() => BankStatementCreateManyBankTypeInputSchema),z.lazy(() => BankStatementCreateManyBankTypeInputSchema).array() ]),
   skipDuplicates: z.boolean().optional()
 }).strict();
 
-export const ReviewUpsertWithWhereUniqueWithoutBankTypeInputSchema: z.ZodType<Prisma.ReviewUpsertWithWhereUniqueWithoutBankTypeInput> = z.object({
-  where: z.lazy(() => ReviewWhereUniqueInputSchema),
-  update: z.union([ z.lazy(() => ReviewUpdateWithoutBankTypeInputSchema),z.lazy(() => ReviewUncheckedUpdateWithoutBankTypeInputSchema) ]),
-  create: z.union([ z.lazy(() => ReviewCreateWithoutBankTypeInputSchema),z.lazy(() => ReviewUncheckedCreateWithoutBankTypeInputSchema) ]),
+export const BankStatementUpsertWithWhereUniqueWithoutBankTypeInputSchema: z.ZodType<Prisma.BankStatementUpsertWithWhereUniqueWithoutBankTypeInput> = z.object({
+  where: z.lazy(() => BankStatementWhereUniqueInputSchema),
+  update: z.union([ z.lazy(() => BankStatementUpdateWithoutBankTypeInputSchema),z.lazy(() => BankStatementUncheckedUpdateWithoutBankTypeInputSchema) ]),
+  create: z.union([ z.lazy(() => BankStatementCreateWithoutBankTypeInputSchema),z.lazy(() => BankStatementUncheckedCreateWithoutBankTypeInputSchema) ]),
 }).strict();
 
-export const ReviewUpdateWithWhereUniqueWithoutBankTypeInputSchema: z.ZodType<Prisma.ReviewUpdateWithWhereUniqueWithoutBankTypeInput> = z.object({
-  where: z.lazy(() => ReviewWhereUniqueInputSchema),
-  data: z.union([ z.lazy(() => ReviewUpdateWithoutBankTypeInputSchema),z.lazy(() => ReviewUncheckedUpdateWithoutBankTypeInputSchema) ]),
+export const BankStatementUpdateWithWhereUniqueWithoutBankTypeInputSchema: z.ZodType<Prisma.BankStatementUpdateWithWhereUniqueWithoutBankTypeInput> = z.object({
+  where: z.lazy(() => BankStatementWhereUniqueInputSchema),
+  data: z.union([ z.lazy(() => BankStatementUpdateWithoutBankTypeInputSchema),z.lazy(() => BankStatementUncheckedUpdateWithoutBankTypeInputSchema) ]),
 }).strict();
 
-export const ReviewUpdateManyWithWhereWithoutBankTypeInputSchema: z.ZodType<Prisma.ReviewUpdateManyWithWhereWithoutBankTypeInput> = z.object({
-  where: z.lazy(() => ReviewScalarWhereInputSchema),
-  data: z.union([ z.lazy(() => ReviewUpdateManyMutationInputSchema),z.lazy(() => ReviewUncheckedUpdateManyWithoutBankTypeInputSchema) ]),
+export const BankStatementUpdateManyWithWhereWithoutBankTypeInputSchema: z.ZodType<Prisma.BankStatementUpdateManyWithWhereWithoutBankTypeInput> = z.object({
+  where: z.lazy(() => BankStatementScalarWhereInputSchema),
+  data: z.union([ z.lazy(() => BankStatementUpdateManyMutationInputSchema),z.lazy(() => BankStatementUncheckedUpdateManyWithoutBankTypeInputSchema) ]),
 }).strict();
 
 export const ReviewCreateWithoutBankStatementsInputSchema: z.ZodType<Prisma.ReviewCreateWithoutBankStatementsInput> = z.object({
@@ -4028,7 +3974,6 @@ export const ReviewCreateWithoutBankStatementsInputSchema: z.ZodType<Prisma.Revi
   updatedAt: z.coerce.date().optional(),
   user: z.lazy(() => UserCreateNestedOneWithoutReviewsInputSchema),
   client: z.lazy(() => ClientCreateNestedOneWithoutReviewsInputSchema),
-  bankType: z.lazy(() => BankTypeCreateNestedOneWithoutReviewsInputSchema),
   transactions: z.lazy(() => TransactionCreateNestedManyWithoutReviewInputSchema).optional()
 }).strict();
 
@@ -4037,7 +3982,6 @@ export const ReviewUncheckedCreateWithoutBankStatementsInputSchema: z.ZodType<Pr
   name: z.string().min(1, { message: "Name cannot be empty." }),
   userId: z.string(),
   clientId: z.string(),
-  bankTypeId: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   transactions: z.lazy(() => TransactionUncheckedCreateNestedManyWithoutReviewInputSchema).optional()
@@ -4046,6 +3990,25 @@ export const ReviewUncheckedCreateWithoutBankStatementsInputSchema: z.ZodType<Pr
 export const ReviewCreateOrConnectWithoutBankStatementsInputSchema: z.ZodType<Prisma.ReviewCreateOrConnectWithoutBankStatementsInput> = z.object({
   where: z.lazy(() => ReviewWhereUniqueInputSchema),
   create: z.union([ z.lazy(() => ReviewCreateWithoutBankStatementsInputSchema),z.lazy(() => ReviewUncheckedCreateWithoutBankStatementsInputSchema) ]),
+}).strict();
+
+export const BankTypeCreateWithoutBankStatementsInputSchema: z.ZodType<Prisma.BankTypeCreateWithoutBankStatementsInput> = z.object({
+  id: z.string().cuid().optional(),
+  name: z.string().min(1, { message: "Name cannot be empty." }),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional()
+}).strict();
+
+export const BankTypeUncheckedCreateWithoutBankStatementsInputSchema: z.ZodType<Prisma.BankTypeUncheckedCreateWithoutBankStatementsInput> = z.object({
+  id: z.string().cuid().optional(),
+  name: z.string().min(1, { message: "Name cannot be empty." }),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional()
+}).strict();
+
+export const BankTypeCreateOrConnectWithoutBankStatementsInputSchema: z.ZodType<Prisma.BankTypeCreateOrConnectWithoutBankStatementsInput> = z.object({
+  where: z.lazy(() => BankTypeWhereUniqueInputSchema),
+  create: z.union([ z.lazy(() => BankTypeCreateWithoutBankStatementsInputSchema),z.lazy(() => BankTypeUncheckedCreateWithoutBankStatementsInputSchema) ]),
 }).strict();
 
 export const ReviewUpsertWithoutBankStatementsInputSchema: z.ZodType<Prisma.ReviewUpsertWithoutBankStatementsInput> = z.object({
@@ -4066,7 +4029,6 @@ export const ReviewUpdateWithoutBankStatementsInputSchema: z.ZodType<Prisma.Revi
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutReviewsNestedInputSchema).optional(),
   client: z.lazy(() => ClientUpdateOneRequiredWithoutReviewsNestedInputSchema).optional(),
-  bankType: z.lazy(() => BankTypeUpdateOneRequiredWithoutReviewsNestedInputSchema).optional(),
   transactions: z.lazy(() => TransactionUpdateManyWithoutReviewNestedInputSchema).optional()
 }).strict();
 
@@ -4075,10 +4037,34 @@ export const ReviewUncheckedUpdateWithoutBankStatementsInputSchema: z.ZodType<Pr
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   clientId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  bankTypeId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   transactions: z.lazy(() => TransactionUncheckedUpdateManyWithoutReviewNestedInputSchema).optional()
+}).strict();
+
+export const BankTypeUpsertWithoutBankStatementsInputSchema: z.ZodType<Prisma.BankTypeUpsertWithoutBankStatementsInput> = z.object({
+  update: z.union([ z.lazy(() => BankTypeUpdateWithoutBankStatementsInputSchema),z.lazy(() => BankTypeUncheckedUpdateWithoutBankStatementsInputSchema) ]),
+  create: z.union([ z.lazy(() => BankTypeCreateWithoutBankStatementsInputSchema),z.lazy(() => BankTypeUncheckedCreateWithoutBankStatementsInputSchema) ]),
+  where: z.lazy(() => BankTypeWhereInputSchema).optional()
+}).strict();
+
+export const BankTypeUpdateToOneWithWhereWithoutBankStatementsInputSchema: z.ZodType<Prisma.BankTypeUpdateToOneWithWhereWithoutBankStatementsInput> = z.object({
+  where: z.lazy(() => BankTypeWhereInputSchema).optional(),
+  data: z.union([ z.lazy(() => BankTypeUpdateWithoutBankStatementsInputSchema),z.lazy(() => BankTypeUncheckedUpdateWithoutBankStatementsInputSchema) ]),
+}).strict();
+
+export const BankTypeUpdateWithoutBankStatementsInputSchema: z.ZodType<Prisma.BankTypeUpdateWithoutBankStatementsInput> = z.object({
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const BankTypeUncheckedUpdateWithoutBankStatementsInputSchema: z.ZodType<Prisma.BankTypeUncheckedUpdateWithoutBankStatementsInput> = z.object({
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const TransactionCreateWithoutCategoryInputSchema: z.ZodType<Prisma.TransactionCreateWithoutCategoryInput> = z.object({
@@ -4263,7 +4249,6 @@ export const ReviewCreateManyUserInputSchema: z.ZodType<Prisma.ReviewCreateManyU
   id: z.string().cuid().optional(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
   clientId: z.string(),
-  bankTypeId: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional()
 }).strict();
@@ -4334,7 +4319,6 @@ export const ReviewUpdateWithoutUserInputSchema: z.ZodType<Prisma.ReviewUpdateWi
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   client: z.lazy(() => ClientUpdateOneRequiredWithoutReviewsNestedInputSchema).optional(),
-  bankType: z.lazy(() => BankTypeUpdateOneRequiredWithoutReviewsNestedInputSchema).optional(),
   transactions: z.lazy(() => TransactionUpdateManyWithoutReviewNestedInputSchema).optional(),
   bankStatements: z.lazy(() => BankStatementUpdateManyWithoutReviewNestedInputSchema).optional()
 }).strict();
@@ -4343,7 +4327,6 @@ export const ReviewUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma.Revie
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   clientId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  bankTypeId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   transactions: z.lazy(() => TransactionUncheckedUpdateManyWithoutReviewNestedInputSchema).optional(),
@@ -4354,7 +4337,6 @@ export const ReviewUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<Prisma.R
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   clientId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  bankTypeId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
@@ -4363,7 +4345,6 @@ export const ReviewCreateManyClientInputSchema: z.ZodType<Prisma.ReviewCreateMan
   id: z.string().cuid().optional(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
   userId: z.string(),
-  bankTypeId: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional()
 }).strict();
@@ -4374,7 +4355,6 @@ export const ReviewUpdateWithoutClientInputSchema: z.ZodType<Prisma.ReviewUpdate
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutReviewsNestedInputSchema).optional(),
-  bankType: z.lazy(() => BankTypeUpdateOneRequiredWithoutReviewsNestedInputSchema).optional(),
   transactions: z.lazy(() => TransactionUpdateManyWithoutReviewNestedInputSchema).optional(),
   bankStatements: z.lazy(() => BankStatementUpdateManyWithoutReviewNestedInputSchema).optional()
 }).strict();
@@ -4383,7 +4363,6 @@ export const ReviewUncheckedUpdateWithoutClientInputSchema: z.ZodType<Prisma.Rev
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  bankTypeId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   transactions: z.lazy(() => TransactionUncheckedUpdateManyWithoutReviewNestedInputSchema).optional(),
@@ -4394,7 +4373,6 @@ export const ReviewUncheckedUpdateManyWithoutClientInputSchema: z.ZodType<Prisma
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  bankTypeId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
@@ -4413,6 +4391,7 @@ export const BankStatementCreateManyReviewInputSchema: z.ZodType<Prisma.BankStat
   id: z.string().cuid().optional(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
   file: z.instanceof(Buffer),
+  bankTypeId: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional()
 }).strict();
@@ -4453,12 +4432,14 @@ export const BankStatementUpdateWithoutReviewInputSchema: z.ZodType<Prisma.BankS
   file: z.union([ z.instanceof(Buffer),z.lazy(() => BytesFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  bankType: z.lazy(() => BankTypeUpdateOneRequiredWithoutBankStatementsNestedInputSchema).optional()
 }).strict();
 
 export const BankStatementUncheckedUpdateWithoutReviewInputSchema: z.ZodType<Prisma.BankStatementUncheckedUpdateWithoutReviewInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   file: z.union([ z.instanceof(Buffer),z.lazy(() => BytesFieldUpdateOperationsInputSchema) ]).optional(),
+  bankTypeId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
@@ -4467,46 +4448,43 @@ export const BankStatementUncheckedUpdateManyWithoutReviewInputSchema: z.ZodType
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   file: z.union([ z.instanceof(Buffer),z.lazy(() => BytesFieldUpdateOperationsInputSchema) ]).optional(),
+  bankTypeId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
-export const ReviewCreateManyBankTypeInputSchema: z.ZodType<Prisma.ReviewCreateManyBankTypeInput> = z.object({
+export const BankStatementCreateManyBankTypeInputSchema: z.ZodType<Prisma.BankStatementCreateManyBankTypeInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
-  userId: z.string(),
-  clientId: z.string(),
+  file: z.instanceof(Buffer),
+  reviewId: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional()
 }).strict();
 
-export const ReviewUpdateWithoutBankTypeInputSchema: z.ZodType<Prisma.ReviewUpdateWithoutBankTypeInput> = z.object({
+export const BankStatementUpdateWithoutBankTypeInputSchema: z.ZodType<Prisma.BankStatementUpdateWithoutBankTypeInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  file: z.union([ z.instanceof(Buffer),z.lazy(() => BytesFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-  user: z.lazy(() => UserUpdateOneRequiredWithoutReviewsNestedInputSchema).optional(),
-  client: z.lazy(() => ClientUpdateOneRequiredWithoutReviewsNestedInputSchema).optional(),
-  transactions: z.lazy(() => TransactionUpdateManyWithoutReviewNestedInputSchema).optional(),
-  bankStatements: z.lazy(() => BankStatementUpdateManyWithoutReviewNestedInputSchema).optional()
+  review: z.lazy(() => ReviewUpdateOneRequiredWithoutBankStatementsNestedInputSchema).optional()
 }).strict();
 
-export const ReviewUncheckedUpdateWithoutBankTypeInputSchema: z.ZodType<Prisma.ReviewUncheckedUpdateWithoutBankTypeInput> = z.object({
+export const BankStatementUncheckedUpdateWithoutBankTypeInputSchema: z.ZodType<Prisma.BankStatementUncheckedUpdateWithoutBankTypeInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  clientId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  file: z.union([ z.instanceof(Buffer),z.lazy(() => BytesFieldUpdateOperationsInputSchema) ]).optional(),
+  reviewId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-  transactions: z.lazy(() => TransactionUncheckedUpdateManyWithoutReviewNestedInputSchema).optional(),
-  bankStatements: z.lazy(() => BankStatementUncheckedUpdateManyWithoutReviewNestedInputSchema).optional()
 }).strict();
 
-export const ReviewUncheckedUpdateManyWithoutBankTypeInputSchema: z.ZodType<Prisma.ReviewUncheckedUpdateManyWithoutBankTypeInput> = z.object({
+export const BankStatementUncheckedUpdateManyWithoutBankTypeInputSchema: z.ZodType<Prisma.BankStatementUncheckedUpdateManyWithoutBankTypeInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  clientId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  file: z.union([ z.instanceof(Buffer),z.lazy(() => BytesFieldUpdateOperationsInputSchema) ]).optional(),
+  reviewId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
