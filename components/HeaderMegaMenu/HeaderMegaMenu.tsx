@@ -2,34 +2,25 @@
 
 import React from 'react';
 import {
-  HoverCard,
   Group,
   Button,
-  UnstyledButton,
-  Text,
-  SimpleGrid,
-  ThemeIcon,
   Anchor,
   Divider,
   Center,
   Box,
   Burger,
   Drawer,
-  Collapse,
   ScrollArea,
   rem,
   useMantineTheme,
-  Avatar, // Make sure to import Avatar
-  MantineProvider,
-  Flex,
+  Avatar,
   Stack,
   Space,
 } from '@mantine/core';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { IconChevronDown } from '@tabler/icons-react';
-import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import { useDisclosure } from '@mantine/hooks';
 
 import classes from './HeaderMegaMenu.module.css';
 import { UserMenu } from '@/components/UserMenu/UserMenu';
@@ -41,8 +32,7 @@ export function HeaderMegaMenu() {
 
   const navLinks = [
     { href: '/', label: 'Home' },
-    { href: '/todos', label: 'Todos' },
-    { href: '/flask', label: 'Flask' },
+    { href: '/clients', label: 'Clients' },
   ];
 
   const renderLinks = navLinks.map((link) => (
@@ -82,7 +72,6 @@ export function HeaderMegaMenu() {
             )}
           </Group>
 
-          {/* Replace Burger with Avatar if session exists */}
           {session ? (
             <Avatar
               src={session?.user?.image}
