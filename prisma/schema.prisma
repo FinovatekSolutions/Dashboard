@@ -44,25 +44,25 @@ model Client {
   /// @zod.string.min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" })
   company String
 
-  /// @zod.string().email({ message: 'Invalid email address' })
+  /// @zod.string.email({ message: 'Invalid email address' })
   email String
 
-  /// @zod.string().regex(/^\d{3}-\d{3}-\d{4}$/, { message: 'Invalid phone number format. Required format: 787-555-4444' })
+  /// @zod.string.regex(/^\d{3}-\d{3}-\d{4}$/, { message: 'Invalid phone number format. Required format: 787-555-4444' })
   phone String
 
-  /// @zod.string().min(1, { message: "Address cannot be empty." })
+  /// @zod.string.min(1, { message: "Address cannot be empty." })
   address String
 
-  /// @zod.string().min(1, { message: "City cannot be empty." })
+  /// @zod.string.min(1, { message: "City cannot be empty." })
   city String
 
-  /// @zod.string().min(2, { message: "State must be at least 2 characters." }).max(100, { message: "State must be at most 100 characters" })
+  /// @zod.string.min(2, { message: "State must be at least 2 characters." }).max(100, { message: "State must be at most 100 characters" })
   state String
 
-  /// @zod.string().regex(/^\d{5}(-\d{4})?$/, { message: 'Invalid ZIP code format. Required format: 12345 or 12345-6789' })
+  /// @zod.string.regex(/^\d{5}(-\d{4})?$/, { message: 'Invalid ZIP code format. Required format: 12345 or 12345-6789' })
   zip String
 
-  /// @zod.string().min(2, { message: "Country must be at least 2 characters." }).max(100, { message: "Country must be at most 100 characters" })
+  /// @zod.string.min(2, { message: "Country must be at least 2 characters." }).max(100, { message: "Country must be at most 100 characters" })
   country String
 
   createdAt DateTime @default(now())
@@ -74,7 +74,7 @@ model Client {
 model Review {
   id String @id @default(cuid())
 
-  /// @zod.string().min(1, { message: "Name cannot be empty." })
+  /// @zod.string.min(1, { message: "Name cannot be empty." })
   name String
 
   userId String
@@ -96,13 +96,13 @@ model Review {
 model Transaction {
   id String @id @default(cuid())
 
-  /// @zod.date()
+  /// @zod.date
   date DateTime
 
-  /// @zod.string().min(1, { message: "Description cannot be empty." })
+  /// @zod.string.min(1, { message: "Description cannot be empty." })
   description String
 
-  /// @zod.number()
+  /// @zod.number
   amount Float
 
   reviewId String
@@ -118,7 +118,7 @@ model Transaction {
 model BankType {
   id String @id @default(cuid())
 
-  /// @zod.string().min(1, { message: "Name cannot be empty." })
+  /// @zod.string.min(1, { message: "Name cannot be empty." })
   name String
 
   createdAt DateTime @default(now())
@@ -130,7 +130,7 @@ model BankType {
 model BankStatement {
   id String @id @default(cuid())
 
-  /// @zod.string().min(1, { message: "Name cannot be empty." })
+  /// @zod.string.min(1, { message: "Name cannot be empty." })
   name String
 
   file Bytes // This field will store the binary data of the file
@@ -145,7 +145,7 @@ model BankStatement {
 model Category {
   id String @id @default(cuid())
 
-  /// @zod.string().min(1, { message: "Name cannot be empty." })
+  /// @zod.string.min(1, { message: "Name cannot be empty." })
   name String
 
   createdAt DateTime @default(now())
