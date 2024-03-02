@@ -1,9 +1,7 @@
-'use client';
-
 import type { ReactElement } from 'react';
 import { Paper, Title, Text, Space, Center, Flex, Box, useMantineTheme } from '@mantine/core';
 
-export function ClientsClient(): ReactElement {
+export function BasicPageLayoutExample() {
   const theme = useMantineTheme();
 
   return (
