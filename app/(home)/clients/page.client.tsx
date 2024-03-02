@@ -1,8 +1,19 @@
 'use client';
 
 import type { ReactElement } from 'react';
-import { Paper, Title, Text, Space, Center, Flex, Box, useMantineTheme, Divider } from '@mantine/core';
+import {
+  Paper,
+  Title,
+  Text,
+  Space,
+  Center,
+  Flex,
+  Box,
+  useMantineTheme,
+  Divider,
+} from '@mantine/core';
 import ClientsTable from '@/components/ClientsTable/ClientsTable';
+import CreateClientButton from '@/components/CreateClientButton/CreateClientButton';
 
 export function ClientsClient(): ReactElement {
   const theme = useMantineTheme();
@@ -22,14 +33,9 @@ export function ClientsClient(): ReactElement {
           mt={16}
         >
           {/* Component 1 */}
-          <Paper style={{ flex: 1, height: '100px', backgroundColor: 'cyan' }} p="md">
-            Component 1
-          </Paper>
+          <CreateClientButton />
 
           {/* Component 2 */}
-          <Paper style={{ flex: 1, height: '100px', backgroundColor: 'magenta' }} p="md">
-            Component 2
-          </Paper>
         </Flex>
 
         {/* Component 3 - Always below the first two */}
