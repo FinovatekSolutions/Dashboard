@@ -1,4 +1,4 @@
-import type { UseQueryOptions } from '@tanstack/react-query';
+import type { UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { Prisma, Client } from '@prisma/client';
 
@@ -15,27 +15,19 @@ const getClientsQueryKey = 'getClients';
 const getClientByIdQueryKey = 'getClientById';
 
 // Queries:
-export function getClientsQuery() {
-  return { queryKey: [getClientsQueryKey], queryFn: () => getClients() } satisfies UseQueryOptions<
-    Client[]
-  >;
+export function useGetClients(): UseQueryResult<Client[]> {
+  return useQuery<Client[]>({
+    queryKey: [getClientsQueryKey],
+    queryFn: getClients,
+  } satisfies UseQueryOptions<Client[]>);
 }
 
-export function getClientByIdQuery(clientId: string) {
-  return {
+export function useGetClientById(clientId: string): UseQueryResult<Client | null> {
+  return useQuery<Client | null>({
     queryKey: [getClientByIdQueryKey, clientId], // Unique query key for each client
     queryFn: () => getClientById(clientId),
     enabled: !!clientId, // Only fetch if clientId is present
-  } satisfies UseQueryOptions<Client | null>; // Specify the expected return type
-}
-
-// Hooks:
-export function useGetClients() {
-  return useQuery(getClientsQuery());
-}
-
-export function useGetClientById(clientId: string) {
-  return useQuery(getClientByIdQuery(clientId));
+  } satisfies UseQueryOptions<Client | null>);
 }
 
 // Mutations:
