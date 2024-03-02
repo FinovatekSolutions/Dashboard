@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { Button, Modal, Group, Text, ButtonProps, useMantineTheme } from '@mantine/core';
 import { IconCirclePlus } from '@tabler/icons-react';
