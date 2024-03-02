@@ -1,7 +1,8 @@
 'use client';
 
 import type { ReactElement } from 'react';
-import { Paper, Title, Text, Space, Center, Flex, Box, useMantineTheme } from '@mantine/core';
+import { Paper, Title, Text, Space, Center, Flex, Box, useMantineTheme, Divider } from '@mantine/core';
+import ClientsTable from '@/components/ClientsTable/ClientsTable';
 
 export function ClientsClient(): ReactElement {
   const theme = useMantineTheme();
@@ -10,9 +11,9 @@ export function ClientsClient(): ReactElement {
     <Center>
       <Space h="md" />
       <Paper p="xs" shadow="xs" w={{ base: '97%' }} maw={`${theme.breakpoints.lg}`}>
-        <Paper h={50} p="sm" style={{ backgroundColor: 'red' }}>
-          Component 0
-        </Paper>
+        <Title m={10} order={1}>
+          Clients
+        </Title>
         {/* Container for the first two components */}
         <Flex
           direction={{ base: 'column', sm: 'row' }}
@@ -32,12 +33,10 @@ export function ClientsClient(): ReactElement {
         </Flex>
 
         {/* Component 3 - Always below the first two */}
+        <Divider my="md" />
         <Box style={{ marginTop: '16px' }}>
-          {' '}
           {/* Adjust the margin as needed */}
-          <Paper style={{ height: '100px', backgroundColor: 'yellow' }} p="md">
-            Component 3
-          </Paper>
+          <ClientsTable />
         </Box>
       </Paper>
     </Center>
