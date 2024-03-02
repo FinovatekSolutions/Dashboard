@@ -83,9 +83,6 @@ model Review {
   clientId String
   client   Client @relation(fields: [clientId], references: [id])
 
-  bankTypeId String
-  bankType   BankType @relation(fields: [bankTypeId], references: [id])
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -124,7 +121,7 @@ model BankType {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  reviews Review[]
+  bankStatements BankStatement[]
 }
 
 model BankStatement {
@@ -137,6 +134,9 @@ model BankStatement {
 
   reviewId String
   review   Review @relation(fields: [reviewId], references: [id])
+
+  bankTypeId String
+  bankType   BankType @relation(fields: [bankTypeId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
