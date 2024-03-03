@@ -1,5 +1,9 @@
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
+import '@mantine/dates/styles.css'; //if using mantine date picker features
+import 'mantine-react-table/styles.css'; //make sure MRT styles were imported in your app root (once)
+import '../styles/global.css'; // Adjust the path according to your file structure
+
 import React from 'react';
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
@@ -28,7 +32,7 @@ export default async function RootLayout({ children }: { children: any }) {
           content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
         />
       </head>
-      <body style={{ backgroundColor: '#f8f9fa' }}>
+      <body>
         <MantineProvider theme={theme} forceColorScheme="light">
           <SessionProvider session={session}>
             <Notifications />

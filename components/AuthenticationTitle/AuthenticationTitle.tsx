@@ -1,9 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Paper, Text, Container, Center, Space } from '@mantine/core';
+import { Paper, Text, Container, Center, Space, Alert } from '@mantine/core';
 import { ClientSafeProvider, signIn } from 'next-auth/react';
 import Image from 'next/image';
+import { IconInfoCircle } from '@tabler/icons-react';
+import { useRouter, useSearchParams } from 'next/navigation';
+
 import { GoogleButton } from '../GoogleButton/GoogleButton';
 import classes from './AuthenticationTitle.module.css';
 
@@ -13,6 +16,9 @@ interface LoginClientProps {
 
 export function AuthenticationTitle({ providers }: LoginClientProps) {
   const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const error = searchParams.get('error');
+  const router = useRouter();
 
   const handleSignIn = (providerId: string) => {
     setLoading(true);
@@ -65,6 +71,30 @@ export function AuthenticationTitle({ providers }: LoginClientProps) {
             Finovatek Solutions 2024
           </Text>
         </Paper>
+        <Space h="md" />
+        {error === 'AccessDenied' ? (
+          <Alert
+            variant="filled"
+            color="cyan"
+            withCloseButton
+            onClose={() => router.push('/login')}
+            title="Access Denied"
+            icon={<IconInfoCircle />}
+          >
+            You do not have permission to access this page.
+          </Alert>
+        ) : error ? (
+          <Alert
+            variant="filled"
+            color="pink"
+            withCloseButton
+            onClose={() => router.push('/login')}
+            title="Oops"
+            icon={<IconInfoCircle />}
+          >
+            An error has occurred, please try again later.
+          </Alert>
+        ) : null}
       </Container>
     </>
   );

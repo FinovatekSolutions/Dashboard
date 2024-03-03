@@ -1,18 +1,34 @@
 'use client';
 
 import type { ReactElement } from 'react';
-import { Paper, Title, Text, Space, Center, Flex, Box, useMantineTheme } from '@mantine/core';
+import {
+  Paper,
+  Title,
+  Text,
+  Space,
+  Center,
+  Flex,
+  Box,
+  useMantineTheme,
+  Divider,
+  Button,
+} from '@mantine/core';
+import { IconRefresh } from '@tabler/icons-react';
+import ClientsTable from '@/components/ClientsTable/ClientsTable';
+import CreateClientButton from '@/components/CreateClientButton/CreateClientButton';
+import { useGetClients } from '@/lib/actions/client';
 
 export function ClientsClient(): ReactElement {
   const theme = useMantineTheme();
+  const getClientsQuery = useGetClients();
 
   return (
     <Center>
       <Space h="md" />
       <Paper p="xs" shadow="xs" w={{ base: '97%' }} maw={`${theme.breakpoints.lg}`}>
-        <Paper h={50} p="sm" style={{ backgroundColor: 'red' }}>
-          Component 0
-        </Paper>
+        <Title m={10} order={1}>
+          Clients
+        </Title>
         {/* Container for the first two components */}
         <Flex
           direction={{ base: 'column', sm: 'row' }}
@@ -21,23 +37,24 @@ export function ClientsClient(): ReactElement {
           mt={16}
         >
           {/* Component 1 */}
-          <Paper style={{ flex: 1, height: '100px', backgroundColor: 'cyan' }} p="md">
-            Component 1
-          </Paper>
+          <CreateClientButton />
 
           {/* Component 2 */}
-          <Paper style={{ flex: 1, height: '100px', backgroundColor: 'magenta' }} p="md">
-            Component 2
-          </Paper>
+          <Button
+            onClick={() => getClientsQuery.refetch()}
+            leftSection={<IconRefresh size={14} />}
+            variant="default"
+            size="md"
+          >
+            Refresh
+          </Button>
         </Flex>
 
         {/* Component 3 - Always below the first two */}
+        <Divider my="md" />
         <Box style={{ marginTop: '16px' }}>
-          {' '}
           {/* Adjust the margin as needed */}
-          <Paper style={{ height: '100px', backgroundColor: 'yellow' }} p="md">
-            Component 3
-          </Paper>
+          <ClientsTable />
         </Box>
       </Paper>
     </Center>
