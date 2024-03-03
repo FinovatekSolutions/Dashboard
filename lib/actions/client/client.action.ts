@@ -7,7 +7,11 @@ import { z } from 'zod';
 import prisma from '@/lib/utils/prisma';
 
 export async function getClients(): Promise<Client[]> {
-  return prisma.client.findMany();
+  return prisma.client.findMany({
+    orderBy: {
+      createdAt: 'desc', // Use 'desc' for descending order (newest first)
+    },
+  });
 }
 
 export async function getClientById(clientId: string): Promise<Client | null> {
