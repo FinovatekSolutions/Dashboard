@@ -18,7 +18,7 @@ const getClientByIdQueryKey = 'getClientById';
 export function useGetClients(): UseQueryResult<Client[]> {
   return useQuery<Client[]>({
     queryKey: [getClientsQueryKey],
-    queryFn: getClients,
+    queryFn: () => getClients(),
   } satisfies UseQueryOptions<Client[]>);
 }
 
