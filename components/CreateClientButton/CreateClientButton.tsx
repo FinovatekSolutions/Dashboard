@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Button, Modal, Group, Text, ButtonProps, useMantineTheme } from '@mantine/core';
+import { Button, Modal, Group, Text, ButtonProps, useMantineTheme, Title } from '@mantine/core';
 import { IconCirclePlus } from '@tabler/icons-react';
 import { useMediaQuery } from '@mantine/hooks';
 
@@ -27,12 +27,17 @@ const CreateClientButton = (props: ButtonProps & React.ComponentPropsWithoutRef<
 
       <Modal
         opened={opened}
+        size="xl"
         centered
         fullScreen={isMobile}
         onClose={() => setOpened(false)}
-        title="Create New Client"
+        title={
+          <Title order={3} mb="xs">
+            Create a New Client
+          </Title>
+        }
       >
-        <NewClientForm />
+        <NewClientForm setOpened={setOpened} />
       </Modal>
     </>
   );

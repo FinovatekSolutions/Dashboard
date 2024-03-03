@@ -39,7 +39,10 @@ model Client {
   id String @id @default(cuid())
 
   /// @zod.string.min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" })
-  name String
+  firstName String
+
+  /// @zod.string.min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" })
+  lastName String
 
   /// @zod.string.min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" })
   company String

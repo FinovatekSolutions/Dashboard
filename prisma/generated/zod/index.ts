@@ -16,7 +16,7 @@ export const TodoScalarFieldEnumSchema = z.enum(['id','title','isCompleted','cre
 
 export const UserScalarFieldEnumSchema = z.enum(['id','name','email','emailVerified','image']);
 
-export const ClientScalarFieldEnumSchema = z.enum(['id','name','company','email','phone','address','city','state','zip','country','createdAt','updatedAt']);
+export const ClientScalarFieldEnumSchema = z.enum(['id','firstName','lastName','company','email','phone','address','city','state','zip','country','createdAt','updatedAt']);
 
 export const ReviewScalarFieldEnumSchema = z.enum(['id','name','userId','clientId','createdAt','updatedAt']);
 
@@ -77,7 +77,8 @@ export type User = z.infer<typeof UserSchema>
 
 export const ClientSchema = z.object({
   id: z.string().cuid(),
-  name: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
+  firstName: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
+  lastName: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
   company: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
   email: z.string().email({ message: 'Invalid email address' }),
   phone: z.string().regex(/^\d{3}-\d{3}-\d{4}$/, { message: 'Invalid phone number format. Required format: 787-555-4444' }),
@@ -287,7 +288,8 @@ export const ClientCountOutputTypeSelectSchema: z.ZodType<Prisma.ClientCountOutp
 
 export const ClientSelectSchema: z.ZodType<Prisma.ClientSelect> = z.object({
   id: z.boolean().optional(),
-  name: z.boolean().optional(),
+  firstName: z.boolean().optional(),
+  lastName: z.boolean().optional(),
   company: z.boolean().optional(),
   email: z.boolean().optional(),
   phone: z.boolean().optional(),
@@ -647,7 +649,8 @@ export const ClientWhereInputSchema: z.ZodType<Prisma.ClientWhereInput> = z.obje
   OR: z.lazy(() => ClientWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => ClientWhereInputSchema),z.lazy(() => ClientWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  firstName: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  lastName: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   company: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   email: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   phone: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
@@ -663,7 +666,8 @@ export const ClientWhereInputSchema: z.ZodType<Prisma.ClientWhereInput> = z.obje
 
 export const ClientOrderByWithRelationInputSchema: z.ZodType<Prisma.ClientOrderByWithRelationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  name: z.lazy(() => SortOrderSchema).optional(),
+  firstName: z.lazy(() => SortOrderSchema).optional(),
+  lastName: z.lazy(() => SortOrderSchema).optional(),
   company: z.lazy(() => SortOrderSchema).optional(),
   email: z.lazy(() => SortOrderSchema).optional(),
   phone: z.lazy(() => SortOrderSchema).optional(),
@@ -685,7 +689,8 @@ export const ClientWhereUniqueInputSchema: z.ZodType<Prisma.ClientWhereUniqueInp
   AND: z.union([ z.lazy(() => ClientWhereInputSchema),z.lazy(() => ClientWhereInputSchema).array() ]).optional(),
   OR: z.lazy(() => ClientWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => ClientWhereInputSchema),z.lazy(() => ClientWhereInputSchema).array() ]).optional(),
-  name: z.union([ z.lazy(() => StringFilterSchema),z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }) ]).optional(),
+  firstName: z.union([ z.lazy(() => StringFilterSchema),z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }) ]).optional(),
+  lastName: z.union([ z.lazy(() => StringFilterSchema),z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }) ]).optional(),
   company: z.union([ z.lazy(() => StringFilterSchema),z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }) ]).optional(),
   email: z.union([ z.lazy(() => StringFilterSchema),z.string().email({ message: 'Invalid email address' }) ]).optional(),
   phone: z.union([ z.lazy(() => StringFilterSchema),z.string().regex(/^\d{3}-\d{3}-\d{4}$/, { message: 'Invalid phone number format. Required format: 787-555-4444' }) ]).optional(),
@@ -701,7 +706,8 @@ export const ClientWhereUniqueInputSchema: z.ZodType<Prisma.ClientWhereUniqueInp
 
 export const ClientOrderByWithAggregationInputSchema: z.ZodType<Prisma.ClientOrderByWithAggregationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  name: z.lazy(() => SortOrderSchema).optional(),
+  firstName: z.lazy(() => SortOrderSchema).optional(),
+  lastName: z.lazy(() => SortOrderSchema).optional(),
   company: z.lazy(() => SortOrderSchema).optional(),
   email: z.lazy(() => SortOrderSchema).optional(),
   phone: z.lazy(() => SortOrderSchema).optional(),
@@ -722,7 +728,8 @@ export const ClientScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Client
   OR: z.lazy(() => ClientScalarWhereWithAggregatesInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => ClientScalarWhereWithAggregatesInputSchema),z.lazy(() => ClientScalarWhereWithAggregatesInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
-  name: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  firstName: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  lastName: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   company: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   email: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   phone: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
@@ -1410,7 +1417,8 @@ export const UserUncheckedUpdateManyInputSchema: z.ZodType<Prisma.UserUncheckedU
 
 export const ClientCreateInputSchema: z.ZodType<Prisma.ClientCreateInput> = z.object({
   id: z.string().cuid().optional(),
-  name: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
+  firstName: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
+  lastName: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
   company: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
   email: z.string().email({ message: 'Invalid email address' }),
   phone: z.string().regex(/^\d{3}-\d{3}-\d{4}$/, { message: 'Invalid phone number format. Required format: 787-555-4444' }),
@@ -1426,7 +1434,8 @@ export const ClientCreateInputSchema: z.ZodType<Prisma.ClientCreateInput> = z.ob
 
 export const ClientUncheckedCreateInputSchema: z.ZodType<Prisma.ClientUncheckedCreateInput> = z.object({
   id: z.string().cuid().optional(),
-  name: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
+  firstName: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
+  lastName: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
   company: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
   email: z.string().email({ message: 'Invalid email address' }),
   phone: z.string().regex(/^\d{3}-\d{3}-\d{4}$/, { message: 'Invalid phone number format. Required format: 787-555-4444' }),
@@ -1442,7 +1451,8 @@ export const ClientUncheckedCreateInputSchema: z.ZodType<Prisma.ClientUncheckedC
 
 export const ClientUpdateInputSchema: z.ZodType<Prisma.ClientUpdateInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  name: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  firstName: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  lastName: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   company: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   email: z.union([ z.string().email({ message: 'Invalid email address' }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   phone: z.union([ z.string().regex(/^\d{3}-\d{3}-\d{4}$/, { message: 'Invalid phone number format. Required format: 787-555-4444' }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -1458,7 +1468,8 @@ export const ClientUpdateInputSchema: z.ZodType<Prisma.ClientUpdateInput> = z.ob
 
 export const ClientUncheckedUpdateInputSchema: z.ZodType<Prisma.ClientUncheckedUpdateInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  name: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  firstName: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  lastName: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   company: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   email: z.union([ z.string().email({ message: 'Invalid email address' }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   phone: z.union([ z.string().regex(/^\d{3}-\d{3}-\d{4}$/, { message: 'Invalid phone number format. Required format: 787-555-4444' }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -1474,7 +1485,8 @@ export const ClientUncheckedUpdateInputSchema: z.ZodType<Prisma.ClientUncheckedU
 
 export const ClientCreateManyInputSchema: z.ZodType<Prisma.ClientCreateManyInput> = z.object({
   id: z.string().cuid().optional(),
-  name: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
+  firstName: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
+  lastName: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
   company: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
   email: z.string().email({ message: 'Invalid email address' }),
   phone: z.string().regex(/^\d{3}-\d{3}-\d{4}$/, { message: 'Invalid phone number format. Required format: 787-555-4444' }),
@@ -1489,7 +1501,8 @@ export const ClientCreateManyInputSchema: z.ZodType<Prisma.ClientCreateManyInput
 
 export const ClientUpdateManyMutationInputSchema: z.ZodType<Prisma.ClientUpdateManyMutationInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  name: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  firstName: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  lastName: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   company: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   email: z.union([ z.string().email({ message: 'Invalid email address' }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   phone: z.union([ z.string().regex(/^\d{3}-\d{3}-\d{4}$/, { message: 'Invalid phone number format. Required format: 787-555-4444' }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -1504,7 +1517,8 @@ export const ClientUpdateManyMutationInputSchema: z.ZodType<Prisma.ClientUpdateM
 
 export const ClientUncheckedUpdateManyInputSchema: z.ZodType<Prisma.ClientUncheckedUpdateManyInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  name: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  firstName: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  lastName: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   company: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   email: z.union([ z.string().email({ message: 'Invalid email address' }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   phone: z.union([ z.string().regex(/^\d{3}-\d{3}-\d{4}$/, { message: 'Invalid phone number format. Required format: 787-555-4444' }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -2243,7 +2257,8 @@ export const DateTimeNullableWithAggregatesFilterSchema: z.ZodType<Prisma.DateTi
 
 export const ClientCountOrderByAggregateInputSchema: z.ZodType<Prisma.ClientCountOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  name: z.lazy(() => SortOrderSchema).optional(),
+  firstName: z.lazy(() => SortOrderSchema).optional(),
+  lastName: z.lazy(() => SortOrderSchema).optional(),
   company: z.lazy(() => SortOrderSchema).optional(),
   email: z.lazy(() => SortOrderSchema).optional(),
   phone: z.lazy(() => SortOrderSchema).optional(),
@@ -2258,7 +2273,8 @@ export const ClientCountOrderByAggregateInputSchema: z.ZodType<Prisma.ClientCoun
 
 export const ClientMaxOrderByAggregateInputSchema: z.ZodType<Prisma.ClientMaxOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  name: z.lazy(() => SortOrderSchema).optional(),
+  firstName: z.lazy(() => SortOrderSchema).optional(),
+  lastName: z.lazy(() => SortOrderSchema).optional(),
   company: z.lazy(() => SortOrderSchema).optional(),
   email: z.lazy(() => SortOrderSchema).optional(),
   phone: z.lazy(() => SortOrderSchema).optional(),
@@ -2273,7 +2289,8 @@ export const ClientMaxOrderByAggregateInputSchema: z.ZodType<Prisma.ClientMaxOrd
 
 export const ClientMinOrderByAggregateInputSchema: z.ZodType<Prisma.ClientMinOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  name: z.lazy(() => SortOrderSchema).optional(),
+  firstName: z.lazy(() => SortOrderSchema).optional(),
+  lastName: z.lazy(() => SortOrderSchema).optional(),
   company: z.lazy(() => SortOrderSchema).optional(),
   email: z.lazy(() => SortOrderSchema).optional(),
   phone: z.lazy(() => SortOrderSchema).optional(),
@@ -3601,7 +3618,8 @@ export const UserCreateOrConnectWithoutReviewsInputSchema: z.ZodType<Prisma.User
 
 export const ClientCreateWithoutReviewsInputSchema: z.ZodType<Prisma.ClientCreateWithoutReviewsInput> = z.object({
   id: z.string().cuid().optional(),
-  name: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
+  firstName: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
+  lastName: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
   company: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
   email: z.string().email({ message: 'Invalid email address' }),
   phone: z.string().regex(/^\d{3}-\d{3}-\d{4}$/, { message: 'Invalid phone number format. Required format: 787-555-4444' }),
@@ -3616,7 +3634,8 @@ export const ClientCreateWithoutReviewsInputSchema: z.ZodType<Prisma.ClientCreat
 
 export const ClientUncheckedCreateWithoutReviewsInputSchema: z.ZodType<Prisma.ClientUncheckedCreateWithoutReviewsInput> = z.object({
   id: z.string().cuid().optional(),
-  name: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
+  firstName: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
+  lastName: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
   company: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
   email: z.string().email({ message: 'Invalid email address' }),
   phone: z.string().regex(/^\d{3}-\d{3}-\d{4}$/, { message: 'Invalid phone number format. Required format: 787-555-4444' }),
@@ -3736,7 +3755,8 @@ export const ClientUpdateToOneWithWhereWithoutReviewsInputSchema: z.ZodType<Pris
 
 export const ClientUpdateWithoutReviewsInputSchema: z.ZodType<Prisma.ClientUpdateWithoutReviewsInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  name: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  firstName: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  lastName: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   company: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   email: z.union([ z.string().email({ message: 'Invalid email address' }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   phone: z.union([ z.string().regex(/^\d{3}-\d{3}-\d{4}$/, { message: 'Invalid phone number format. Required format: 787-555-4444' }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3751,7 +3771,8 @@ export const ClientUpdateWithoutReviewsInputSchema: z.ZodType<Prisma.ClientUpdat
 
 export const ClientUncheckedUpdateWithoutReviewsInputSchema: z.ZodType<Prisma.ClientUncheckedUpdateWithoutReviewsInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  name: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  firstName: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  lastName: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   company: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   email: z.union([ z.string().email({ message: 'Invalid email address' }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   phone: z.union([ z.string().regex(/^\d{3}-\d{3}-\d{4}$/, { message: 'Invalid phone number format. Required format: 787-555-4444' }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
