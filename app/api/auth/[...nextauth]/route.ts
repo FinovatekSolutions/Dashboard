@@ -30,7 +30,7 @@ export const authOptions = {
       // return false;
 
       // Allow sign in
-      return false;
+      return true;
     },
   },
 };
