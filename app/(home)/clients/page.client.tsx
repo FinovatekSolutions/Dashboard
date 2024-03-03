@@ -11,12 +11,16 @@ import {
   Box,
   useMantineTheme,
   Divider,
+  Button,
 } from '@mantine/core';
+import { IconRefresh } from '@tabler/icons-react';
 import ClientsTable from '@/components/ClientsTable/ClientsTable';
 import CreateClientButton from '@/components/CreateClientButton/CreateClientButton';
+import { useGetClients } from '@/lib/actions/client';
 
 export function ClientsClient(): ReactElement {
   const theme = useMantineTheme();
+  const getClientsQuery = useGetClients();
 
   return (
     <Center>
@@ -36,6 +40,14 @@ export function ClientsClient(): ReactElement {
           <CreateClientButton />
 
           {/* Component 2 */}
+          <Button
+            onClick={() => getClientsQuery.refetch()}
+            leftSection={<IconRefresh size={14} />}
+            variant="default"
+            size="md"
+          >
+            Refresh
+          </Button>
         </Flex>
 
         {/* Component 3 - Always below the first two */}
