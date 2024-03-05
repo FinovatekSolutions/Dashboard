@@ -1,0 +1,36 @@
+.root {
+  padding-top: rem(80px);
+  padding-bottom: rem(80px);
+}
+
+.title {
+  font-weight: 900;
+  font-size: rem(34px);
+  margin-bottom: var(--mantine-spacing-md);
+  font-family:
+    Greycliff CF,
+    var(--mantine-font-family);
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    font-size: rem(32px);
+  }
+}
+
+.control {
+  @media (max-width: $mantine-breakpoint-sm) {
+    width: 100%;
+  }
+}
+
+.label {
+  text-align: center;
+  font-weight: 900;
+  font-size: rem(200px);
+  line-height: 1;
+  margin-bottom: calc(var(--mantine-spacing-xl) * 1.5);
+  color: var(--mantine-color-gray-4);
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    font-size: rem(220px);
+  }
+}
