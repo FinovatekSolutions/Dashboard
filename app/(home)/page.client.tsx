@@ -12,6 +12,7 @@ import {
   useMantineTheme,
   Divider,
   Button,
+  Container,
 } from '@mantine/core';
 import { IconRefresh } from '@tabler/icons-react';
 import CreateClientButton from '@/components/CreateClientButton/CreateClientButton';
@@ -41,18 +42,26 @@ export function MainPage(): ReactElement {
           mt={16}
         >
           {/* Component 1 */}
-          <Paper style={{ flex: 1, height: '400px', backgroundColor: 'cyan' }} p="md">
-            <SelectClientDropdown></SelectClientDropdown>
-            <CreateClientButton></CreateClientButton>
-            <SelectBankTypeDropdown></SelectBankTypeDropdown>
-            <CreateBankButton></CreateBankButton>
+          <Paper style={{ flex: 1, height: '400px', backgroundColor: 'yellow' }} shadow="xl" p="md">
+            <b>Select Client</b>
+            <Flex direction={{ base: 'column', sm: 'row' }} justify="space-between" style={{ gap: '16px' }}>
+              <SelectClientDropdown></SelectClientDropdown>
+              <CreateClientButton></CreateClientButton>
+            </Flex>
+
+            <b>Select Bank Type</b>
+            <Flex direction={{ base: 'column', sm: 'row' }} justify="space-between" style={{ gap: '16px' }}>
+              <SelectBankTypeDropdown></SelectBankTypeDropdown>
+              <CreateBankButton></CreateBankButton>
+            </Flex>
             <BankStatementsDragAndDrop></BankStatementsDragAndDrop>
+
           </Paper>
 
           <Divider size="sm" orientation="vertical" color="#1A1C27"/>
 
           {/* Component 2 */}
-          <Paper style={{ flex: 1, height: '400px', backgroundColor: 'magenta' }} p="md">
+          <Paper style={{ flex: 1, height: '400px', backgroundColor: 'magenta' }} shadow="xl" p="md">
             Component 2
           </Paper>
 
