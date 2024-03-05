@@ -20,11 +20,11 @@ import type { Prisma } from '@prisma/client';
 import { ClientCreateInputSchema } from '@prisma/zod';
 import { useCreateClient } from '@/lib/actions/client';
 
-interface NewBankFormProps {
+interface NewBankTypeFormProps {
   setOpened: (opened: boolean) => void;
 }
 
-export function NewBankForm({ setOpened }: NewBankFormProps) {
+export function NewBankTypeForm({ setOpened }: NewBankTypeFormProps) {
   const theme = useMantineTheme();
 
   const form = useForm({
@@ -43,7 +43,7 @@ export function NewBankForm({ setOpened }: NewBankFormProps) {
     validate: zodResolver(ClientCreateInputSchema),
   });
 
-  const createBankMutation = useCreateClient(
+  const createBankTypeMutation = useCreateClient(
     // onSuccess callback
     () => {
       form.reset();
@@ -83,7 +83,7 @@ export function NewBankForm({ setOpened }: NewBankFormProps) {
       withCloseButton: false,
     });
 
-    createBankMutation.mutate(values);
+    createBankTypeMutation.mutate(values);
   };
 
   return (

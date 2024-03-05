@@ -6,9 +6,9 @@ import { Button, Modal, Group, Text, ButtonProps, useMantineTheme, Title } from 
 import { IconCirclePlus } from '@tabler/icons-react';
 import { useMediaQuery } from '@mantine/hooks';
 
-import { NewBankForm } from '../NewBankForm/NewBankForm';
+import { NewBankTypeForm } from '../NewBankTypeForm/NewBankTypeForm';
 
-const CreateBankButton = (props: ButtonProps & React.ComponentPropsWithoutRef<'button'>) => {
+const CreateBankTypeButton = (props: ButtonProps & React.ComponentPropsWithoutRef<'button'>) => {
   const [opened, setOpened] = useState(false);
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
@@ -38,12 +38,12 @@ const CreateBankButton = (props: ButtonProps & React.ComponentPropsWithoutRef<'b
           </Title>
         }
       >
-        <NewBankForm setOpened={setOpened} />
+        <NewBankTypeForm setOpened={setOpened} />
       </Modal>
     </>
   );
 };
 
-export default CreateBankButton;
+export default CreateBankTypeButton;
 
 

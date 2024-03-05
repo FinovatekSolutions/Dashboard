@@ -17,7 +17,7 @@ import { IconRefresh } from '@tabler/icons-react';
 import CreateClientButton from '@/components/CreateClientButton/CreateClientButton';
 import { BankStatementsDragAndDrop } from '@/components/BankStatementsDragAndDrop/BankStatementsDragAndDrop';
 import { BankStatementsList } from '@/components/BankStatementsList/BankStatementsList';
-import CreateBankButton from '@/components/CreateBankButton/CreateBankButton';
+import CreateBankButton from '@/components/CreateBankTypeButton/CreateBankTypeButton';
 import { FinancialAnalysisButton } from '@/components/FinancialAnalysisButton/FinancialAnalysisButton';
 import { SaveFinancialAnalysisButton } from '@/components/SaveFinancialAnalysisButton/SaveFinancialAnalysisButton';
 import { SelectBankTypeDropdown } from '@/components/SelectBankTypeDropdown/SelectBankTypeDropdown';
