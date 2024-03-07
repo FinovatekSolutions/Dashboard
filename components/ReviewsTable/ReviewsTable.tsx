@@ -42,6 +42,23 @@ const ReviewsTable = ({ clientId }: { clientId: string }) => {
         accessorKey: 'name', //access nested data with dot notation
       },
       {
+        header: 'Period',
+        accessorFn: (row) => {
+          if (!row?.startDate || !row?.startDate) return '';
+          const startDate = new Date(row.startDate);
+          const endDate = new Date(row.endDate);
+          const startDateFormatted = new Intl.DateTimeFormat('en-US', {
+            year: 'numeric',
+            month: 'long',
+          }).format(startDate);
+          const endDateFormatted = new Intl.DateTimeFormat('en-US', {
+            year: 'numeric',
+            month: 'long',
+          }).format(endDate);
+          return `${startDateFormatted} - ${endDateFormatted}`;
+        },
+      },
+      {
         header: 'Worked By',
         accessorFn: (row) => {
           if (!row?.user) return '';
@@ -49,7 +66,7 @@ const ReviewsTable = ({ clientId }: { clientId: string }) => {
         },
       },
       {
-        header: 'Created At',
+        header: 'Created On',
         accessorFn: (row) => {
           if (!row?.createdAt) return '';
           const date = new Date(row.createdAt);
@@ -67,6 +84,7 @@ const ReviewsTable = ({ clientId }: { clientId: string }) => {
   const table = useMantineReactTable({
     columns,
     data: getClientByIdQuery.data?.reviews || [], //must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
+    enableFullScreenToggle: false,
     positionGlobalFilter: 'left',
     enableRowActions: true,
     getRowId: (originalRow) => originalRow.id,
@@ -91,6 +109,10 @@ const ReviewsTable = ({ clientId }: { clientId: string }) => {
     mantinePaperProps: {
       shadow: 'none',
       style: { border: '0px solid #e0e0e0' },
+    },
+    mantineTableProps: {
+      striped: true,
+      withColumnBorders: true,
     },
     renderRowActions: ({ row }) => (
       <Flex gap="md">
