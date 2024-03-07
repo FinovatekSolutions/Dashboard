@@ -103,6 +103,10 @@ const ClientsTable = () => {
       shadow: 'none',
       style: { border: '0px solid #e0e0e0' },
     },
+    mantineTableProps: {
+      striped: true,
+      withColumnBorders: true,
+    },
     renderRowActions: ({ row }) => (
       <Flex gap="md">
         <Tooltip label="View Client">
