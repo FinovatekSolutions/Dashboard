@@ -7,7 +7,11 @@ import { useMediaQuery } from '@mantine/hooks';
 
 import { EditClientForm } from '../EditClientForm/EditClientForm';
 
-const EditClientButton = (props: ButtonProps & React.ComponentPropsWithoutRef<'button'>) => {
+interface EditClientButtonProps extends ButtonProps {
+  clientId: string;
+}
+
+const EditClientButton = ({ clientId, ...props }: EditClientButtonProps) => {
   const [opened, setOpened] = useState(false);
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
@@ -37,7 +41,7 @@ const EditClientButton = (props: ButtonProps & React.ComponentPropsWithoutRef<'b
           </Title>
         }
       >
-        <EditClientForm setOpened={setOpened} />
+        <EditClientForm clientId={clientId} setOpened={setOpened} />
       </Modal>
     </>
   );

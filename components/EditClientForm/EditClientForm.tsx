@@ -18,40 +18,42 @@ import { IconCheck, IconX } from '@tabler/icons-react';
 import type { Prisma } from '@prisma/client';
 
 import { ClientCreateInputSchema } from '@prisma/zod';
-import { useCreateClient } from '@/lib/actions/client';
+import { useCreateClient, useGetClientById, useUpdateClient } from '@/lib/actions/client';
 
 interface EditClientFormProps {
   setOpened: (opened: boolean) => void;
+  clientId: string;
 }
 
-export function EditClientForm({ setOpened }: EditClientFormProps) {
+export function EditClientForm({ setOpened, clientId }: EditClientFormProps) {
   const theme = useMantineTheme();
+  const getClientByIdQuery = useGetClientById(clientId);
 
   const form = useForm({
     initialValues: {
-      firstName: '',
-      lastName: '',
-      company: '',
-      email: '',
-      phone: '',
-      address: '',
-      city: '',
-      state: '',
-      zip: '',
-      country: '',
+      firstName: getClientByIdQuery.data?.firstName || '',
+      lastName: getClientByIdQuery.data?.lastName || '',
+      company: getClientByIdQuery.data?.company || '',
+      email: getClientByIdQuery.data?.email || '',
+      phone: getClientByIdQuery.data?.phone || '',
+      address: getClientByIdQuery.data?.address || '',
+      city: getClientByIdQuery.data?.city || '',
+      state: getClientByIdQuery.data?.state || '',
+      zip: getClientByIdQuery.data?.zip || '',
+      country: getClientByIdQuery.data?.country || '',
     },
     validate: zodResolver(ClientCreateInputSchema),
   });
 
-  const createClientMutation = useCreateClient(
+  const updateClientMutation = useUpdateClient(
     // onSuccess callback
     () => {
       form.reset();
       notifications.update({
-        id: 'client-create',
+        id: 'client-update',
         color: 'teal',
-        title: 'Client was created',
-        message: 'The new client has been added successfully.',
+        title: 'Client was updated',
+        message: 'The client has been updated successfully.',
         icon: <IconCheck size={theme.fontSizes.md} />,
         loading: false,
         autoClose: 2000,
@@ -61,9 +63,9 @@ export function EditClientForm({ setOpened }: EditClientFormProps) {
     // onError callback
     () => {
       notifications.update({
-        id: 'client-create',
+        id: 'client-update',
         color: 'red',
-        title: 'Failed to create client',
+        title: 'Failed to update client',
         message: 'An error occurred. Please try again.',
         icon: <IconX size={theme.fontSizes.md} />,
         loading: false,
@@ -72,18 +74,18 @@ export function EditClientForm({ setOpened }: EditClientFormProps) {
     }
   );
 
-  const handleSubmit = async (values: Prisma.ClientCreateInput) => {
+  const handleSubmit = async (values: Prisma.ClientUpdateInput) => {
     // Show loading notification
     notifications.show({
-      id: 'client-create',
+      id: 'client-update',
       loading: true,
-      title: 'Creating client',
+      title: 'Updating client',
       message: 'Please wait...',
       autoClose: false,
       withCloseButton: false,
     });
 
-    createClientMutation.mutate(values);
+    updateClientMutation.mutate({ id: clientId, ...values });
   };
 
   return (
@@ -136,7 +138,7 @@ export function EditClientForm({ setOpened }: EditClientFormProps) {
             mt={10}
             type="submit"
           >
-            Add Client
+            Update Client
           </Button>
         </Flex>
       </Stack>
