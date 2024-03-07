@@ -80,6 +80,12 @@ model Review {
   /// @zod.string.min(1, { message: "Name cannot be empty." })
   name String
 
+  /// @zod.date
+  startDate DateTime
+
+  /// @zod.date
+  endDate DateTime
+
   userId String
   user   User   @relation(fields: [userId], references: [id])
 
