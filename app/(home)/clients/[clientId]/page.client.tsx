@@ -15,6 +15,7 @@ import {
   Anchor,
   Breadcrumbs,
   LoadingOverlay,
+  Skeleton,
 } from '@mantine/core';
 import { IconRefresh } from '@tabler/icons-react';
 import Link from 'next/link';
@@ -24,6 +25,7 @@ import EditClientButton from '@/components/EditClientButton/EditClientButton';
 import { useGetClients, useGetClientById } from '@/lib/actions/client';
 import { ClientInfo } from '@/components/ClientInfo/ClientInfo';
 import { StatsSegments } from '@/components/StatsSegments.tsx/StatsSegments';
+import ReviewsTable from '@/components/ReviewsTable/ReviewsTable';
 
 export function ViewClientByIDClient({ params }: { params: { clientId: string } }) {
   const theme = useMantineTheme();
@@ -40,21 +42,23 @@ export function ViewClientByIDClient({ params }: { params: { clientId: string } 
     >
       Clients
     </Anchor>,
-    <Text size="md" c={theme.colors['trust-md-gray'][6]} key="myClient">
-      {getClientByIdQuery.data?.firstName} {getClientByIdQuery.data?.lastName} (
-      {getClientByIdQuery.data?.company})
-    </Text>,
+    <Skeleton visible={getClientByIdQuery.isLoading} key="myClient">
+      <Text size="md" c={theme.colors['trust-md-gray'][6]}>
+        {getClientByIdQuery.data?.firstName} {getClientByIdQuery.data?.lastName} (
+        {getClientByIdQuery.data?.company})
+      </Text>
+    </Skeleton>,
   ];
 
   return (
-    <Center pos="relative">
-      <LoadingOverlay
-        visible={getClientByIdQuery.isLoading}
-        zIndex={1000}
-        overlayProps={{ radius: 'sm', blur: 2 }}
-      />
+    <Center>
       <Space h="md" />
-      <Paper p="xs" shadow="xs" w={{ base: '97%' }} maw={`${theme.breakpoints.lg}`}>
+      <Paper pos="relative" p="xs" shadow="xs" w={{ base: '97%' }} maw={`${theme.breakpoints.lg}`}>
+        <LoadingOverlay
+          visible={getClientByIdQuery.isLoading}
+          zIndex={1000}
+          overlayProps={{ radius: 'sm', blur: 2 }}
+        />
         <Breadcrumbs m={10}>{breadcrumbsItems}</Breadcrumbs>
 
         {/* Container for the first two components */}
@@ -65,7 +69,7 @@ export function ViewClientByIDClient({ params }: { params: { clientId: string } 
           mt={16}
         >
           {/* Component 1 */}
-          <EditClientButton />
+          <EditClientButton clientId={params.clientId} />
 
           {/* Component 2 */}
           <Button
@@ -86,21 +90,29 @@ export function ViewClientByIDClient({ params }: { params: { clientId: string } 
           mt={16}
         >
           {/* Component 1 */}
-          <ClientInfo clientId={params.clientId} />
+          <Skeleton visible={getClientByIdQuery.isLoading}>
+            <ClientInfo clientId={params.clientId} />
+          </Skeleton>
 
           {/* Component 2 */}
-          <StatsSegments />
+          <Skeleton visible={getClientByIdQuery.isLoading}>
+            <StatsSegments />
+          </Skeleton>
         </Flex>
 
         {/* Component 3 - Always below the first two */}
         <Divider my="md" />
-        <Text fz="xl" fw={500}>
-          {getClientByIdQuery.data?.firstName} {getClientByIdQuery.data?.lastName}
-          &apos;s Financial Reviews
-        </Text>
+        <Skeleton visible={getClientByIdQuery.isLoading}>
+          <Text fz="xl" fw={500}>
+            {getClientByIdQuery.data?.firstName} {getClientByIdQuery.data?.lastName}
+            &apos;s Financial Reviews
+          </Text>
+        </Skeleton>
         <Box style={{ marginTop: '16px' }}>
           {/* Adjust the margin as needed */}
-          <ClientsTable />
+          <Skeleton visible={getClientByIdQuery.isLoading}>
+            <ReviewsTable clientId={params.clientId} />
+          </Skeleton>
         </Box>
       </Paper>
     </Center>
