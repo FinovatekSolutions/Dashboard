@@ -5,12 +5,11 @@ import { MantineReactTable, useMantineReactTable, type MRT_ColumnDef } from 'man
 import { notifications } from '@mantine/notifications';
 
 import { Client } from '@prisma/client';
-
+import { useRouter } from 'next/navigation';
 import { ActionIcon, Flex, Tooltip, useMantineTheme } from '@mantine/core';
 import { IconEdit, IconEye, IconTrash, IconX } from '@tabler/icons-react';
 
 import { useGetClients } from '@/lib/actions/client';
-import { useRouter } from 'next/navigation';
 
 const ClientsTable = () => {
   const getClientsQuery = useGetClients();
@@ -93,6 +92,8 @@ const ClientsTable = () => {
     mantineSearchTextInputProps: {
       placeholder: `Search ${getClientsQuery?.data?.length || 0} rows`,
       id: 'wazzapp',
+      variant: 'filled',
+      size: 'sm',
     },
     mantineTopToolbarProps: {
       // Ensure the toolbar spans the full width and provides space for the search input to grow
