@@ -4,7 +4,7 @@ import { useEffect, useMemo } from 'react';
 import { MantineReactTable, useMantineReactTable, type MRT_ColumnDef } from 'mantine-react-table';
 import { notifications } from '@mantine/notifications';
 
-import { Client, Review } from '@prisma/client';
+import { Client, Review, User } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { ActionIcon, Flex, Tooltip, useMantineTheme } from '@mantine/core';
 import { IconEdit, IconEye, IconTrash, IconX } from '@tabler/icons-react';
@@ -29,23 +29,36 @@ const ReviewsTable = ({ clientId }: { clientId: string }) => {
   }, [getClientByIdQuery.isError]);
 
   //should be memoized or stable
-  const columns = useMemo<MRT_ColumnDef<Review>[]>(
+  const columns = useMemo<
+    MRT_ColumnDef<
+      Review & {
+        user: User;
+      }
+    >[]
+  >(
     () => [
       {
+        header: 'Review Name',
         accessorKey: 'name', //access nested data with dot notation
-        header: 'Review Name',
       },
       {
-        accessorKey: 'name',
-        header: 'Review Name',
+        header: 'Worked By',
+        accessorFn: (row) => {
+          if (!row?.user) return '';
+          return row.user?.name;
+        },
       },
       {
-        accessorKey: 'name',
-        header: 'Review Name',
-      },
-      {
-        accessorKey: 'name',
-        header: 'Review Name',
+        header: 'Created At',
+        accessorFn: (row) => {
+          if (!row?.createdAt) return '';
+          const date = new Date(row.createdAt);
+          return new Intl.DateTimeFormat('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: '2-digit',
+          }).format(date);
+        },
       },
     ],
     []
