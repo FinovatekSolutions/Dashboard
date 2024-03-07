@@ -1,6 +1,6 @@
 'use server';
 
-import type { Prisma, Client, Review } from '@prisma/client';
+import type { Prisma, Client, Review, User } from '@prisma/client';
 import { ClientCreateInputSchema, ClientUpdateInputSchema } from '@prisma/zod';
 import { z } from 'zod';
 
@@ -14,15 +14,24 @@ export async function getClients(): Promise<Client[]> {
   });
 }
 
-export async function getClientById(
-  clientId: string
-): Promise<(Client & { reviews: Review[] }) | null> {
+export async function getClientById(clientId: string): Promise<
+  | (Client & {
+      reviews: (Review & {
+        user: User;
+      })[];
+    })
+  | null
+> {
   return prisma.client.findUnique({
     where: {
       id: clientId,
     },
     include: {
-      reviews: true,
+      reviews: { // Includes the reviews for the client
+        include: {
+          user: true, // This includes the user for each review
+        },
+      },
     },
   });
 }

@@ -1,6 +1,6 @@
 import type { UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { Prisma, Client, Review } from '@prisma/client';
+import type { Prisma, Client, Review, User } from '@prisma/client';
 
 import {
   getClients,
@@ -22,14 +22,28 @@ export function useGetClients(): UseQueryResult<Client[]> {
   } satisfies UseQueryOptions<Client[]>);
 }
 
-export function useGetClientById(
-  clientId: string
-): UseQueryResult<(Client & { reviews: Review[] }) | null> {
-  return useQuery<(Client & { reviews: Review[] }) | null>({
+// prettier-ignore
+export function useGetClientById(clientId: string): UseQueryResult<
+  | (Client & {
+      reviews: (Review & {
+        user: User;
+      })[];
+    })
+  | null
+> {
+  return useQuery<(Client & {
+    reviews: (Review & {
+      user: User;
+    })[];
+  }) | null>({
     queryKey: [getClientByIdQueryKey, clientId], // Unique query key for each client
     queryFn: () => getClientById(clientId),
     enabled: !!clientId, // Only fetch if clientId is present
-  } satisfies UseQueryOptions<(Client & { reviews: Review[] }) | null>);
+  } satisfies UseQueryOptions<(Client & {
+    reviews: (Review & {
+      user: User;
+    })[];
+  }) | null>);
 }
 
 // Mutations:
