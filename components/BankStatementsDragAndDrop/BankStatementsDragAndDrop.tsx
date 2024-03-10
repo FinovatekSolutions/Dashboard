@@ -1,22 +1,21 @@
-import { Group, Text, rem } from '@mantine/core';
+import { Group, Text, px, rem } from '@mantine/core';
 import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
 import { Dropzone, DropzoneProps, MIME_TYPES } from '@mantine/dropzone';
 
 export function BankStatementsDragAndDrop(props: Partial<DropzoneProps>) {
   return (
-    <Dropzone
+    <Dropzone 
       onDrop={(files) => console.log('accepted files', files)}
       onReject={(files) => console.log('rejected files', files)}
-      maxFiles={100}
       accept={[
         MIME_TYPES.pdf,
         MIME_TYPES.csv,
         MIME_TYPES.xls,
         MIME_TYPES.xlsx,
       ]}
-      multiple = {true}
+      style={{borderStyle: 'solid', borderWidth: 2, borderRadius: 20, color: 'dimgray'}}
     >
-      <Group justify="center" gap="xl" mih={220} style={{ pointerEvents: 'none' }}>
+      <Group justify="center" gap="xl" mih={100} style={{ pointerEvents: 'none' }}>
         <Dropzone.Accept>
           <IconUpload
             style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-blue-6)' }}
@@ -37,11 +36,11 @@ export function BankStatementsDragAndDrop(props: Partial<DropzoneProps>) {
         </Dropzone.Idle>
 
         <div>
-          <Text size="xl" inline>
+          <Text fw = {600} size="md" inline>
             Drag spreadsheets or pdf files here or click to select files
           </Text>
           <Text size="sm" c="dimmed" inline mt={7}>
-            Attach as many files as you like, each file should not exceed 5mb
+            Attach as many files as you like
           </Text>
         </div>
       </Group>

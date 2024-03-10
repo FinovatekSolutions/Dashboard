@@ -8,6 +8,7 @@ export function SelectBankTypeDropdown() {
       data={['React', 'Angular', 'Vue', 'Svelte']}
       comboboxProps={{ transitionProps: { transition: 'pop', duration: 200 } }}
       searchable
+      size='md'
     />
   );
 }

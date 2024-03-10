@@ -18,12 +18,13 @@ import { IconRefresh } from '@tabler/icons-react';
 import CreateClientButton from '@/components/CreateClientButton/CreateClientButton';
 import { BankStatementsDragAndDrop } from '@/components/BankStatementsDragAndDrop/BankStatementsDragAndDrop';
 import { BankStatementsList } from '@/components/BankStatementsList/BankStatementsList';
-import CreateBankButton from '@/components/CreateBankTypeButton/CreateBankTypeButton';
+import CreateBankTypeButton from '@/components/CreateBankTypeButton/CreateBankTypeButton';
 import { FinancialAnalysisButton } from '@/components/FinancialAnalysisButton/FinancialAnalysisButton';
 import { SaveFinancialAnalysisButton } from '@/components/SaveFinancialAnalysisButton/SaveFinancialAnalysisButton';
 import { SelectBankTypeDropdown } from '@/components/SelectBankTypeDropdown/SelectBankTypeDropdown';
 import { SelectClientDropdown } from '@/components/SelectClientDropdown/SelectClientDropdown';
 import { TransactionsTable } from '@/components/TransactionsTable/TransactionsTable';
+import { useForm } from '@mantine/form';
 
 export function MainPage(): ReactElement {
   const theme = useMantineTheme();
@@ -42,26 +43,33 @@ export function MainPage(): ReactElement {
           mt={16}
         >
           {/* Component 1 */}
-          <Paper style={{ flex: 1, height: '400px', backgroundColor: 'yellow' }} shadow="xl" p="md">
-            <b>Select Client</b>
+          <Paper style={{ flex: 1, height: '470px', backgroundColor: 'white' }} shadow="xs" withBorder={true} p="md">
+            <Text fw = {700}>Select Client</Text>
             <Flex direction={{ base: 'column', sm: 'row' }} justify="space-between" style={{ gap: '16px' }}>
               <SelectClientDropdown></SelectClientDropdown>
               <CreateClientButton></CreateClientButton>
             </Flex>
-
-            <b>Select Bank Type</b>
-            <Flex direction={{ base: 'column', sm: 'row' }} justify="space-between" style={{ gap: '16px' }}>
+            
+            <Text fw = {700}>Select Bank Type</Text>
+            <Flex direction={{ base: 'column', sm: 'row' }} justify="space-between" mb = {10} style={{ gap: '16px'}}>
               <SelectBankTypeDropdown></SelectBankTypeDropdown>
-              <CreateBankButton></CreateBankButton>
+              <CreateBankTypeButton></CreateBankTypeButton>
             </Flex>
+
+            <Text ta = "center" fw = {700}>Bank Statements</Text>
+
             <BankStatementsDragAndDrop></BankStatementsDragAndDrop>
+
+            <Flex direction={{ base: 'column', sm: 'row' }} justify="space-between" mb = {10} style={{ gap: '16px'}}>
+              
+            </Flex>
 
           </Paper>
 
           <Divider size="sm" orientation="vertical" color="#1A1C27"/>
 
           {/* Component 2 */}
-          <Paper style={{ flex: 1, height: '400px', backgroundColor: 'magenta' }} shadow="xl" p="md">
+          <Paper style={{ flex: 1, height: '470px', backgroundColor: 'grey' }} shadow="xs" withBorder={true} p="md">
             Component 2
           </Paper>
 
@@ -70,17 +78,3 @@ export function MainPage(): ReactElement {
     </Center>
   );
 }
-
-  {/* <Paper h={50} p="sm" style={{ backgroundColor: 'red' }}>
-    Component 0
-  </Paper> */}
-  {/* Container for the first two components */}
-
-  {/* Component 3 - Always below the first two */}
-  {' '}
-  {/* Adjust the margin as needed */}
-  {/* <Paper style={{ height: '100px', backgroundColor: 'yellow' }} p="md">
-    Component 3
-  </Paper> */}
-
-  

@@ -7,6 +7,7 @@ export function SelectClientDropdown() {
       placeholder="Pick a Client"
       data={['React', 'Angular', 'Vue', 'Svelte']}
       searchable
+      size='md'
     />
   );
 }
