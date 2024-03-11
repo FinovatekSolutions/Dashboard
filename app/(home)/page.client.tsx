@@ -17,7 +17,6 @@ import {
 import { IconRefresh } from '@tabler/icons-react';
 import CreateClientButton from '@/components/CreateClientButton/CreateClientButton';
 import { BankStatementsDragAndDrop } from '@/components/BankStatementsDragAndDrop/BankStatementsDragAndDrop';
-import { BankStatementsList } from '@/components/BankStatementsList/BankStatementsList';
 import CreateBankTypeButton from '@/components/CreateBankTypeButton/CreateBankTypeButton';
 import { FinancialAnalysisButton } from '@/components/FinancialAnalysisButton/FinancialAnalysisButton';
 import { SaveFinancialAnalysisButton } from '@/components/SaveFinancialAnalysisButton/SaveFinancialAnalysisButton';
@@ -59,9 +58,10 @@ export function MainPage(): ReactElement {
             <Text ta = "center" fw = {700}>Bank Statements</Text>
 
             <BankStatementsDragAndDrop></BankStatementsDragAndDrop>
+            {/* <BankStatementsList></BankStatementsList> */}
 
             <Flex direction={{ base: 'column', sm: 'row' }} justify="space-between" mb = {10} style={{ gap: '16px'}}>
-              
+
             </Flex>
 
           </Paper>
