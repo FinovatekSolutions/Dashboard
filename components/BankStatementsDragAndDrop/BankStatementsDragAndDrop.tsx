@@ -1,92 +1,60 @@
-import { Group, Text, px, rem, Center, CloseButton } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
-import { Dropzone, DropzoneProps, MIME_TYPES } from '@mantine/dropzone';
+import { useRef } from 'react';
+import { Text, Group, Button, rem, useMantineTheme } from '@mantine/core';
+import { Dropzone, MIME_TYPES } from '@mantine/dropzone';
+import { IconX, IconDownload } from '@tabler/icons-react';
+import classes from './BankStatementsDragAndDrop.module.css';
 
-interface FormValues {
-  files: File[];
-}
-
-export function BankStatementsDragAndDrop(props: Partial<DropzoneProps>) {
-  const form = useForm<FormValues>({
-    initialValues: { files: [] },
-  });
-
-  const selectedFiles = form.values.files.map((file, index) => (
-    <Text key={file.name}>
-      <b>{file.name}</b> ({(file.size / 1024).toFixed(2)} kb)
-      <CloseButton
-        size="xs"
-        onClick={() =>
-          form.setFieldValue(
-            'files',
-            form.values.files.filter((_, i) => i !== index)
-          )
-        }
-      />
-    </Text>
-  ));
+export function BankStatementsDragAndDrop() {
+  const theme = useMantineTheme();
+  const openRef = useRef<() => void>(null);
 
   return (
-    <>
+    <div className={classes.wrapper}>
       <Dropzone
-        onDrop={(files) => form.setFieldValue('files', files)}
-        onReject={() => form.setFieldError('files', 'Select PDf or Excel Type Files only')}
-        accept={[
-          MIME_TYPES.pdf,
-          MIME_TYPES.png,
-          MIME_TYPES.csv,
-          MIME_TYPES.xls,
-          MIME_TYPES.xlsx,
-        ]}        
-        style={{borderStyle: 'solid', borderWidth: 2, borderRadius: 20, color: 'dimgray'}}
+        openRef={openRef}
+        onDrop={() => {}}
+        className={classes.dropzone}
+        radius="sm"
+        accept={[MIME_TYPES.pdf, MIME_TYPES.csv, MIME_TYPES.xls,MIME_TYPES.xlsx]}
+        maxSize={30 * 1024 ** 2}
+        style={{borderStyle: 'dashed', borderWidth: 2, borderRadius: 10, color: 'dimgray'}}
       >
-        <Group justify="center" gap="xl" mih={100} style={{ pointerEvents: 'none' }}>
-          <Dropzone.Accept>
-            <IconUpload
-              style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-blue-6)' }}
-              stroke={1.5}
-            />
-          </Dropzone.Accept>
-          <Dropzone.Reject>
-            <IconX
-              style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-red-6)' }}
-              stroke={1.5}
-            />
-          </Dropzone.Reject>
-          <Dropzone.Idle>
-            <IconPhoto
-              style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-dimmed)' }}
-              stroke={1.5}
-            />
-          </Dropzone.Idle>
+        <div style={{ pointerEvents: 'none' }}>
+          <Group justify="center" mt={rem(5)}>
+            <Dropzone.Accept>
+              <IconDownload
+                style={{ width: rem(50), height: rem(50)}}
+                color={theme.colors.blue[6]}
+                stroke={1.5}
+              />
+            </Dropzone.Accept>
+            <Dropzone.Reject>
+              <IconX
+                style={{ width: rem(50), height: rem(50)}}
+                color={theme.colors.red[6]}
+                stroke={1.5}
+              />
+            </Dropzone.Reject>
+            <Dropzone.Idle>
+              <IconDownload style={{ width: rem(50), height: rem(50)}} stroke={1.5} />
+            </Dropzone.Idle>
+          </Group>
 
-          <div>
-          <Text fw = {600} size="md" inline>
-            Drag spreadsheets or pdf files here or click to select files
+          <Text ta="center" fw={700} fz="lg" mt="sm">
+            <Dropzone.Accept>Drop the Bank Statements</Dropzone.Accept>
+            <Dropzone.Reject>Incorrect file type or file size is more than 30mb </Dropzone.Reject>
+            <Dropzone.Idle>Upload Bank Statements</Dropzone.Idle>
           </Text>
-          <Text size="sm" c="dimmed" inline mt={7}>
-            Attach as many files as you like
+          <Text ta="center" fz="sm" mt="xs" c="dimmed" pb="xl">
+            Drag&apos;n&apos;drop files here to upload. We can accept only <i>.pdf, .csv, .xls, .xlsx</i> files that
+            are less than 30mb in size.
           </Text>
         </div>
-      </Group>
-  </Dropzone>
+      </Dropzone>
 
-      {form.errors.files && (
-        <Text c="red" mt={5}>
-          {form.errors.files}
-        </Text>
-      )}
-
-      {selectedFiles.length > 0 && (
-        <>
-          <Text mb={5} mt="md">
-            Selected files:
-          </Text>
-          {selectedFiles}
-        </>
-      )}
-    </>
-
+      <Button className={classes.control} size="md" radius="xl" onClick={() => openRef.current?.()}>
+        Select files
+      </Button>
+    </div>
   );
 }

@@ -9,6 +9,7 @@ import {
   Center,
   Flex,
   Box,
+  rem,
   useMantineTheme,
   Divider,
   Button,
@@ -39,33 +40,32 @@ export function MainPage(): ReactElement {
           direction={{ base: 'column', sm: 'row' }}
           justify="space-between"
           style={{ gap: '16px' }} // Adjust the gap size as needed
-          mt={16}
         >
           {/* Component 1 */}
-          <Paper style={{ flex: 1, height: '470px', backgroundColor: 'white' }} shadow="xs" withBorder={true} p="md">
+          <Paper style={{ flex: 1, height: rem(470), backgroundColor: 'white' }} shadow="xs" withBorder={true} p="md">
+            {/*Client*/}
             <Text fw = {700}>Select Client</Text>
-            <Flex direction={{ base: 'column', sm: 'row' }} justify="space-between" style={{ gap: '16px' }}>
+            <Flex direction={{ base: 'column', sm: 'row' }}  mb = {10} justify="space-between" style={{ gap: '16px' }}>
               <SelectClientDropdown></SelectClientDropdown>
               <CreateClientButton></CreateClientButton>
             </Flex>
-            
+
+            {/*Bank Statements*/}
+            <Text ta = "center" fw = {700}>Bank Statements</Text>
+            <Flex direction={{ base: 'column', sm: 'row' }} justify="space-between" mb = {10} style={{ gap: '16px'}}>
+              <BankStatementsDragAndDrop></BankStatementsDragAndDrop>
+            </Flex>
+
+            {/*Bank Type*/}
             <Text fw = {700}>Select Bank Type</Text>
             <Flex direction={{ base: 'column', sm: 'row' }} justify="space-between" mb = {10} style={{ gap: '16px'}}>
               <SelectBankTypeDropdown></SelectBankTypeDropdown>
               <CreateBankTypeButton></CreateBankTypeButton>
             </Flex>
 
-            <Text ta = "center" fw = {700}>Bank Statements</Text>
-
-            <BankStatementsDragAndDrop></BankStatementsDragAndDrop>
-            {/* <BankStatementsList></BankStatementsList> */}
-
-            <Flex direction={{ base: 'column', sm: 'row' }} justify="space-between" mb = {10} style={{ gap: '16px'}}>
-
-            </Flex>
-
           </Paper>
 
+          {/*Divider*/}
           <Divider size="sm" orientation="vertical" color="#1A1C27"/>
 
           {/* Component 2 */}
