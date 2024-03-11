@@ -22,7 +22,6 @@ const CreateBankTypeButton = (props: ButtonProps & React.ComponentPropsWithoutRe
         size="md"
         onClick={() => setOpened(true)}
         {...props}
-        style = {{width: 250}}
       >
         Create New Bank Type
       </Button>

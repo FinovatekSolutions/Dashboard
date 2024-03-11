@@ -57,9 +57,7 @@ export function MainPage(): ReactElement {
             </Flex>
 
             {/*Bank Type*/}
-            <Text fw = {700}>Select Bank Type</Text>
-            <Flex direction={{ base: 'column', sm: 'row' }} justify="space-between" mb = {10} style={{ gap: '16px'}}>
-              <SelectBankTypeDropdown></SelectBankTypeDropdown>
+            <Flex direction={{ base: 'column', sm: 'row' }} justify="flex-end" align="flex-end" mb = {10} style={{ gap: '16px'}}>
               <CreateBankTypeButton></CreateBankTypeButton>
             </Flex>
 
