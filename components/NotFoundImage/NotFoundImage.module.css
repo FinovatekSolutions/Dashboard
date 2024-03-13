@@ -1,6 +1,10 @@
 .root {
   padding-top: rem(80px);
   padding-bottom: rem(80px);
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    padding-top: rem(20px);
+  }
 }
 
 .title {
@@ -31,6 +35,7 @@
   color: var(--mantine-color-gray-4);
 
   @media (max-width: $mantine-breakpoint-sm) {
-    font-size: rem(220px);
+    font-size: rem(150px);
+    margin-bottom: calc(var(--mantine-spacing-xs) * 1.5);
   }
 }

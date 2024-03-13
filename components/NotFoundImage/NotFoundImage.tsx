@@ -1,12 +1,15 @@
 import { Container, Title, Text, Button, SimpleGrid, Center, Box } from '@mantine/core';
-import classes from './NotFoundImage.module.css';
 import Link from 'next/link';
+import classes from './NotFoundImage.module.css';
 
 export function NotFoundImage() {
   return (
     <Container className={classes.root}>
       <SimpleGrid spacing={{ base: 40, sm: 80 }} cols={{ base: 1, sm: 2 }}>
-        <Center><Title order={1} className={classes.label}>404</Title>
+        <Center>
+          <Title order={1} className={classes.label}>
+            404
+          </Title>
         </Center>
         <Box>
           <Title className={classes.title}>Nothing to see here...</Title>
