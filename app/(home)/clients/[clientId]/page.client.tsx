@@ -16,8 +16,9 @@ import {
   Breadcrumbs,
   LoadingOverlay,
   Skeleton,
+  Group,
 } from '@mantine/core';
-import { IconRefresh } from '@tabler/icons-react';
+import { IconChevronLeft, IconRefresh } from '@tabler/icons-react';
 import Link from 'next/link';
 
 import ClientsTable from '@/components/ClientsTable/ClientsTable';
@@ -59,8 +60,21 @@ export function ViewClientByIDClient({ params }: { params: { clientId: string } 
           zIndex={1000}
           overlayProps={{ radius: 'sm', blur: 2 }}
         />
-        <Breadcrumbs m={10}>{breadcrumbsItems}</Breadcrumbs>
-
+        <Breadcrumbs visibleFrom="xs" m={10}>
+          {breadcrumbsItems}
+        </Breadcrumbs>
+        <Box hiddenFrom="xs" m={10} ml={0}>
+          <Anchor
+            href="/clients"
+            size="md"
+            component={Link}
+            c={theme.colors['trust-md-gray'][6]}
+            key="clients"
+          >
+            <IconChevronLeft size={15} style={{ marginRight: '5px' }} />
+            View All Clients
+          </Anchor>
+        </Box>
         {/* Container for the first two components */}
         <Flex
           direction={{ base: 'column', sm: 'row' }}
