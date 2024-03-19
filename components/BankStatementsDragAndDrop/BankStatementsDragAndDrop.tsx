@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Table, ActionIcon, Text, Group, Button, rem, useMantineTheme, Flex, ScrollArea, DirectionContext, Center } from '@mantine/core';
+import { Table, ActionIcon, Text, Tooltip, Group, Button, rem, useMantineTheme, Flex, ScrollArea, DirectionContext, Center } from '@mantine/core';
 import { IconX, IconTrash, IconDownload } from '@tabler/icons-react';
 import { SelectBankTypeDropdown } from '../SelectBankTypeDropdown/SelectBankTypeDropdown';
 import { useForm } from '@mantine/form';
@@ -21,7 +21,9 @@ export function BankStatementsDragAndDrop() {
     const selectedBankStatements = form.values.files.map((files, index) => (
         <Table.Tr key={index}>
         <Table.Td style={{maxWidth: rem(250)}}>
+        <Tooltip arrowOffset={50} arrowSize={5} withArrow position="top-start" label={files.name}>
             <Text truncate="end">{files.name}</Text>
+        </Tooltip>
         </Table.Td>
         <Table.Td style={{minWidth: rem(78)}}>
             <Text>{((files.size / 1024)*0.001).toFixed(2)} mb</Text>
@@ -32,7 +34,7 @@ export function BankStatementsDragAndDrop() {
         </Table.Td>
         <Table.Td>
             <Center>
-                <ActionIcon color="red" onClick={() => console.log('test')}>
+                <ActionIcon color="red" onClick={() => form.removeListItem('files', index)}>
                 <IconTrash size="1rem" />
                 </ActionIcon>
             </Center>
