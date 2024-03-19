@@ -58,18 +58,28 @@ export function MainPage(): ReactElement {
             </Flex>
 
             {/*Bank Type*/}
-            <Flex direction={{ base: 'column', sm: 'row' }} justify="flex-end" align="flex-end" mb = {5} style={{ gap: '16px'}}>
+            <Flex direction={{ base: 'column', sm: 'row' }} justify="space-between" align="flex-end" mb = {5} style={{ gap: '16px'}}>
               <CreateBankTypeButton></CreateBankTypeButton>
+              <Button  size="md" radius="xl">
+                Submit Bank Statements          
+              </Button>  {/*Leaving in for now as filler*/}
             </Flex>
-
           </Paper>
 
           {/*Divider*/}
-          <Divider size="sm" orientation="vertical" color="#1A1C27"/>
+          <Divider size="sm" orientation="vertical" color="black"/>
 
           {/* Component 2 */}
-          <Paper style={{ flex: 1, height: rem(610), backgroundColor: 'grey' }} shadow="xs" withBorder={true} mb="sm" p="md">
-            Component 2
+          <Paper style={{ flex: 1, height: rem(610), backgroundColor: 'white' }} shadow="xs" withBorder={true} mb="sm" p="md">
+            <Text ta = "center" fw = {700}>Categorization</Text>
+            <Flex direction={{ base: 'column', sm: 'row' }} mb = {10} style={{height: rem(500), backgroundColor: 'white', borderStyle: 'solid', borderWidth: 2, borderRadius: 10, color: 'black' }}>
+
+            </Flex>
+            <Flex direction={{ base: 'column', sm: 'row' }} justify="flex-end" align="flex-end" mb = {5} style={{ gap: '16px'}}>
+              <Button size="md" radius="xl">
+                  Save Categorization          
+              </Button>  {/*Leaving in for now as filler*/}
+            </Flex>
           </Paper>
 
         </Flex>
