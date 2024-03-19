@@ -9,7 +9,7 @@ import prisma from '@/lib/utils/prisma';
 export async function getBankTypes(): Promise<BankType[]> {
   return prisma.bankType.findMany({
     orderBy: {
-      createdAt: 'desc', // Use 'desc' for descending order (newest first)
+      name: 'asc', //alphabetical order a-z
     },
   });
 }
