@@ -2395,6 +2395,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mantine/dropzone@npm:^7.6.1":
+  version: 7.6.1
+  resolution: "@mantine/dropzone@npm:7.6.1"
+  dependencies:
+    react-dropzone-esm: "npm:15.0.1"
+  peerDependencies:
+    "@mantine/core": 7.6.1
+    "@mantine/hooks": 7.6.1
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  checksum: c4e146689ab2a92da5478c8c242a10860672becf8c997075399fb624a24b66cf04eba5d738a1908a08b699ca6bb10d91d0a2fee68fa7a2e84f16be13c6d51ec6
+  languageName: node
+  linkType: hard
+
 "@mantine/form@npm:^7.4.1":
   version: 7.4.1
   resolution: "@mantine/form@npm:7.4.1"
@@ -11793,6 +11807,7 @@ __metadata:
     "@babel/core": "npm:^7.23.2"
     "@mantine/core": "npm:^7.6.1"
     "@mantine/dates": "npm:^7.6.1"
+    "@mantine/dropzone": "npm:^7.6.1"
     "@mantine/form": "npm:^7.4.1"
     "@mantine/hooks": "npm:^7.6.1"
     "@mantine/notifications": "npm:^7.4.1"
@@ -13827,6 +13842,17 @@ __metadata:
   peerDependencies:
     react: ^18.2.0
   checksum: 66dfc5f93e13d0674e78ef41f92ed21dfb80f9c4ac4ac25a4b51046d41d4d2186abc915b897f69d3d0ebbffe6184e7c5876f2af26bfa956f179225d921be713a
+  languageName: node
+  linkType: hard
+
+"react-dropzone-esm@npm:15.0.1":
+  version: 15.0.1
+  resolution: "react-dropzone-esm@npm:15.0.1"
+  dependencies:
+    prop-types: "npm:^15.8.1"
+  peerDependencies:
+    react: ">= 16.8 || 18.0.0"
+  checksum: 4bd7054a78a9d8b98d13f0abfbdec334e647c681ccb62c5c38fce72e1bace4cdb7d5eb22675ab2ce63f6cca11ec40c0e2081a28a725a38f331cf930abb170e7d
   languageName: node
   linkType: hard
 
