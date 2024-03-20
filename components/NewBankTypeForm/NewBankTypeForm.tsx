@@ -1,22 +1,11 @@
 'use client';
 
-import {
-  Button,
-  TextInput,
-  Group,
-  Title,
-  Box,
-  useMantineTheme,
-  Stack,
-  Flex,
-  Space,
-} from '@mantine/core';
+import { Button, TextInput, Group, Box, useMantineTheme, Stack, Flex } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useForm } from '@mantine/form';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { IconCheck, IconX } from '@tabler/icons-react';
 import type { Prisma } from '@prisma/client';
-
 import { BankTypeCreateInputSchema } from '@prisma/zod';
 import { useCreateBankType } from '@/lib/actions/banktype';
 
@@ -81,7 +70,11 @@ export function NewBankTypeForm({ setOpened }: NewBankTypeFormProps) {
     <Box component="form" onSubmit={form.onSubmit(handleSubmit)}>
       <Stack>
         <Group grow>
-          <TextInput label="Bank Type Name" placeholder="Banco Popular" {...form.getInputProps('name')} />
+          <TextInput
+            label="Bank Type Name"
+            placeholder="Banco Popular"
+            {...form.getInputProps('name')}
+          />
         </Group>
         <Flex direction={{ base: 'column', sm: 'row' }} justify="flex-end">
           <Button

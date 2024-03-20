@@ -1,11 +1,9 @@
-
 'use client';
 
 import { useState } from 'react';
 import { Button, Modal, Group, Text, ButtonProps, useMantineTheme, Title } from '@mantine/core';
 import { IconCirclePlus } from '@tabler/icons-react';
 import { useMediaQuery } from '@mantine/hooks';
-
 import { NewBankTypeForm } from '../NewBankTypeForm/NewBankTypeForm';
 
 const CreateBankTypeButton = (props: ButtonProps & React.ComponentPropsWithoutRef<'button'>) => {
@@ -45,5 +43,3 @@ const CreateBankTypeButton = (props: ButtonProps & React.ComponentPropsWithoutRe
 };
 
 export default CreateBankTypeButton;
-
-
