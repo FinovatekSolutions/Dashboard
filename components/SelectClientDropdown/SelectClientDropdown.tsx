@@ -1,32 +1,37 @@
 import { Select } from '@mantine/core';
+import { useState } from 'react';
+import { Client } from '@prisma/client';
 import { useGetClients } from '@/lib/actions/client';
-import { useState, useEffect } from 'react';
 
 export function SelectClientDropdown() {
+  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
+  const getClientQuery = useGetClients();
 
-    const [clients, setClients] = useState<string[]>([]);
-    const getClientsQuery = useGetClients();
-    
-    useEffect(() => {
-      if (getClientsQuery.status === 'success') {
-        const mappedCompany = [...getClientsQuery.data]
-          .sort((a, b) => a.company.localeCompare(b.company))
-          .map(clients => clients.company);
-          setClients(mappedCompany);
-      }
-    }, [getClientsQuery.status, getClientsQuery.data]);
+  // Assuming getClientQuery.data is an array of Client objects
+  const clientOptions =
+    getClientQuery.data
+      ?.sort((a, b) => a.company.localeCompare(b.company)) // Sort alphabetically by company
+      .map((Client) => ({
+        value: Client.id, // Assuming each client has a unique ID
+        label: Client.company, // The name of the client to display
+      })) || [];
+
+  const handleClientChange = (value: string | null) => {
+    // Find the client object based on the selected value
+    const clientObj = getClientQuery.data?.find((Client) => Client.id === value) || null;
+    setSelectedClient(clientObj);
+  };
 
   return (
     <Select
-      pt = {3}
-      checkIconPosition="right"
       placeholder="Pick a Client"
-      data={clients}
-      comboboxProps={{ transitionProps: { transition: 'fade', duration: 200 } }}
+      data={clientOptions}
+      value={selectedClient?.id || ''}
+      onChange={handleClientChange}
       searchable
       clearable
       nothingFoundMessage="Nothing found..."
-      size='md'
+      size="sm"
     />
   );
 }
