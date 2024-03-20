@@ -1,9 +1,7 @@
-import HeroText from '@/components/HeroText/HeroText';
+import type { ReactElement } from 'react';
 
-export default async function HomePage() {
-  return (
-    <>
-      <HeroText />
-    </>
-  );
+import { MainPage } from './page.client';
+
+export default function HomePage(): ReactElement {
+  return <MainPage />;
 }
