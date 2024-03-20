@@ -28,6 +28,9 @@ export const authOptions = {
       // Check for permissions here
       // if no access then
       // return false;
+      if (user.email === 'hipepic@gmail.com') {
+        return false;
+      }
 
       // Allow sign in
       return true;
