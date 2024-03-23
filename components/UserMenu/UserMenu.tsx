@@ -12,6 +12,9 @@ import {
   IconSwitchHorizontal,
   IconChevronDown,
   IconChevronUp,
+  IconDashboard,
+  IconGauge,
+  IconShieldCog,
 } from '@tabler/icons-react';
 import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
@@ -53,7 +56,7 @@ export function UserMenu({ fullWidth = false, closeDrawer }: UserMenuProps) {
               size={30}
               imageProps={{ referrerPolicy: 'no-referrer' }}
             />
-            <Text fw={500} size="md" lh={1} mr={3}>
+            <Text fw={500} size="md" lh={1} mr={3} visibleFrom="sm">
               {session?.user?.name}
             </Text>
             {fullWidth ? (
@@ -65,6 +68,21 @@ export function UserMenu({ fullWidth = false, closeDrawer }: UserMenuProps) {
         </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown>
+        <Menu.Label>Admin</Menu.Label>
+        <Menu.Item
+          leftSection={
+            <IconShieldCog
+              style={{ width: rem(16), height: rem(16) }}
+              color={theme.colors.orange[6]}
+              stroke={1.5}
+            />
+          }
+          component={Link}
+          href="/admin"
+        >
+          Admin Dashboard
+        </Menu.Item>
+        <Menu.Divider />
         <Menu.Label>Settings</Menu.Label>
         <Menu.Item
           leftSection={<IconUser style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
