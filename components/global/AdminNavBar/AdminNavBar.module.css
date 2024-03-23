@@ -1,0 +1,18 @@
+.linklogo {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-left: var(--mantine-spacing-md);
+  padding-right: var(--mantine-spacing-md);
+  text-decoration: none;
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  font-weight: 500;
+  font-size: var(--mantine-font-size-sm);
+
+  /* Adjust logo alignment and padding for mobile */
+  @media (max-width: $mantine-breakpoint-sm) {
+    justify-content: center; /* Center logo if needed */
+    padding-left: var(--mantine-spacing-xs); /* Adjust if needed */
+    padding-right: var(--mantine-spacing-xs); /* Adjust if needed */
+  }
+}

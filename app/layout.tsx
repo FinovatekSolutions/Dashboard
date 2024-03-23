@@ -11,7 +11,7 @@ import { getServerSession } from 'next-auth';
 
 import { theme } from '../theme';
 import { TanStackQuery } from '@/lib/providers/tanstack-query';
-import SessionProvider from '@/components/SessionProvider/SessionProvider';
+import SessionProvider from '@/lib/providers/session-provider';
 import { authOptions } from './api/auth/[...nextauth]/route';
 
 export const metadata = {

@@ -1,11 +1,14 @@
-import React from 'react';
+import { AppShell, Burger, Group, Skeleton } from '@mantine/core';
+
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { HeaderMegaMenu } from '@/components/global/HeaderMegaMenu/HeaderMegaMenu';
+import { MantineLogo } from '@mantinex/mantine-logo';
 import { authOptions } from '../api/auth/[...nextauth]/route';
-import { LockWhenSignedOut } from '@/lib/providers/lock-when-signed-out';
 
-export default async function HomeLayout({ children }: { children: any }) {
+import { LockWhenSignedOut } from '@/lib/providers/lock-when-signed-out';
+import { AdminNavBar } from '@/components/global/AdminNavBar/AdminNavBar';
+
+export default async function AdminLayout({ children }: { children: any }) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
@@ -15,8 +18,7 @@ export default async function HomeLayout({ children }: { children: any }) {
   return (
     <>
       <LockWhenSignedOut />
-      <HeaderMegaMenu />
-      {children}
+      <AdminNavBar>{children}</AdminNavBar>
     </>
   );
 }

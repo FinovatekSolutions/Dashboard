@@ -4,8 +4,8 @@ import React, { type ReactElement, useState, useEffect } from 'react';
 import { Container, Title, Paper, Space, List, Loader, Center } from '@mantine/core';
 
 import { Todo } from '@prisma/client';
-import TodoItem from '@/components/TodoItem/TodoItem';
-import NewTodoForm from '@/components/NewTodoForm/NewTodoForm';
+import TodoItem from '@/components/todo/general/TodoItem/TodoItem';
+import NewTodoForm from '@/components/todo/crud/NewTodoForm/NewTodoForm';
 import { useGetTodos } from '@/lib/actions/todo';
 
 export function TodoClient(): ReactElement {

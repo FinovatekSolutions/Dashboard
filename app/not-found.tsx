@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import HomeLayout from './(home)/layout';
-import { NotFoundImage } from '@/components/NotFoundImage/NotFoundImage';
+import { NotFoundImage } from '@/components/shared/NotFoundImage/NotFoundImage';
 
 export default function NotFound() {
   return (
