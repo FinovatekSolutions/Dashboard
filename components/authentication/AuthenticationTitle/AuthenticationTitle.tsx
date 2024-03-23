@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { IconInfoCircle } from '@tabler/icons-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { GoogleButton } from '../GoogleButton/GoogleButton';
+import { GoogleButton } from '@/components/shared/GoogleButton/GoogleButton';
 import classes from './AuthenticationTitle.module.css';
 
 interface LoginClientProps {

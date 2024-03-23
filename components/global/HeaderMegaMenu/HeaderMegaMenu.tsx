@@ -23,7 +23,7 @@ import Link from 'next/link';
 import { useDisclosure } from '@mantine/hooks';
 
 import classes from './HeaderMegaMenu.module.css';
-import { UserMenu } from '@/components/UserMenu/UserMenu';
+import { UserMenu } from '@/components/user/general/UserMenu/UserMenu';
 
 export function HeaderMegaMenu() {
   const { data: session } = useSession();

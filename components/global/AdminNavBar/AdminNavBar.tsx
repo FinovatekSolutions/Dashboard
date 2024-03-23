@@ -20,7 +20,7 @@ import { MantineLogo } from '@mantinex/mantine-logo';
 // import Image from 'next/image';
 import Link from 'next/link';
 import classes from './AdminNavBar.module.css';
-import { UserMenu } from '../UserMenu/UserMenu';
+import { UserMenu } from '@/components/user/general/UserMenu/UserMenu';
 
 export function AdminNavBar({ children }: { children: any }) {
   const theme = useMantineTheme();

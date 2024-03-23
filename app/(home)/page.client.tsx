@@ -16,13 +16,13 @@ import {
   Group,
 } from '@mantine/core';
 import CreateClientButton from '@/components/client/crud/CreateClientButton/CreateClientButton';
-import { BankStatementsDragAndDrop } from '@/components/BankStatementsDragAndDrop/BankStatementsDragAndDrop';
-import CreateBankTypeButton from '@/components/CreateBankTypeButton/CreateBankTypeButton';
-import { FinancialAnalysisButton } from '@/components/FinancialAnalysisButton/FinancialAnalysisButton';
-import { SaveFinancialAnalysisButton } from '@/components/SaveFinancialAnalysisButton/SaveFinancialAnalysisButton';
-import { SelectBankTypeDropdown } from '@/components/SelectBankTypeDropdown/SelectBankTypeDropdown';
-import { SelectClientDropdown } from '@/components/SelectClientDropdown/SelectClientDropdown';
-import { TransactionsTable } from '@/components/TransactionsTable/TransactionsTable';
+import { BankStatementsDragAndDrop } from '@/components/review/crud/BankStatementsDragAndDrop/BankStatementsDragAndDrop';
+import CreateBankTypeButton from '@/components/banktype/crud/CreateBankTypeButton/CreateBankTypeButton';
+import { FinancialAnalysisButton } from '@/components/review/general/FinancialAnalysisButton/FinancialAnalysisButton';
+import { SaveFinancialAnalysisButton } from '@/components/review/crud/SaveFinancialAnalysisButton/SaveFinancialAnalysisButton';
+import { SelectBankTypeDropdown } from '@/components/review/crud/SelectBankTypeDropdown/SelectBankTypeDropdown';
+import { SelectClientDropdown } from '@/components/review/crud/SelectClientDropdown/SelectClientDropdown';
+import { TransactionsTable } from '@/components/transaction/general/TransactionsTable/TransactionsTable';
 
 export function MainPage(): ReactElement {
   const theme = useMantineTheme();

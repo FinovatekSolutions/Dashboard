@@ -2,7 +2,7 @@
 
 import type { ReactElement } from 'react';
 import { Box, Center, Container, Space, Title } from '@mantine/core';
-import { UserCardImage } from '@/components/UserCardImage/UserCardImage';
+import { UserCardImage } from '@/components/user/general/UserCardImage/UserCardImage';
 
 export function ProfileClient(): ReactElement {
   return (

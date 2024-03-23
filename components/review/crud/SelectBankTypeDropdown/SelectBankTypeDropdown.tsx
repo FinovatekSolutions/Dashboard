@@ -1,7 +1,7 @@
 import { Select } from '@mantine/core';
-import { useGetBankTypes } from '@/lib/actions/banktype';
 import { useState } from 'react';
 import { BankType } from '@prisma/client';
+import { useGetBankTypes } from '@/lib/actions/banktype';
 
 export function SelectBankTypeDropdown() {
   const [selectedBankType, setSelectedBankType] = useState<BankType | null>(null);

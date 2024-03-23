@@ -11,14 +11,14 @@ export function SelectClientDropdown() {
   const clientOptions =
     getClientQuery.data
       ?.sort((a, b) => a.company.localeCompare(b.company)) // Sort alphabetically by company
-      .map((Client) => ({
-        value: Client.id, // Assuming each client has a unique ID
-        label: Client.company, // The name of the client to display
+      .map((localClient) => ({
+        value: localClient.id, // Assuming each client has a unique ID
+        label: localClient.company, // The name of the client to display
       })) || [];
 
   const handleClientChange = (value: string | null) => {
     // Find the client object based on the selected value
-    const clientObj = getClientQuery.data?.find((Client) => Client.id === value) || null;
+    const clientObj = getClientQuery.data?.find((localClient) => localClient.id === value) || null;
     setSelectedClient(clientObj);
   };
 

@@ -12,11 +12,12 @@ import {
   Center,
 } from '@mantine/core';
 import { IconX, IconTrash, IconDownload } from '@tabler/icons-react';
-import { SelectBankTypeDropdown } from '../SelectBankTypeDropdown/SelectBankTypeDropdown';
+
 import { useForm } from '@mantine/form';
 import { Dropzone, MIME_TYPES } from '@mantine/dropzone';
 import classes from './BankStatementsDragAndDrop.module.css';
 import { useGetBankTypes } from '@/lib/actions/banktype';
+import { SelectBankTypeDropdown } from '@/components/review/crud/SelectBankTypeDropdown/SelectBankTypeDropdown';
 
 interface FormValues {
   files: File[];
@@ -42,7 +43,7 @@ export function BankStatementsDragAndDrop() {
         <Text>{((files.size / 1024) * 0.001).toFixed(2)} mb</Text>
       </Table.Td>
       <Table.Td style={{ minWidth: rem(57) }}>
-        <SelectBankTypeDropdown></SelectBankTypeDropdown>
+        <SelectBankTypeDropdown />
       </Table.Td>
       <Table.Td>
         <Center>
@@ -119,13 +120,7 @@ export function BankStatementsDragAndDrop() {
       </Text>
       <Flex style={{ height: rem(200) }}>
         <Table.ScrollContainer minWidth={500}>
-          <Table
-            striped
-            stickyHeader
-            highlightOnHover
-            withTableBorder
-            withColumnBorders
-          >
+          <Table striped stickyHeader highlightOnHover withTableBorder withColumnBorders>
             <Table.Thead>
               <Table.Tr>
                 <Table.Th style={{ maxWidth: rem(250) }}>Bank Statement</Table.Th>

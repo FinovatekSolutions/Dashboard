@@ -3,7 +3,7 @@
 import type { ReactElement } from 'react';
 import { Title, Text } from '@mantine/core';
 
-import { Welcome } from '@/components/Welcome/Welcome';
+import { Welcome } from '@/components/examples/Welcome/Welcome';
 
 export function AdminClient(): ReactElement {
   return (

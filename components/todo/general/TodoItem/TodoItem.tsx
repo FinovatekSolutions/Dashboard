@@ -16,7 +16,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { IconCheck, IconX, IconTrash, IconEdit } from '@tabler/icons-react';
 import { Todo } from '@prisma/client';
 import { useUpdateTodo, useRemoveTodo } from '@/lib/actions/todo';
-import EditTodoForm from '@/components/EditTodoForm/EditTodoForm';
+import EditTodoForm from '@/components/todo/crud/EditTodoForm/EditTodoForm';
 
 const TodoItem = ({ todo }: { todo: Todo }) => {
   const theme = useMantineTheme();

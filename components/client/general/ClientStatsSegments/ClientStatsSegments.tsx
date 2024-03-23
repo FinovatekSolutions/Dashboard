@@ -1,6 +1,6 @@
 import { Progress, Box, Text, Group, Paper, SimpleGrid, rem } from '@mantine/core';
 import { IconArrowUpRight, IconDeviceAnalytics } from '@tabler/icons-react';
-import classes from './StatsSegments.module.css';
+import classes from './ClientStatsSegments.module.css';
 
 const data = [
   { label: 'Profit', count: '204,001', part: 59, color: '#47d6ab' },
@@ -8,7 +8,7 @@ const data = [
   { label: 'Growth Rate', count: '31,118', part: 6, color: '#4fcdf7' },
 ];
 
-export function StatsSegments() {
+export function ClientStatsSegments() {
   const segments = data.map((segment) => (
     <Progress.Section value={segment.part} color={segment.color} key={segment.color}>
       {segment.part > 10 && <Progress.Label>{segment.part}%</Progress.Label>}

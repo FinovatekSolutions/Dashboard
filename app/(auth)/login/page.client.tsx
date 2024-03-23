@@ -4,7 +4,7 @@ import { ClientSafeProvider } from 'next-auth/react';
 import { useMantineTheme, Box, Center } from '@mantine/core';
 import type { ReactElement } from 'react';
 
-import { AuthenticationTitle } from '@/components/AuthenticationTitle/AuthenticationTitle';
+import { AuthenticationTitle } from '@/components/authentication/AuthenticationTitle/AuthenticationTitle';
 
 interface LoginClientProps {
   providers: Record<string, ClientSafeProvider> | null;
