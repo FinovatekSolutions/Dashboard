@@ -1142,17 +1142,26 @@ export const PermissionOrderByWithRelationInputSchema: z.ZodType<Prisma.Permissi
   updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
-export const PermissionWhereUniqueInputSchema: z.ZodType<Prisma.PermissionWhereUniqueInput> = z.object({
-  id: z.string().cuid()
-})
+export const PermissionWhereUniqueInputSchema: z.ZodType<Prisma.PermissionWhereUniqueInput> = z.union([
+  z.object({
+    id: z.string().cuid(),
+    email: z.string().email({ message: 'Invalid email address' })
+  }),
+  z.object({
+    id: z.string().cuid(),
+  }),
+  z.object({
+    email: z.string().email({ message: 'Invalid email address' }),
+  }),
+])
 .and(z.object({
   id: z.string().cuid().optional(),
+  email: z.string().email({ message: 'Invalid email address' }).optional(),
   AND: z.union([ z.lazy(() => PermissionWhereInputSchema),z.lazy(() => PermissionWhereInputSchema).array() ]).optional(),
   OR: z.lazy(() => PermissionWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => PermissionWhereInputSchema),z.lazy(() => PermissionWhereInputSchema).array() ]).optional(),
   firstName: z.union([ z.lazy(() => StringFilterSchema),z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }) ]).optional(),
   lastName: z.union([ z.lazy(() => StringFilterSchema),z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }) ]).optional(),
-  email: z.union([ z.lazy(() => StringFilterSchema),z.string().email({ message: 'Invalid email address' }) ]).optional(),
   role: z.union([ z.lazy(() => EnumRoleFilterSchema),z.lazy(() => RoleSchema) ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),

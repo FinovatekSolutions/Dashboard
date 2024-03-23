@@ -178,7 +178,7 @@ model Permission {
   lastName String
 
   /// @zod.string.email({ message: 'Invalid email address' })
-  email String
+  email String @unique
 
   role Role @default(USER)
 
