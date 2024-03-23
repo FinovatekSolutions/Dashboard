@@ -5,7 +5,7 @@ import { Button, Modal, Group, Text, ButtonProps, useMantineTheme, Title } from 
 import { IconCirclePlus, IconEdit } from '@tabler/icons-react';
 import { useMediaQuery } from '@mantine/hooks';
 
-import { EditClientForm } from '../EditClientForm/EditClientForm';
+import { EditClientForm } from '@/components/client/crud/EditClientForm/EditClientForm';
 
 interface EditClientButtonProps extends ButtonProps {
   clientId: string;

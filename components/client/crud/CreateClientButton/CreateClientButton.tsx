@@ -5,7 +5,7 @@ import { Button, Modal, Group, Text, ButtonProps, useMantineTheme, Title } from 
 import { IconCirclePlus } from '@tabler/icons-react';
 import { useMediaQuery } from '@mantine/hooks';
 
-import { NewClientForm } from '../NewClientForm/NewClientForm';
+import { NewClientForm } from '@/components/client/crud/NewClientForm/NewClientForm';
 
 const CreateClientButton = (props: ButtonProps & React.ComponentPropsWithoutRef<'button'>) => {
   const [opened, setOpened] = useState(false);

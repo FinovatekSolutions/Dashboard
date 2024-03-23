@@ -21,10 +21,10 @@ import {
 import { IconChevronLeft, IconRefresh } from '@tabler/icons-react';
 import Link from 'next/link';
 
-import ClientsTable from '@/components/ClientsTable/ClientsTable';
-import EditClientButton from '@/components/EditClientButton/EditClientButton';
+import ClientsTable from '@/components/client/general/ClientsTable/ClientsTable';
+import EditClientButton from '@/components/client/crud/EditClientButton/EditClientButton';
 import { useGetClients, useGetClientById } from '@/lib/actions/client';
-import { ClientInfo } from '@/components/ClientInfo/ClientInfo';
+import { ClientInfo } from '@/components/client/general/ClientInfo/ClientInfo';
 import { StatsSegments } from '@/components/StatsSegments.tsx/StatsSegments';
 import ReviewsTable from '@/components/ReviewsTable/ReviewsTable';
 

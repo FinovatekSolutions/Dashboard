@@ -15,7 +15,7 @@ import {
   Container,
   Group,
 } from '@mantine/core';
-import CreateClientButton from '@/components/CreateClientButton/CreateClientButton';
+import CreateClientButton from '@/components/client/crud/CreateClientButton/CreateClientButton';
 import { BankStatementsDragAndDrop } from '@/components/BankStatementsDragAndDrop/BankStatementsDragAndDrop';
 import CreateBankTypeButton from '@/components/CreateBankTypeButton/CreateBankTypeButton';
 import { FinancialAnalysisButton } from '@/components/FinancialAnalysisButton/FinancialAnalysisButton';
@@ -43,7 +43,7 @@ export function MainPage(): ReactElement {
           <Paper
             style={{ flex: 1, height: rem(610), backgroundColor: 'white' }}
             shadow="xs"
-            withBorder={true}
+            withBorder
             mb="sm"
             p="md"
           >
@@ -55,8 +55,8 @@ export function MainPage(): ReactElement {
               justify="space-between"
               style={{ gap: '16px' }}
             >
-              <SelectClientDropdown></SelectClientDropdown>
-              <CreateClientButton></CreateClientButton>
+              <SelectClientDropdown />
+              <CreateClientButton />
             </Flex>
 
             {/*Bank Statements*/}
@@ -64,7 +64,7 @@ export function MainPage(): ReactElement {
               Bank Statements
             </Text>
             <Flex direction={{ base: 'column', sm: 'row' }} mb={10}>
-              <BankStatementsDragAndDrop></BankStatementsDragAndDrop>
+              <BankStatementsDragAndDrop />
             </Flex>
 
             {/*Bank Type*/}
@@ -75,7 +75,7 @@ export function MainPage(): ReactElement {
               mb={5}
               style={{ gap: '16px' }}
             >
-              <CreateBankTypeButton></CreateBankTypeButton>
+              <CreateBankTypeButton />
               <Button size="md" radius="xl">
                 Submit Bank Statements
               </Button>{' '}
@@ -90,25 +90,14 @@ export function MainPage(): ReactElement {
           <Paper
             style={{ flex: 1, height: rem(610), backgroundColor: 'white' }}
             shadow="xs"
-            withBorder={true}
+            withBorder
             mb="sm"
             p="md"
           >
             <Text ta="center" fw={700}>
               Categorization
             </Text>
-            <Flex
-              direction={{ base: 'column', sm: 'row' }}
-              mb={10}
-              style={{
-                height: rem(500),
-                backgroundColor: 'white',
-                borderStyle: 'solid',
-                borderWidth: 2,
-                borderRadius: 10,
-                color: 'dimgrey',
-              }}
-            ></Flex>
+
             <Flex
               direction={{ base: 'column', sm: 'row' }}
               justify="flex-end"

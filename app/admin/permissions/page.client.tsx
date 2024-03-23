@@ -14,8 +14,8 @@ import {
   Button,
 } from '@mantine/core';
 import { IconRefresh } from '@tabler/icons-react';
-import ClientsTable from '@/components/ClientsTable/ClientsTable';
-import CreateClientButton from '@/components/CreateClientButton/CreateClientButton';
+import ClientsTable from '@/components/client/general/ClientsTable/ClientsTable';
+import CreateClientButton from '@/components/client/crud/CreateClientButton/CreateClientButton';
 import { useGetClients } from '@/lib/actions/client';
 
 export function ClientsClient(): ReactElement {
