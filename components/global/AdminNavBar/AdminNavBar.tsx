@@ -83,7 +83,7 @@ export function AdminNavBar({ children }: { children: any }) {
           <Text c={theme.colors.gray[2]}>Navigation</Text>
 
           <Divider my="md" color={theme.colors.dark[3]} />
-          <Button component={Link} href="/" color="teal" size="md">
+          <Button component={Link} href="/" variant="outline" color="teal" size="md">
             Return to Home
           </Button>
           <Divider my="md" color={theme.colors.dark[3]} />
@@ -113,6 +113,7 @@ export function AdminNavBar({ children }: { children: any }) {
         <AppShell.Main>
           <Space h="sm" />
           {children}
+          <Space h="sm" hiddenFrom="sm" />
         </AppShell.Main>
       </AppShell>
     </>
