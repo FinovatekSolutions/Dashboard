@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import {
   Button,
   TextInput,
@@ -10,50 +11,66 @@ import {
   Stack,
   Flex,
   Space,
+  Select,
+  LoadingOverlay,
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useForm } from '@mantine/form';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { IconCheck, IconX } from '@tabler/icons-react';
+import { Role } from '@prisma/client';
 import type { Prisma } from '@prisma/client';
 
-import { ClientCreateInputSchema } from '@prisma/zod';
-import { useCreateClient, useGetClientById, useUpdateClient } from '@/lib/actions/client';
+import { PermissionCreateInputSchema } from '@prisma/zod';
+import { useGetPermissionById, useUpdatePermission } from '@/lib/actions/permission';
 
-interface EditClientFormProps {
+interface EditPermissionFormProps {
   setOpened: (opened: boolean) => void;
-  clientId: string;
+  permissionId: string;
 }
 
-export function EditPermissionForm({ setOpened, clientId }: EditClientFormProps) {
+export function EditPermissionForm({ setOpened, permissionId }: EditPermissionFormProps) {
   const theme = useMantineTheme();
-  const getClientByIdQuery = useGetClientById(clientId);
+  const getPermissionByIdQuery = useGetPermissionById(permissionId);
+  const [hasLoaded, setHasLoaded] = useState(false);
+
+  const roleOptions = Object.values(Role).map((role) => ({
+    value: role,
+    label: role.charAt(0) + role.slice(1).toLowerCase(),
+  }));
 
   const form = useForm({
     initialValues: {
-      firstName: getClientByIdQuery.data?.firstName || '',
-      lastName: getClientByIdQuery.data?.lastName || '',
-      company: getClientByIdQuery.data?.company || '',
-      email: getClientByIdQuery.data?.email || '',
-      phone: getClientByIdQuery.data?.phone || '',
-      address: getClientByIdQuery.data?.address || '',
-      city: getClientByIdQuery.data?.city || '',
-      state: getClientByIdQuery.data?.state || '',
-      zip: getClientByIdQuery.data?.zip || '',
-      country: getClientByIdQuery.data?.country || '',
+      firstName: getPermissionByIdQuery.data?.firstName || '',
+      lastName: getPermissionByIdQuery.data?.lastName || '',
+      email: getPermissionByIdQuery.data?.email || '',
+      role: getPermissionByIdQuery.data?.role || Role.USER,
     },
-    validate: zodResolver(ClientCreateInputSchema),
+    validate: zodResolver(PermissionCreateInputSchema),
   });
 
-  const updateClientMutation = useUpdateClient(
+  useEffect(() => {
+    // When the data is loaded, update form values
+    if (getPermissionByIdQuery.data && !hasLoaded) {
+      form.setValues({
+        firstName: getPermissionByIdQuery.data.firstName,
+        lastName: getPermissionByIdQuery.data.lastName,
+        email: getPermissionByIdQuery.data.email,
+        role: getPermissionByIdQuery.data.role,
+      });
+      setHasLoaded(true);
+    }
+  }, [getPermissionByIdQuery.data, form, hasLoaded]);
+
+  const updatePermissionMutation = useUpdatePermission(
     // onSuccess callback
     () => {
       form.reset();
       notifications.update({
-        id: 'client-update',
+        id: 'permission-update',
         color: 'teal',
-        title: 'Client was updated',
-        message: 'The client has been updated successfully.',
+        title: 'Permission was updated',
+        message: 'The permission has been updated successfully.',
         icon: <IconCheck size={theme.fontSizes.md} />,
         loading: false,
         autoClose: 2000,
@@ -63,9 +80,9 @@ export function EditPermissionForm({ setOpened, clientId }: EditClientFormProps)
     // onError callback
     () => {
       notifications.update({
-        id: 'client-update',
+        id: 'permission-update',
         color: 'red',
-        title: 'Failed to update client',
+        title: 'Failed to update permission',
         message: 'An error occurred. Please try again.',
         icon: <IconX size={theme.fontSizes.md} />,
         loading: false,
@@ -74,61 +91,45 @@ export function EditPermissionForm({ setOpened, clientId }: EditClientFormProps)
     }
   );
 
-  const handleSubmit = async (values: Prisma.ClientUpdateInput) => {
+  const handleSubmit = async (values: Prisma.PermissionUpdateInput) => {
     // Show loading notification
     notifications.show({
-      id: 'client-update',
+      id: 'permission-update',
       loading: true,
-      title: 'Updating client',
+      title: 'Updating permission',
       message: 'Please wait...',
       autoClose: false,
       withCloseButton: false,
     });
 
-    updateClientMutation.mutate({ id: clientId, ...values });
+    updatePermissionMutation.mutate({ id: permissionId, ...values });
   };
 
   return (
     <Box component="form" onSubmit={form.onSubmit(handleSubmit)}>
+      <LoadingOverlay
+        visible={getPermissionByIdQuery.isLoading}
+        zIndex={1000}
+        overlayProps={{ radius: 'sm', blur: 2 }}
+      />
       <Stack>
+        <Select
+          label="Role"
+          placeholder="Select a role"
+          data={roleOptions}
+          {...form.getInputProps('role')}
+        />
         <Group grow>
           <TextInput label="First Name" placeholder="John" {...form.getInputProps('firstName')} />
           <TextInput label="Last Name" placeholder="Doe" {...form.getInputProps('lastName')} />
         </Group>
-        <TextInput
-          label="Company Name"
-          placeholder="Doe Industries"
-          {...form.getInputProps('company')}
-        />
+
         <TextInput
           label="Email Address"
           placeholder="john.doe@example.com"
           {...form.getInputProps('email')}
         />
-        <TextInput
-          label="Phone Number"
-          placeholder="787-555-1234"
-          {...form.getInputProps('phone')}
-        />
-        <Flex direction="row" gap="md">
-          <TextInput
-            label="Address"
-            placeholder="1234 Main St"
-            style={{ flex: 3 }} // Set address to 75% width
-            {...form.getInputProps('address')}
-          />
-          <TextInput
-            label="Country"
-            style={{ flex: 2 }} // Set country to 25% width
-            placeholder="Country"
-            {...form.getInputProps('country')}
-          />
-        </Flex>
-        <Group grow>
-          <TextInput label="City" placeholder="Anytown" {...form.getInputProps('city')} />
-          <TextInput label="State/Province" placeholder="State" {...form.getInputProps('state')} />
-          <TextInput label="ZIP/Postal Code" placeholder="123456" {...form.getInputProps('zip')} />
-        </Group>
+
         <Flex direction={{ base: 'column', sm: 'row' }} justify="flex-end">
           <Button
             size="md"
@@ -138,7 +139,7 @@ export function EditPermissionForm({ setOpened, clientId }: EditClientFormProps)
             mt={10}
             type="submit"
           >
-            Update Client
+            Update Permission
           </Button>
         </Flex>
       </Stack>
