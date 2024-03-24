@@ -27,7 +27,7 @@ const CreatePermissionButton = (props: ButtonProps & React.ComponentPropsWithout
 
       <Modal
         opened={opened}
-        size="xl"
+        size="md"
         centered
         fullScreen={isMobile}
         onClose={() => setOpened(false)}
