@@ -1,57 +1,47 @@
 'use client';
 
-import {
-  Button,
-  TextInput,
-  Group,
-  Title,
-  Box,
-  useMantineTheme,
-  Stack,
-  Flex,
-  Space,
-} from '@mantine/core';
+import { Button, TextInput, Group, Box, useMantineTheme, Stack, Flex, Select } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useForm } from '@mantine/form';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { IconCheck, IconX } from '@tabler/icons-react';
+import { Role } from '@prisma/client';
 import type { Prisma } from '@prisma/client';
 
-import { ClientCreateInputSchema } from '@prisma/zod';
-import { useCreateClient } from '@/lib/actions/client';
+import { PermissionCreateInputSchema } from '@prisma/zod';
+import { useCreatePermission } from '@/lib/actions/permission';
 
-interface NewClientFormProps {
+interface NewPermissionFormProps {
   setOpened: (opened: boolean) => void;
 }
 
-export function NewPermissionForm({ setOpened }: NewClientFormProps) {
+export function NewPermissionForm({ setOpened }: NewPermissionFormProps) {
   const theme = useMantineTheme();
+
+  const roleOptions = Object.values(Role).map((role) => ({
+    value: role,
+    label: role.charAt(0) + role.slice(1).toLowerCase(),
+  }));
 
   const form = useForm({
     initialValues: {
       firstName: '',
       lastName: '',
-      company: '',
       email: '',
-      phone: '',
-      address: '',
-      city: '',
-      state: '',
-      zip: '',
-      country: '',
+      role: Role.USER,
     },
-    validate: zodResolver(ClientCreateInputSchema),
+    validate: zodResolver(PermissionCreateInputSchema),
   });
 
-  const createClientMutation = useCreateClient(
+  const createPermissionMutation = useCreatePermission(
     // onSuccess callback
     () => {
       form.reset();
       notifications.update({
-        id: 'client-create',
+        id: 'permission-create',
         color: 'teal',
-        title: 'Client was created',
-        message: 'The new client has been added successfully.',
+        title: 'Permission was created',
+        message: 'The new permission has been added successfully.',
         icon: <IconCheck size={theme.fontSizes.md} />,
         loading: false,
         autoClose: 2000,
@@ -61,9 +51,9 @@ export function NewPermissionForm({ setOpened }: NewClientFormProps) {
     // onError callback
     () => {
       notifications.update({
-        id: 'client-create',
+        id: 'permission-create',
         color: 'red',
-        title: 'Failed to create client',
+        title: 'Failed to create permission',
         message: 'An error occurred. Please try again.',
         icon: <IconX size={theme.fontSizes.md} />,
         loading: false,
@@ -72,61 +62,40 @@ export function NewPermissionForm({ setOpened }: NewClientFormProps) {
     }
   );
 
-  const handleSubmit = async (values: Prisma.ClientCreateInput) => {
+  const handleSubmit = async (values: Prisma.PermissionCreateInput) => {
     // Show loading notification
     notifications.show({
-      id: 'client-create',
+      id: 'permission-create',
       loading: true,
-      title: 'Creating client',
+      title: 'Creating permission',
       message: 'Please wait...',
       autoClose: false,
       withCloseButton: false,
     });
 
-    createClientMutation.mutate(values);
+    createPermissionMutation.mutate(values);
   };
 
   return (
     <Box component="form" onSubmit={form.onSubmit(handleSubmit)}>
       <Stack>
+        <Select
+          label="Role"
+          placeholder="Select a role"
+          data={roleOptions}
+          {...form.getInputProps('role')}
+        />
         <Group grow>
           <TextInput label="First Name" placeholder="John" {...form.getInputProps('firstName')} />
           <TextInput label="Last Name" placeholder="Doe" {...form.getInputProps('lastName')} />
         </Group>
-        <TextInput
-          label="Company Name"
-          placeholder="Doe Industries"
-          {...form.getInputProps('company')}
-        />
+
         <TextInput
           label="Email Address"
           placeholder="john.doe@example.com"
           {...form.getInputProps('email')}
         />
-        <TextInput
-          label="Phone Number"
-          placeholder="787-555-1234"
-          {...form.getInputProps('phone')}
-        />
-        <Flex direction="row" gap="md">
-          <TextInput
-            label="Address"
-            placeholder="1234 Main St"
-            style={{ flex: 3 }} // Set address to 75% width
-            {...form.getInputProps('address')}
-          />
-          <TextInput
-            label="Country"
-            style={{ flex: 2 }} // Set country to 25% width
-            placeholder="Country"
-            {...form.getInputProps('country')}
-          />
-        </Flex>
-        <Group grow>
-          <TextInput label="City" placeholder="Anytown" {...form.getInputProps('city')} />
-          <TextInput label="State/Province" placeholder="State" {...form.getInputProps('state')} />
-          <TextInput label="ZIP/Postal Code" placeholder="123456" {...form.getInputProps('zip')} />
-        </Group>
+
         <Flex direction={{ base: 'column', sm: 'row' }} justify="flex-end">
           <Button
             size="md"
@@ -136,7 +105,7 @@ export function NewPermissionForm({ setOpened }: NewClientFormProps) {
             mt={10}
             type="submit"
           >
-            Add Client
+            Add Permission
           </Button>
         </Flex>
       </Stack>
