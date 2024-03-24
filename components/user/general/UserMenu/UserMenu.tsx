@@ -19,7 +19,11 @@ import {
 import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { Role } from '@prisma/client';
+
 import classes from './UserMenu.module.css';
+
+import { useGetPermissionByEmail } from '@/lib/actions/permission';
 
 // Define the props with TypeScript
 interface UserMenuProps {
@@ -32,6 +36,7 @@ export function UserMenu({ fullWidth = false, closeDrawer }: UserMenuProps) {
   const theme = useMantineTheme();
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const router = useRouter();
+  const getPermissionQuery = useGetPermissionByEmail(session?.user?.email || '');
 
   return (
     <Menu
@@ -68,7 +73,9 @@ export function UserMenu({ fullWidth = false, closeDrawer }: UserMenuProps) {
         </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Label>Admin</Menu.Label>
+        <Menu.Label display={getPermissionQuery.data?.role !== Role.ADMIN ? 'none' : undefined}>
+          Admin
+        </Menu.Label>
         <Menu.Item
           leftSection={
             <IconShieldCog
@@ -79,10 +86,11 @@ export function UserMenu({ fullWidth = false, closeDrawer }: UserMenuProps) {
           }
           component={Link}
           href="/admin"
+          display={getPermissionQuery.data?.role !== Role.ADMIN ? 'none' : undefined}
         >
           Admin Dashboard
         </Menu.Item>
-        <Menu.Divider />
+        <Menu.Divider display={getPermissionQuery.data?.role !== Role.ADMIN ? 'none' : undefined} />
         <Menu.Label>Settings</Menu.Label>
         <Menu.Item
           leftSection={<IconUser style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
