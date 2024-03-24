@@ -1,23 +1,27 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { MantineReactTable, useMantineReactTable, type MRT_ColumnDef } from 'mantine-react-table';
 import { notifications } from '@mantine/notifications';
 
-import { Client } from '@prisma/client';
+import { Permission } from '@prisma/client';
 import { useRouter } from 'next/navigation';
-import { ActionIcon, Flex, Tooltip, useMantineTheme } from '@mantine/core';
-import { IconEdit, IconEye, IconTrash, IconX } from '@tabler/icons-react';
+import { ActionIcon, Flex, Modal, Tooltip, useMantineTheme, Title } from '@mantine/core';
+import { IconEdit, IconX } from '@tabler/icons-react';
+import { useMediaQuery } from '@mantine/hooks';
 
-import { useGetClients } from '@/lib/actions/client';
+import { useGetPermissions } from '@/lib/actions/permission';
+import { EditPermissionForm } from '@/components/permission/crud/EditPermissionForm/EditPermissionForm';
 
 const PermissionsTable = () => {
-  const getClientsQuery = useGetClients();
+  const getPermissionsQuery = useGetPermissions();
   const theme = useMantineTheme();
   const router = useRouter();
+  const [opened, setOpened] = useState(false);
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
   useEffect(() => {
-    if (getClientsQuery.isError) {
+    if (getPermissionsQuery.isError) {
       notifications.show({
         color: 'red',
         title: 'Failed to fetch data',
@@ -26,10 +30,10 @@ const PermissionsTable = () => {
         autoClose: 4000,
       });
     }
-  }, [getClientsQuery.isError]);
+  }, [getPermissionsQuery.isError]);
 
   //should be memoized or stable
-  const columns = useMemo<MRT_ColumnDef<Client>[]>(
+  const columns = useMemo<MRT_ColumnDef<Permission>[]>(
     () => [
       {
         accessorKey: 'firstName', //access nested data with dot notation
@@ -40,36 +44,15 @@ const PermissionsTable = () => {
         header: 'Last Name',
       },
       {
-        accessorKey: 'company', //normal accessorKey
-        header: 'Company',
-      },
-      {
         accessorKey: 'email', //normal accessorKey
         header: 'Email',
       },
       {
-        accessorKey: 'phone',
-        header: 'Phone',
-      },
-      {
-        accessorKey: 'address',
-        header: 'Address',
-      },
-      {
-        accessorKey: 'city',
-        header: 'City',
-      },
-      {
-        accessorKey: 'state',
-        header: 'State',
-      },
-      {
-        accessorKey: 'zip',
-        header: 'Zip',
-      },
-      {
-        accessorKey: 'country',
-        header: 'Country',
+        header: 'Role',
+        accessorFn: (row) => {
+          if (!row?.role) return '';
+          return row.role.charAt(0) + row.role.slice(1).toLowerCase();
+        },
       },
     ],
     []
@@ -77,7 +60,7 @@ const PermissionsTable = () => {
 
   const table = useMantineReactTable({
     columns,
-    data: getClientsQuery.data || [], //must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
+    data: getPermissionsQuery.data || [], //must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
     positionGlobalFilter: 'left',
     enableRowActions: true,
     getRowId: (originalRow) => originalRow.id,
@@ -85,12 +68,12 @@ const PermissionsTable = () => {
       showGlobalFilter: true,
     },
     state: {
-      isLoading: getClientsQuery.isLoading,
-      isSaving: getClientsQuery.isLoading,
-      showProgressBars: getClientsQuery.isFetching,
+      isLoading: getPermissionsQuery.isLoading,
+      isSaving: getPermissionsQuery.isLoading,
+      showProgressBars: getPermissionsQuery.isFetching,
     },
     mantineSearchTextInputProps: {
-      placeholder: `Search ${getClientsQuery?.data?.length || 0} rows`,
+      placeholder: `Search ${getPermissionsQuery?.data?.length || 0} rows`,
       id: 'wazzapp',
       variant: 'filled',
       size: 'sm',
@@ -109,15 +92,29 @@ const PermissionsTable = () => {
     },
     renderRowActions: ({ row }) => (
       <Flex gap="md">
-        <Tooltip label="View Client">
+        <Tooltip label="Edit Permission">
           <ActionIcon
-            onClick={() => router.push(`/clients/${row.id}`)}
+            onClick={() => setOpened(true)}
             color={theme.colors['trust-md-light-blue'][4]}
             variant="outline"
           >
-            <IconEye />
+            <IconEdit />
           </ActionIcon>
         </Tooltip>
+        <Modal
+          opened={opened}
+          size="xl"
+          centered
+          fullScreen={isMobile}
+          onClose={() => setOpened(false)}
+          title={
+            <Title order={3} mb="xs">
+              Edit Client
+            </Title>
+          }
+        >
+          <EditPermissionForm permissionId={row.id} setOpened={setOpened} />
+        </Modal>
       </Flex>
     ),
   });
