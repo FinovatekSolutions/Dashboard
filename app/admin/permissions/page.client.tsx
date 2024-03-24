@@ -16,11 +16,11 @@ import {
 import { IconRefresh } from '@tabler/icons-react';
 import PermissionsTable from '@/components/permission/general/PermissionsTable/PermissionsTable';
 import CreatePermissionButton from '@/components/permission/crud/CreatePermissionButton/CreatePermissionButton';
-import { useGetClients } from '@/lib/actions/client';
+import { useGetPermissions } from '@/lib/actions/permission';
 
 export function ClientsClient(): ReactElement {
   const theme = useMantineTheme();
-  const getClientsQuery = useGetClients();
+  const getPermissionsQuery = useGetPermissions();
 
   return (
     <Center>
@@ -41,7 +41,7 @@ export function ClientsClient(): ReactElement {
 
           {/* Component 2 */}
           <Button
-            onClick={() => getClientsQuery.refetch()}
+            onClick={() => getPermissionsQuery.refetch()}
             leftSection={<IconRefresh size={14} />}
             variant="default"
             size="md"
