@@ -7,18 +7,21 @@ import { notifications } from '@mantine/notifications';
 import { Permission } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { ActionIcon, Flex, Modal, Tooltip, useMantineTheme, Title } from '@mantine/core';
-import { IconEdit, IconX } from '@tabler/icons-react';
+import { IconEdit, IconTrash, IconX } from '@tabler/icons-react';
 import { useMediaQuery } from '@mantine/hooks';
 
 import { useGetPermissions } from '@/lib/actions/permission';
 import { EditPermissionForm } from '@/components/permission/crud/EditPermissionForm/EditPermissionForm';
+import { DeletePermissionForm } from '@/components/permission/crud/DeletePermissionForm/DeletePermissionForm';
 
 const PermissionsTable = () => {
   const getPermissionsQuery = useGetPermissions();
   const theme = useMantineTheme();
   const router = useRouter();
-  const [opened, setOpened] = useState(false);
+  const [openedEdit, setOpenedEdit] = useState(false);
+  const [openedDelete, setOpenedDelete] = useState(false);
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
+  const [selectedPermissionId, setSelectedPermissionId] = useState('');
 
   useEffect(() => {
     if (getPermissionsQuery.isError) {
@@ -94,27 +97,26 @@ const PermissionsTable = () => {
       <Flex gap="md">
         <Tooltip label="Edit Permission">
           <ActionIcon
-            onClick={() => setOpened(true)}
+            onClick={() => {
+              setOpenedEdit(true);
+              setSelectedPermissionId(row.id);
+            }}
             color={theme.colors['trust-md-light-blue'][4]}
-            variant="outline"
           >
             <IconEdit />
           </ActionIcon>
         </Tooltip>
-        <Modal
-          opened={opened}
-          size="xl"
-          centered
-          fullScreen={isMobile}
-          onClose={() => setOpened(false)}
-          title={
-            <Title order={3} mb="xs">
-              Edit Client
-            </Title>
-          }
-        >
-          <EditPermissionForm permissionId={row.id} setOpened={setOpened} />
-        </Modal>
+        <Tooltip label="Delete Permission">
+          <ActionIcon
+            onClick={() => {
+              setOpenedDelete(true);
+              setSelectedPermissionId(row.id);
+            }}
+            color={theme.colors.red[6]}
+          >
+            <IconTrash />
+          </ActionIcon>
+        </Tooltip>
       </Flex>
     ),
   });
@@ -122,6 +124,34 @@ const PermissionsTable = () => {
   return (
     <>
       <MantineReactTable table={table} />
+      <Modal
+        opened={openedEdit}
+        size="md"
+        centered
+        fullScreen={isMobile}
+        onClose={() => setOpenedEdit(false)}
+        title={
+          <Title order={3} mb="xs">
+            Edit Permission
+          </Title>
+        }
+      >
+        <EditPermissionForm permissionId={selectedPermissionId} setOpened={setOpenedEdit} />
+      </Modal>
+      <Modal
+        opened={openedDelete}
+        size="md"
+        centered
+        fullScreen={isMobile}
+        onClose={() => setOpenedDelete(false)}
+        title={
+          <Title order={3} mb="xs">
+            Delete Permission?
+          </Title>
+        }
+      >
+        <DeletePermissionForm permissionId={selectedPermissionId} setOpened={setOpenedDelete} />
+      </Modal>
     </>
   );
 };
