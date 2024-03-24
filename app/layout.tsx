@@ -13,6 +13,7 @@ import { theme } from '../theme';
 import { TanStackQuery } from '@/lib/providers/tanstack-query';
 import SessionProvider from '@/lib/providers/session-provider';
 import { authOptions } from './api/auth/[...nextauth]/route';
+import { PermissionProvider } from '@/lib/providers/permission-provider';
 
 export const metadata = {
   title: 'Finovatek',
@@ -36,7 +37,10 @@ export default async function RootLayout({ children }: { children: any }) {
         <MantineProvider theme={theme} forceColorScheme="light">
           <SessionProvider session={session}>
             <Notifications />
-            <TanStackQuery>{children}</TanStackQuery>
+            <TanStackQuery>
+              <PermissionProvider />
+              {children}
+            </TanStackQuery>
           </SessionProvider>
         </MantineProvider>
       </body>
