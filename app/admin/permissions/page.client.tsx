@@ -14,20 +14,20 @@ import {
   Button,
 } from '@mantine/core';
 import { IconRefresh } from '@tabler/icons-react';
-import ClientsTable from '@/components/client/general/ClientsTable/ClientsTable';
-import CreateClientButton from '@/components/client/crud/CreateClientButton/CreateClientButton';
-import { useGetClients } from '@/lib/actions/client';
+import PermissionsTable from '@/components/permission/general/PermissionsTable/PermissionsTable';
+import CreatePermissionButton from '@/components/permission/crud/CreatePermissionButton/CreatePermissionButton';
+import { useGetPermissions } from '@/lib/actions/permission';
 
 export function ClientsClient(): ReactElement {
   const theme = useMantineTheme();
-  const getClientsQuery = useGetClients();
+  const getPermissionsQuery = useGetPermissions();
 
   return (
     <Center>
       <Space h="md" />
-      <Paper p="xs" shadow="xs" w={{ base: '97%' }} maw={`${theme.breakpoints.lg}`}>
+      <Paper p="xs" shadow="xl" withBorder w={{ base: '97%' }} maw={`${theme.breakpoints.lg}`}>
         <Title m={10} order={1}>
-          Clients
+          Permissions
         </Title>
         {/* Container for the first two components */}
         <Flex
@@ -37,11 +37,11 @@ export function ClientsClient(): ReactElement {
           mt={16}
         >
           {/* Component 1 */}
-          <CreateClientButton />
+          <CreatePermissionButton />
 
           {/* Component 2 */}
           <Button
-            onClick={() => getClientsQuery.refetch()}
+            onClick={() => getPermissionsQuery.refetch()}
             leftSection={<IconRefresh size={14} />}
             variant="default"
             size="md"
@@ -54,7 +54,7 @@ export function ClientsClient(): ReactElement {
         <Divider my="md" />
         <Box style={{ marginTop: '16px' }}>
           {/* Adjust the margin as needed */}
-          <ClientsTable />
+          <PermissionsTable />
         </Box>
       </Paper>
     </Center>
