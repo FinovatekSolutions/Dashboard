@@ -2,6 +2,7 @@ import NextAuth, { Account, Profile, User } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import prisma from '@/lib/utils/prisma';
+import { getPermissionByEmail } from '@/lib/actions/permission';
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
@@ -25,11 +26,11 @@ export const authOptions = {
       account: Account | null;
       profile?: Profile | undefined;
     }): Promise<boolean> {
-      // Check for permissions here
-      // if no access then
-      // return false;
+      const permission = await getPermissionByEmail(user.email);
 
-      // Allow sign in
+      if (!permission) {
+        return false;
+      }
       return true;
     },
   },
