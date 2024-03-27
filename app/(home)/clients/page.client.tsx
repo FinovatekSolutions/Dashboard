@@ -25,7 +25,7 @@ export function ClientsClient(): ReactElement {
   return (
     <Center>
       <Space h="md" />
-      <Paper p="xs" shadow="xs" w={{ base: '97%' }} maw={`${theme.breakpoints.lg}`}>
+      <Paper p="xs" shadow="xl" withBorder w={{ base: '97%' }} maw={`${theme.breakpoints.lg}`}>
         <Title m={10} order={1}>
           Clients
         </Title>
