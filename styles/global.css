@@ -2,6 +2,13 @@ body {
   background-color: #f8f9fa;
 }
 
+@font-face {
+  font-family: 'TrustMDFont';
+  src: url('/fonts/friz-quadrata-regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 #wazzapp {
   /* border-color: red; */
 }
