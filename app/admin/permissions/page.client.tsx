@@ -29,6 +29,9 @@ export function ClientsClient(): ReactElement {
         <Title m={10} order={1}>
           Permissions
         </Title>
+        <Text ml={10} c="dimmed">
+          Manage who has access to the website and their roles.
+        </Text>
         {/* Container for the first two components */}
         <Flex
           direction={{ base: 'column', sm: 'row' }}
