@@ -21,6 +21,7 @@ import {
 } from '@mantine/core';
 import { IconArrowLeft, IconChevronLeft, IconRefresh } from '@tabler/icons-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import ClientsTable from '@/components/client/general/ClientsTable/ClientsTable';
 import EditClientButton from '@/components/client/crud/EditClientButton/EditClientButton';
@@ -33,6 +34,7 @@ export function ViewClientByIDClient({ params }: { params: { clientId: string } 
   const theme = useMantineTheme();
   const getClientsQuery = useGetClients();
   const getClientByIdQuery = useGetClientById(params.clientId);
+  const router = useRouter();
 
   const breadcrumbsItems = [
     <Anchor
@@ -55,7 +57,14 @@ export function ViewClientByIDClient({ params }: { params: { clientId: string } 
   return (
     <Center>
       <Space h="md" />
-      <Paper pos="relative" p="xs" shadow="xl" withBorder w={{ base: '97%' }} maw={`${theme.breakpoints.lg}`}>
+      <Paper
+        pos="relative"
+        p="xs"
+        shadow="xl"
+        withBorder
+        w={{ base: '97%' }}
+        maw={`${theme.breakpoints.lg}`}
+      >
         <LoadingOverlay
           visible={getClientByIdQuery.isLoading}
           zIndex={1000}
@@ -85,16 +94,15 @@ export function ViewClientByIDClient({ params }: { params: { clientId: string } 
               {breadcrumbsItems}
             </Breadcrumbs>
             <Box hiddenFrom="xs" m={10} ml={0}>
-              <Anchor
-                href="/clients"
+              <Button
+                color={theme.colors['trust-md-gray'][6]}
+                leftSection={<IconArrowLeft size={14} />}
+                variant="transparent"
                 size="md"
-                component={Link}
-                c={theme.colors['trust-md-gray'][6]}
-                key="clients"
+                onClick={() => router.back()}
               >
-                <IconChevronLeft size={15} style={{ marginRight: '5px' }} />
-                View All Clients
-              </Anchor>
+                Go back
+              </Button>
             </Box>
             {/* Container for the first two components */}
             <Flex
