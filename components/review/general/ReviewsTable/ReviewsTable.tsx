@@ -4,20 +4,35 @@ import { useEffect, useMemo } from 'react';
 import { MantineReactTable, useMantineReactTable, type MRT_ColumnDef } from 'mantine-react-table';
 import { notifications } from '@mantine/notifications';
 
-import { Client, Review, User } from '@prisma/client';
+import { Review, User } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { ActionIcon, Flex, Tooltip, useMantineTheme } from '@mantine/core';
-import { IconEdit, IconEye, IconTrash, IconX } from '@tabler/icons-react';
+import { IconEye, IconX } from '@tabler/icons-react';
 
-import { useGetClientById, useGetClients } from '@/lib/actions/client';
+import { useGetClientById } from '@/lib/actions/client';
+import { useGetReviewsByUserId } from '@/lib/actions/review';
 
-const ReviewsTable = ({ clientId }: { clientId: string }) => {
-  const getClientByIdQuery = useGetClientById(clientId);
+import { ReviewWithUser } from '@/lib/utils/types';
+
+type ReviewsTableProps = {
+  clientId?: string;
+  userId?: string;
+};
+
+const ReviewsTable = ({ clientId, userId }: ReviewsTableProps) => {
   const theme = useMantineTheme();
   const router = useRouter();
 
+  const getClientByIdQuery = clientId ? useGetClientById(clientId) : null;
+  const getReviewsByUserIdQuery = userId ? useGetReviewsByUserId(userId) : null;
+
+  const reviewsData = getClientByIdQuery?.data?.reviews || getReviewsByUserIdQuery?.data || [];
+  const isLoading = getClientByIdQuery?.isLoading || getReviewsByUserIdQuery?.isLoading;
+  const isFetching = getClientByIdQuery?.isFetching || getReviewsByUserIdQuery?.isFetching;
+
   useEffect(() => {
-    if (getClientByIdQuery.isError) {
+    const error = getClientByIdQuery?.isError || getReviewsByUserIdQuery?.isError;
+    if (error) {
       notifications.show({
         color: 'red',
         title: 'Failed to fetch data',
@@ -26,16 +41,10 @@ const ReviewsTable = ({ clientId }: { clientId: string }) => {
         autoClose: 4000,
       });
     }
-  }, [getClientByIdQuery.isError]);
+  }, [getClientByIdQuery?.isError, getReviewsByUserIdQuery?.isError]);
 
   //should be memoized or stable
-  const columns = useMemo<
-    MRT_ColumnDef<
-      Review & {
-        user: User;
-      }
-    >[]
-  >(
+  const columns = useMemo<MRT_ColumnDef<ReviewWithUser>[]>(
     () => [
       {
         header: 'Review Name',
@@ -83,7 +92,7 @@ const ReviewsTable = ({ clientId }: { clientId: string }) => {
 
   const table = useMantineReactTable({
     columns,
-    data: getClientByIdQuery.data?.reviews || [], //must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
+    data: reviewsData,
     enableFullScreenToggle: false,
     positionGlobalFilter: 'left',
     enableRowActions: true,
@@ -92,9 +101,9 @@ const ReviewsTable = ({ clientId }: { clientId: string }) => {
       showGlobalFilter: true,
     },
     state: {
-      isLoading: getClientByIdQuery.isLoading,
-      isSaving: getClientByIdQuery.isLoading,
-      showProgressBars: getClientByIdQuery.isFetching,
+      isLoading,
+      isSaving: isLoading,
+      showProgressBars: isFetching,
     },
     mantineSearchTextInputProps: {
       placeholder: `Search ${getClientByIdQuery?.data?.reviews?.length || 0} rows`,
