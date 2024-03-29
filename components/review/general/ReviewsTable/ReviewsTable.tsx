@@ -10,28 +10,28 @@ import { ActionIcon, Flex, Tooltip, useMantineTheme } from '@mantine/core';
 import { IconEye, IconX } from '@tabler/icons-react';
 
 import { useGetClientById } from '@/lib/actions/client';
-import { useGetReviewsByUserId } from '@/lib/actions/review';
+import { useGetReviewsByUserEmail } from '@/lib/actions/review';
 
 import { ReviewWithUser } from '@/lib/utils/types';
 
 type ReviewsTableProps = {
   clientId?: string;
-  userId?: string;
+  userEmail?: string;
 };
 
-const ReviewsTable = ({ clientId, userId }: ReviewsTableProps) => {
+const ReviewsTable = ({ clientId, userEmail }: ReviewsTableProps) => {
   const theme = useMantineTheme();
   const router = useRouter();
 
   const getClientByIdQuery = clientId ? useGetClientById(clientId) : null;
-  const getReviewsByUserIdQuery = userId ? useGetReviewsByUserId(userId) : null;
+  const getReviewsByUserEmailQuery = userEmail ? useGetReviewsByUserEmail(userEmail) : null;
 
-  const reviewsData = getClientByIdQuery?.data?.reviews || getReviewsByUserIdQuery?.data || [];
-  const isLoading = getClientByIdQuery?.isLoading || getReviewsByUserIdQuery?.isLoading;
-  const isFetching = getClientByIdQuery?.isFetching || getReviewsByUserIdQuery?.isFetching;
+  const reviewsData = getClientByIdQuery?.data?.reviews || getReviewsByUserEmailQuery?.data || [];
+  const isLoading = getClientByIdQuery?.isLoading || getReviewsByUserEmailQuery?.isLoading;
+  const isFetching = getClientByIdQuery?.isFetching || getReviewsByUserEmailQuery?.isFetching;
 
   useEffect(() => {
-    const error = getClientByIdQuery?.isError || getReviewsByUserIdQuery?.isError;
+    const error = getClientByIdQuery?.isError || getReviewsByUserEmailQuery?.isError;
     if (error) {
       notifications.show({
         color: 'red',
@@ -41,7 +41,7 @@ const ReviewsTable = ({ clientId, userId }: ReviewsTableProps) => {
         autoClose: 4000,
       });
     }
-  }, [getClientByIdQuery?.isError, getReviewsByUserIdQuery?.isError]);
+  }, [getClientByIdQuery?.isError, getReviewsByUserEmailQuery?.isError]);
 
   //should be memoized or stable
   const columns = useMemo<MRT_ColumnDef<ReviewWithUser>[]>(
