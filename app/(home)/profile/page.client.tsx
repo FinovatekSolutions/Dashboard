@@ -1,8 +1,7 @@
 'use client';
 
 import type { ReactElement } from 'react';
-import { Box, Center, Divider, Space, Title, useMantineTheme } from '@mantine/core';
-import { UserCardImage } from '@/components/user/general/UserCardImage/UserCardImage';
+import { Center, Divider, Space, Title, useMantineTheme } from '@mantine/core';
 import { PageContainer } from '@/components/global/PageContainer/PageContainer';
 import { UserProfile } from '@/components/user/general/UserProfile/UserProfile';
 
