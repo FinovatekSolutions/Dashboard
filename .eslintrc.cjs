@@ -15,7 +15,8 @@ module.exports = {
     'import/extensions': 'off',
     'no-var': 'off',
     'vars-on-top': 'off',
-    "@typescript-eslint/semi": "warn",
+    '@typescript-eslint/semi': 'warn',
     '@typescript-eslint/no-unused-vars': 'warn',
+    'no-spaced-func': 'off',
   },
 };
