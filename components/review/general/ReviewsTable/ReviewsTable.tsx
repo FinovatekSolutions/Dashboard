@@ -106,7 +106,7 @@ const ReviewsTable = ({ clientId, userEmail }: ReviewsTableProps) => {
       showProgressBars: isFetching,
     },
     mantineSearchTextInputProps: {
-      placeholder: `Search ${getClientByIdQuery?.data?.reviews?.length || 0} rows`,
+      placeholder: `Search ${reviewsData?.length || 0} rows`,
       id: 'wazzapp',
       variant: 'filled',
       size: 'sm',
