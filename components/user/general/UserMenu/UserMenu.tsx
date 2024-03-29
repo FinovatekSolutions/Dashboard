@@ -15,6 +15,7 @@ import {
   IconDashboard,
   IconGauge,
   IconShieldCog,
+  IconLayoutDashboard,
 } from '@tabler/icons-react';
 import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
@@ -73,6 +74,20 @@ export function UserMenu({ fullWidth = false, closeDrawer }: UserMenuProps) {
         </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown>
+        <Menu.Label>General</Menu.Label>
+        <Menu.Item
+          leftSection={
+            <IconLayoutDashboard
+              style={{ width: rem(16), height: rem(16) }}
+              stroke={1.5}
+            />
+          }
+          component={Link}
+          href="/my-reports"
+        >
+          My Reports
+        </Menu.Item>
+        <Menu.Divider />
         <Menu.Label display={getPermissionQuery.data?.role !== Role.ADMIN ? 'none' : undefined}>
           Admin
         </Menu.Label>
