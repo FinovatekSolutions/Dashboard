@@ -1,29 +1,24 @@
 'use client';
 
 import type { ReactElement } from 'react';
-import { Box, Center, Container, Space, Title } from '@mantine/core';
-import { UserCardImage } from '@/components/user/general/UserCardImage/UserCardImage';
+import { Center, Divider, Space, Title, useMantineTheme } from '@mantine/core';
+import { PageContainer } from '@/components/global/PageContainer/PageContainer';
+import { UserProfile } from '@/components/user/general/UserProfile/UserProfile';
 
 export function ProfileClient(): ReactElement {
+  const theme = useMantineTheme();
+
   return (
-    <>
-      <Space h="lg" />
-      <Container>
-        <Title order={1}>Profile</Title>
-        <Space h="md" />
-        <Box
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          mt={20}
-        >
-          <Center style={{ width: '100%' }}>
-            <UserCardImage />
-          </Center>
-        </Box>
-      </Container>
-    </>
+    <PageContainer maw={`${theme.breakpoints.xs}`}>
+      <Title m={10} order={1}>
+        Profile
+      </Title>
+      <Divider my="md" />
+      <Space h="md" />
+      <Center>
+        <UserProfile />
+      </Center>
+      <Space h="md" />
+    </PageContainer>
   );
 }

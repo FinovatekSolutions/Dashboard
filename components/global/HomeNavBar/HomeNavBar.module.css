@@ -1,0 +1,14 @@
+.control {
+  display: block;
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
+  border-radius: var(--mantine-radius-md);
+  font-weight: 500;
+  color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-white));
+
+  @mixin hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    &:hover {
+      color: #44c5f8;
+    }
+  }
+}

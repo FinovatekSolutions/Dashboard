@@ -30,7 +30,7 @@ export function MainPage(): ReactElement {
   return (
     <Center>
       <Space h="md" />
-      <Paper mb="sm" p="xs" shadow="xs" w={{ base: '97%' }} maw={`${theme.breakpoints.lg}`}>
+      <Paper mb="sm" p="xs" shadow="xl" withBorder w={{ base: '97%' }} maw={`${theme.breakpoints.lg}`}>
         <Title m={1} order={1}>
           Home
         </Title>

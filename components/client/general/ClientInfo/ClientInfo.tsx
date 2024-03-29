@@ -1,4 +1,4 @@
-import { Avatar, Group, Stack, Text, Title } from '@mantine/core';
+import { Avatar, Group, Stack, Text, Title, Tooltip } from '@mantine/core';
 import { IconAt, IconBuilding, IconMapPin, IconPhoneCall } from '@tabler/icons-react';
 
 import classes from './ClientInfo.module.css';
@@ -20,27 +20,35 @@ export function ClientInfo({ clientId }: { clientId: string }) {
           </Title>
 
           <Group wrap="nowrap" gap={10} mt={3}>
-            <IconBuilding stroke={1.5} size="1.2rem" className={classes.icon} />
+            <Tooltip label="Company">
+              <IconBuilding stroke={1.5} size="1.2rem" className={classes.icon} />
+            </Tooltip>
             <Text fz="sm" c="dimmed">
               {getClientByIdQuery.data?.company}
             </Text>
           </Group>
 
           <Group wrap="nowrap" gap={10} mt={3}>
-            <IconAt stroke={1.5} size="1.2rem" className={classes.icon} />
+            <Tooltip label="Email">
+              <IconAt stroke={1.5} size="1.2rem" className={classes.icon} />
+            </Tooltip>
             <Text fz="sm" c="dimmed">
               {getClientByIdQuery.data?.email}
             </Text>
           </Group>
 
           <Group wrap="nowrap" gap={10} mt={5}>
-            <IconPhoneCall stroke={1.5} size="1.2rem" className={classes.icon} />
+            <Tooltip label="Phone">
+              <IconPhoneCall stroke={1.5} size="1.2rem" className={classes.icon} />
+            </Tooltip>
             <Text fz="sm" c="dimmed">
               {getClientByIdQuery.data?.phone}
             </Text>
           </Group>
           <Group wrap="nowrap" gap={10} mt={3}>
-            <IconMapPin stroke={1.5} size="1.2rem" className={classes.icon} />
+            <Tooltip label="Address">
+              <IconMapPin stroke={1.5} size="1.2rem" className={classes.icon} />
+            </Tooltip>
             <Stack gap={0}>
               <Text fz="sm" c="dimmed">
                 {getClientByIdQuery.data?.address}, {getClientByIdQuery.data?.country}

@@ -31,7 +31,7 @@ export function ClientStatsSegments() {
   ));
 
   return (
-    <Paper withBorder p="md" radius="md">
+    <Paper withBorder shadow="xs" p="md" radius="md">
       <Group justify="space-between">
         <Group align="flex-end" gap="xs">
           <Text fz="xl" fw={700}>
