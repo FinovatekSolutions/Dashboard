@@ -18,10 +18,12 @@ export async function getReviews(): Promise<ReviewWithUser[]> {
   });
 }
 
-export async function getReviewsByUserId(userId: string): Promise<ReviewWithUser[]> {
+export async function getReviewsByUserEmail(userEmail: string): Promise<ReviewWithUser[]> {
   return prisma.review.findMany({
     where: {
-      userId,
+      user: {
+        email: userEmail,
+      },
     },
     include: {
       user: true,

@@ -4,7 +4,7 @@ import type { Prisma, Permission, Review, User } from '@prisma/client';
 
 import {
   getReviews,
-  getReviewsByUserId,
+  getReviewsByUserEmail,
   getReviewById,
   createReview,
   updateReview,
@@ -28,11 +28,11 @@ export function useGetReviews(): UseQueryResult<ReviewWithUser[]> {
   } satisfies UseQueryOptions<ReviewWithUser[]>);
 }
 
-export function useGetReviewsByUserId(userId: string): UseQueryResult<ReviewWithUser[]> {
+export function useGetReviewsByUserEmail(userEmail: string): UseQueryResult<ReviewWithUser[]> {
   return useQuery<ReviewWithUser[]>({
-    queryKey: [getReviewsQueryKey, userId],
-    queryFn: () => getReviewsByUserId(userId),
-    enabled: !!userId,
+    queryKey: [getReviewsQueryKey, userEmail],
+    queryFn: () => getReviewsByUserEmail(userEmail),
+    enabled: !!userEmail,
   } satisfies UseQueryOptions<ReviewWithUser[]>);
 }
 
