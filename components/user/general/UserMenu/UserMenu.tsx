@@ -83,9 +83,9 @@ export function UserMenu({ fullWidth = false, closeDrawer }: UserMenuProps) {
             />
           }
           component={Link}
-          href="/my-reports"
+          href="/my-reviews"
         >
-          My Reports
+          My Reviews
         </Menu.Item>
         <Menu.Divider />
         <Menu.Label display={getPermissionQuery.data?.role !== Role.ADMIN ? 'none' : undefined}>
