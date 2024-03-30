@@ -13,6 +13,7 @@ import { useGetClientById } from '@/lib/actions/client';
 import { useGetReviewsByUserEmail } from '@/lib/actions/review';
 
 import { ReviewWithUser } from '@/lib/utils/types';
+import { calculatePeriod, formatDate } from '@/lib/utils/helpers';
 
 type ReviewsTableProps = {
   clientId?: string;
@@ -54,21 +55,11 @@ const ReviewsTable = ({ clientId, userEmail }: ReviewsTableProps) => {
         header: 'Period',
         accessorFn: (row) => {
           if (!row?.startDate || !row?.startDate) return '';
-          const startDate = new Date(row.startDate);
-          const endDate = new Date(row.endDate);
-          const startDateFormatted = new Intl.DateTimeFormat('en-US', {
-            year: 'numeric',
-            month: 'long',
-          }).format(startDate);
-          const endDateFormatted = new Intl.DateTimeFormat('en-US', {
-            year: 'numeric',
-            month: 'long',
-          }).format(endDate);
-          return `${startDateFormatted} - ${endDateFormatted}`;
+          return calculatePeriod(row.startDate, row.endDate);
         },
       },
       {
-        header: 'Worked By',
+        header: 'Author',
         accessorFn: (row) => {
           if (!row?.user) return '';
           return row.user?.name;
@@ -78,12 +69,7 @@ const ReviewsTable = ({ clientId, userEmail }: ReviewsTableProps) => {
         header: 'Created On',
         accessorFn: (row) => {
           if (!row?.createdAt) return '';
-          const date = new Date(row.createdAt);
-          return new Intl.DateTimeFormat('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: '2-digit',
-          }).format(date);
+          return formatDate(row.createdAt);
         },
       },
     ],
