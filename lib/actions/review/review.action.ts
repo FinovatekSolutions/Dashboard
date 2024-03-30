@@ -4,7 +4,7 @@ import type { Prisma, Permission, Review, User } from '@prisma/client';
 import { ReviewCreateInputSchema, ReviewUpdateInputSchema } from '@prisma/zod';
 import { z } from 'zod';
 
-import { ReviewWithUser, ReviewWithUserAndTransactions } from '@/lib/utils/types';
+import { ReviewWithUser, FullReviewDetails } from '@/lib/utils/types';
 import prisma from '@/lib/utils/prisma';
 
 export async function getReviews(): Promise<ReviewWithUser[]> {
@@ -34,15 +34,14 @@ export async function getReviewsByUserEmail(userEmail: string): Promise<ReviewWi
   });
 }
 
-export async function getReviewById(
-  reviewId: string
-): Promise<ReviewWithUserAndTransactions | null> {
+export async function getReviewById(reviewId: string): Promise<FullReviewDetails | null> {
   return prisma.review.findUnique({
     where: {
       id: reviewId,
     },
     include: {
       user: true,
+      client: true,
       transactions: true,
     },
   });
