@@ -14,7 +14,7 @@ import {
   onSuccessCallback,
   onErrorCallback,
   ReviewWithUser,
-  ReviewWithUserAndTransactions,
+  FullReviewDetails,
 } from '@/lib/utils/types';
 
 const getReviewsQueryKey = 'getReviews';
@@ -36,14 +36,12 @@ export function useGetReviewsByUserEmail(userEmail: string): UseQueryResult<Revi
   } satisfies UseQueryOptions<ReviewWithUser[]>);
 }
 
-export function useGetReviewById(
-  reviewId: string
-): UseQueryResult<ReviewWithUserAndTransactions | null> {
-  return useQuery<ReviewWithUserAndTransactions | null>({
+export function useGetReviewById(reviewId: string): UseQueryResult<FullReviewDetails | null> {
+  return useQuery<FullReviewDetails | null>({
     queryKey: [getReviewByIdQueryKey, reviewId],
     queryFn: () => getReviewById(reviewId),
     enabled: !!reviewId,
-  } satisfies UseQueryOptions<ReviewWithUserAndTransactions | null>);
+  } satisfies UseQueryOptions<FullReviewDetails | null>);
 }
 
 // Mutations:
