@@ -18,8 +18,9 @@ import {
   Skeleton,
   Group,
 } from '@mantine/core';
-import { IconChevronLeft, IconRefresh } from '@tabler/icons-react';
+import { IconArrowLeft, IconChevronLeft, IconRefresh } from '@tabler/icons-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import ClientsTable from '@/components/client/general/ClientsTable/ClientsTable';
 import EditClientButton from '@/components/client/crud/EditClientButton/EditClientButton';
@@ -28,11 +29,14 @@ import { ClientInfo } from '@/components/client/general/ClientInfo/ClientInfo';
 import { ClientStatsSegments } from '@/components/client/general/ClientStatsSegments/ClientStatsSegments';
 import ReviewsTable from '@/components/review/general/ReviewsTable/ReviewsTable';
 import { PageContainer } from '@/components/global/PageContainer/PageContainer';
+import { useGetReviewById } from '@/lib/actions/review';
+import EditReviewButton from '@/components/review/crud/EditReviewButton/EditReviewButton';
+import { ReviewInfo } from '@/components/review/general/ReviewInfo/ReviewInfo';
 
-export function ViewReviewByIDClient({ params }: { params: { clientId: string } }) {
+export function ViewReviewByIDClient({ params }: { params: { reviewId: string } }) {
   const theme = useMantineTheme();
-  const getClientsQuery = useGetClients();
-  const getClientByIdQuery = useGetClientById(params.clientId);
+  const router = useRouter();
+  const getReviewByIdQuery = useGetReviewById(params.reviewId);
 
   const breadcrumbsItems = [
     <Anchor
@@ -44,10 +48,20 @@ export function ViewReviewByIDClient({ params }: { params: { clientId: string } 
     >
       Clients
     </Anchor>,
-    <Skeleton visible={getClientByIdQuery.isLoading} key="myClient">
+    <Skeleton visible={getReviewByIdQuery.isLoading} key="myClient" w="fit-content">
+      <Anchor
+        href={`/clients/${getReviewByIdQuery.data?.client?.id}`}
+        component={Link}
+        size="md"
+        c={theme.colors['trust-md-gray'][6]}
+      >
+        {getReviewByIdQuery.data?.client?.firstName} {getReviewByIdQuery.data?.client?.lastName} (
+        {getReviewByIdQuery.data?.client?.company})
+      </Anchor>
+    </Skeleton>,
+    <Skeleton visible={getReviewByIdQuery.isLoading} key="myReview">
       <Text size="md" c={theme.colors['trust-md-gray'][6]}>
-        {getClientByIdQuery.data?.firstName} {getClientByIdQuery.data?.lastName} (
-        {getClientByIdQuery.data?.company})
+        {getReviewByIdQuery.data?.name}
       </Text>
     </Skeleton>,
   ];
@@ -55,7 +69,7 @@ export function ViewReviewByIDClient({ params }: { params: { clientId: string } 
   return (
     <PageContainer pos="relative">
       <LoadingOverlay
-        visible={getClientByIdQuery.isLoading}
+        visible={getReviewByIdQuery.isLoading}
         zIndex={1000}
         overlayProps={{ radius: 'sm', blur: 2 }}
       />
@@ -63,16 +77,15 @@ export function ViewReviewByIDClient({ params }: { params: { clientId: string } 
         {breadcrumbsItems}
       </Breadcrumbs>
       <Box hiddenFrom="xs" m={10} ml={0}>
-        <Anchor
-          href="/clients"
+        <Button
+          color={theme.colors['trust-md-gray'][6]}
+          leftSection={<IconArrowLeft size={14} />}
+          variant="transparent"
           size="md"
-          component={Link}
-          c={theme.colors['trust-md-gray'][6]}
-          key="clients"
+          onClick={() => router.back()}
         >
-          <IconChevronLeft size={15} style={{ marginRight: '5px' }} />
-          View All Clients
-        </Anchor>
+          Go back
+        </Button>
       </Box>
       {/* Container for the first two components */}
       <Flex
@@ -82,11 +95,11 @@ export function ViewReviewByIDClient({ params }: { params: { clientId: string } 
         mt={16}
       >
         {/* Component 1 */}
-        <EditClientButton clientId={params.clientId} />
+        <EditReviewButton reviewId={params.reviewId} />
 
         {/* Component 2 */}
         <Button
-          onClick={() => getClientByIdQuery.refetch()}
+          onClick={() => getReviewByIdQuery.refetch()}
           leftSection={<IconRefresh size={14} />}
           variant="default"
           size="md"
@@ -103,28 +116,27 @@ export function ViewReviewByIDClient({ params }: { params: { clientId: string } 
         mt={16}
       >
         {/* Component 1 */}
-        <Skeleton visible={getClientByIdQuery.isLoading}>
-          <ClientInfo clientId={params.clientId} />
+        <Skeleton visible={getReviewByIdQuery.isLoading}>
+          <ReviewInfo reviewId={params.reviewId} />
         </Skeleton>
 
         {/* Component 2 */}
-        <Skeleton visible={getClientByIdQuery.isLoading}>
+        <Skeleton visible={getReviewByIdQuery.isLoading}>
           <ClientStatsSegments />
         </Skeleton>
       </Flex>
 
       {/* Component 3 - Always below the first two */}
       <Divider my="md" />
-      <Skeleton visible={getClientByIdQuery.isLoading}>
+      <Skeleton visible={getReviewByIdQuery.isLoading}>
         <Text fz="xl" fw={500}>
-          {getClientByIdQuery.data?.firstName} {getClientByIdQuery.data?.lastName}
-          &apos;s Financial Reviews
+          {getReviewByIdQuery.data?.name} Transactions
         </Text>
       </Skeleton>
       <Box style={{ marginTop: '16px' }}>
         {/* Adjust the margin as needed */}
-        <Skeleton visible={getClientByIdQuery.isLoading}>
-          <ReviewsTable clientId={params.clientId} />
+        <Skeleton visible={getReviewByIdQuery.isLoading}>
+          TODO: Transaction table
         </Skeleton>
       </Box>
     </PageContainer>
