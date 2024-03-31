@@ -17,7 +17,7 @@ import { zodResolver } from 'mantine-form-zod-resolver';
 import { IconCheck, IconX } from '@tabler/icons-react';
 import type { Prisma } from '@prisma/client';
 
-import { ClientCreateInputSchema } from '@prisma/zod';
+import { ClientUpdateInputSchema } from '@prisma/zod';
 import { useCreateClient, useGetClientById, useUpdateClient } from '@/lib/actions/client';
 
 interface EditClientFormProps {
@@ -42,7 +42,7 @@ export function EditClientForm({ setOpened, clientId }: EditClientFormProps) {
       zip: getClientByIdQuery.data?.zip || '',
       country: getClientByIdQuery.data?.country || '',
     },
-    validate: zodResolver(ClientCreateInputSchema),
+    validate: zodResolver(ClientUpdateInputSchema),
   });
 
   const updateClientMutation = useUpdateClient(
