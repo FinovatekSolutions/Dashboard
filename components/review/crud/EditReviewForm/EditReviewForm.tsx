@@ -17,7 +17,7 @@ import { zodResolver } from 'mantine-form-zod-resolver';
 import { IconCheck, IconX } from '@tabler/icons-react';
 import type { Prisma } from '@prisma/client';
 
-import { ClientCreateInputSchema, ReviewCreateInputSchema } from '@prisma/zod';
+import { ClientCreateInputSchema, ReviewUpdateInputSchema } from '@prisma/zod';
 import { useCreateClient, useGetClientById, useUpdateClient } from '@/lib/actions/client';
 import { useGetReviewById, useUpdateReview } from '@/lib/actions/review';
 import { calculatePeriod, formatDate } from '@/lib/utils/helpers';
@@ -34,18 +34,9 @@ export function EditReviewForm({ setOpened, reviewId }: EditReviewFormProps) {
 
   const form = useForm({
     initialValues: {
-      firstName: getClientByIdQuery.data?.firstName || '',
-      lastName: getClientByIdQuery.data?.lastName || '',
-      company: getClientByIdQuery.data?.company || '',
-      email: getClientByIdQuery.data?.email || '',
-      phone: getClientByIdQuery.data?.phone || '',
-      address: getClientByIdQuery.data?.address || '',
-      city: getClientByIdQuery.data?.city || '',
-      state: getClientByIdQuery.data?.state || '',
-      zip: getClientByIdQuery.data?.zip || '',
-      country: getClientByIdQuery.data?.country || '',
+      name: getReviewByIdQuery.data?.name || '',
     },
-    validate: zodResolver(ClientCreateInputSchema),
+    validate: zodResolver(ReviewUpdateInputSchema),
   });
 
   const updateReviewMutation = useUpdateReview(
@@ -77,7 +68,7 @@ export function EditReviewForm({ setOpened, reviewId }: EditReviewFormProps) {
     }
   );
 
-  const handleSubmit = async (values: Prisma.ClientUpdateInput) => {
+  const handleSubmit = async (values: Prisma.ReviewUpdateInput) => {
     console.log('Submitting form with values:', values);
     // Show loading notification
     notifications.show({
@@ -95,44 +86,11 @@ export function EditReviewForm({ setOpened, reviewId }: EditReviewFormProps) {
   return (
     <Box component="form" onSubmit={form.onSubmit(handleSubmit)}>
       <Stack>
-        <Group grow>
-          <TextInput label="First Name" placeholder="John" {...form.getInputProps('firstName')} />
-          <TextInput label="Last Name" placeholder="Doe" {...form.getInputProps('lastName')} />
-        </Group>
         <TextInput
-          label="Company Name"
-          placeholder="Doe Industries"
-          {...form.getInputProps('company')}
+          label="Review Name"
+          placeholder="Radiography-1"
+          {...form.getInputProps('name')}
         />
-        <TextInput
-          label="Email Address"
-          placeholder="john.doe@example.com"
-          {...form.getInputProps('email')}
-        />
-        <TextInput
-          label="Phone Number"
-          placeholder="787-555-1234"
-          {...form.getInputProps('phone')}
-        />
-        <Flex direction="row" gap="md">
-          <TextInput
-            label="Address"
-            placeholder="1234 Main St"
-            style={{ flex: 3 }} // Set address to 75% width
-            {...form.getInputProps('address')}
-          />
-          <TextInput
-            label="Country"
-            style={{ flex: 2 }} // Set country to 25% width
-            placeholder="Country"
-            {...form.getInputProps('country')}
-          />
-        </Flex>
-        <Group grow>
-          <TextInput label="City" placeholder="Anytown" {...form.getInputProps('city')} />
-          <TextInput label="State/Province" placeholder="State" {...form.getInputProps('state')} />
-          <TextInput label="ZIP/Postal Code" placeholder="123456" {...form.getInputProps('zip')} />
-        </Group>
         <Flex direction={{ base: 'column', sm: 'row' }} justify="flex-end">
           <Button
             size="md"
