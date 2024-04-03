@@ -16,19 +16,19 @@ const getBankTypeByIdQueryKey = 'getBankTypeById';
 
 // Queries:
 export function useGetBankTypes(): UseQueryResult<BankType[]> {
-    return useQuery<BankType[]>({
-      queryKey: [getBankTypesQueryKey],
-      queryFn: () => getBankTypes(),
-    } satisfies UseQueryOptions<BankType[]>);
-  }
-  
-  export function useGetBankTypesById(bankTypeId: string): UseQueryResult<BankType | null> {
-    return useQuery<BankType | null>({
-      queryKey: [getBankTypeByIdQueryKey, bankTypeId], // Unique query key for each client
-      queryFn: () => getBankTypeById(bankTypeId),
-      enabled: !!bankTypeId, // Only fetch if clientId is present
-    } satisfies UseQueryOptions<BankType | null>);
-  }
+  return useQuery<BankType[]>({
+    queryKey: [getBankTypesQueryKey],
+    queryFn: () => getBankTypes(),
+  } satisfies UseQueryOptions<BankType[]>);
+}
+
+export function useGetBankTypesById(bankTypeId: string): UseQueryResult<BankType | null> {
+  return useQuery<BankType | null>({
+    queryKey: [getBankTypeByIdQueryKey, bankTypeId], // Unique query key for each client
+    queryFn: () => getBankTypeById(bankTypeId),
+    enabled: !!bankTypeId, // Only fetch if clientId is present
+  } satisfies UseQueryOptions<BankType | null>);
+}
 
 // Mutations:
 export function useCreateBankType(onSuccessCb?: onSuccessCallback, onErrorCb?: onErrorCallback) {
@@ -37,7 +37,7 @@ export function useCreateBankType(onSuccessCb?: onSuccessCallback, onErrorCb?: o
   return useMutation({
     mutationFn: async (input: Prisma.BankTypeCreateInput) => createBankType(input),
     onSuccess: (data) => {
-        queryClient.invalidateQueries({ queryKey: [getBankTypesQueryKey] });
+      queryClient.invalidateQueries({ queryKey: [getBankTypesQueryKey] });
       if (onSuccessCb) {
         onSuccessCb(data);
       }
@@ -70,7 +70,7 @@ export function useUpdateBankType(onSuccessCb?: onSuccessCallback, onErrorCb?: o
       // Optimistically update to the new value
       queryClient.setQueryData([getBankTypesQueryKey], (old: BankType[]) =>
         old.map((bankType) =>
-        bankType.id === updatedBankType.id ? { ...bankType, ...updatedBankType } : bankType
+          bankType.id === updatedBankType.id ? { ...bankType, ...updatedBankType } : bankType
         )
       );
       queryClient.setQueryData([getBankTypeByIdQueryKey, updatedBankType.id], updatedBankType);
@@ -89,8 +89,8 @@ export function useUpdateBankType(onSuccessCb?: onSuccessCallback, onErrorCb?: o
       }
     },
     onSuccess: (data) => {
-        queryClient.invalidateQueries({ queryKey: [getBankTypesQueryKey] });
-        queryClient.invalidateQueries({ queryKey: [getBankTypeByIdQueryKey, data.id] });
+      queryClient.invalidateQueries({ queryKey: [getBankTypesQueryKey] });
+      queryClient.invalidateQueries({ queryKey: [getBankTypeByIdQueryKey, data.id] });
       if (onSuccessCb) {
         onSuccessCb(data);
       }
@@ -104,8 +104,8 @@ export function useRemoveBankType(onSuccessCb?: onSuccessCallback, onErrorCb?: o
   return useMutation({
     mutationFn: (bankTypeId: string) => removeBankType(bankTypeId),
     onSuccess: (data) => {
-        queryClient.invalidateQueries({ queryKey: [getBankTypesQueryKey] });
-        queryClient.invalidateQueries({ queryKey: [getBankTypeByIdQueryKey, data.id] });
+      queryClient.invalidateQueries({ queryKey: [getBankTypesQueryKey] });
+      queryClient.invalidateQueries({ queryKey: [getBankTypeByIdQueryKey, data.id] });
       if (onSuccessCb) {
         onSuccessCb();
       }

@@ -19,7 +19,6 @@ import { useForm } from '@mantine/form';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { IconCheck, IconX } from '@tabler/icons-react';
 import { Role } from '@prisma/client';
-import type { Prisma } from '@prisma/client';
 
 import { PermissionCreateInputSchema } from '@prisma/zod';
 import { useGetPermissionById, useRemovePermission } from '@/lib/actions/permission';

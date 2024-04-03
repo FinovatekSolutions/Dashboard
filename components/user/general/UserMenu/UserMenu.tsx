@@ -3,23 +3,14 @@ import { useState } from 'react';
 import { Avatar, UnstyledButton, Group, Text, Menu, rem, useMantineTheme } from '@mantine/core';
 import {
   IconLogout,
-  IconHeart,
-  IconStar,
-  IconFiles,
-  IconUser,
-  IconPlayerPause,
-  IconTrash,
-  IconSwitchHorizontal,
   IconChevronDown,
   IconChevronUp,
-  IconDashboard,
-  IconGauge,
   IconShieldCog,
   IconLayoutDashboard,
+  IconUser,
 } from '@tabler/icons-react';
 import Link from 'next/link';
-import { signIn, signOut, useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { signOut, useSession } from 'next-auth/react';
 import { Role } from '@prisma/client';
 
 import classes from './UserMenu.module.css';
@@ -36,7 +27,7 @@ export function UserMenu({ fullWidth = false, closeDrawer }: UserMenuProps) {
   const { data: session } = useSession();
   const theme = useMantineTheme();
   const [userMenuOpened, setUserMenuOpened] = useState(false);
-  const router = useRouter();
+
   const getPermissionQuery = useGetPermissionByEmail(session?.user?.email || '');
 
   return (
@@ -77,10 +68,7 @@ export function UserMenu({ fullWidth = false, closeDrawer }: UserMenuProps) {
         <Menu.Label>General</Menu.Label>
         <Menu.Item
           leftSection={
-            <IconLayoutDashboard
-              style={{ width: rem(16), height: rem(16) }}
-              stroke={1.5}
-            />
+            <IconLayoutDashboard style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
           }
           component={Link}
           href="/my-reviews"

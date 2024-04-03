@@ -1,26 +1,12 @@
 'use client';
 
 import type { ReactElement } from 'react';
-import {
-  Center,
-  Divider,
-  Space,
-  Title,
-  useMantineTheme,
-  Text,
-  Flex,
-  Button,
-  Box,
-} from '@mantine/core';
+import { Divider, Title, Flex, Button, Box } from '@mantine/core';
 
 import { useSession } from 'next-auth/react';
 
 import { IconRefresh } from '@tabler/icons-react';
 import { PageContainer } from '@/components/global/PageContainer/PageContainer';
-import { UserProfile } from '@/components/user/general/UserProfile/UserProfile';
-import CreateClientButton from '@/components/client/crud/CreateClientButton/CreateClientButton';
-import ClientsTable from '@/components/client/general/ClientsTable/ClientsTable';
-import { useGetClients } from '@/lib/actions/client';
 import CreateReviewButton from '@/components/review/crud/CreateReviewButton/CreateReviewButton';
 import { useGetReviewsByUserEmail } from '@/lib/actions/review';
 import ReviewsTable from '@/components/review/general/ReviewsTable/ReviewsTable';

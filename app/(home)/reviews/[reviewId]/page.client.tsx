@@ -1,12 +1,7 @@
 'use client';
 
-import type { ReactElement } from 'react';
 import {
-  Paper,
-  Title,
   Text,
-  Space,
-  Center,
   Flex,
   Box,
   useMantineTheme,
@@ -16,18 +11,12 @@ import {
   Breadcrumbs,
   LoadingOverlay,
   Skeleton,
-  Group,
 } from '@mantine/core';
-import { IconArrowLeft, IconChevronLeft, IconRefresh } from '@tabler/icons-react';
+import { IconArrowLeft, IconRefresh } from '@tabler/icons-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import ClientsTable from '@/components/client/general/ClientsTable/ClientsTable';
-import EditClientButton from '@/components/client/crud/EditClientButton/EditClientButton';
-import { useGetClients, useGetClientById } from '@/lib/actions/client';
-import { ClientInfo } from '@/components/client/general/ClientInfo/ClientInfo';
 import { ClientStatsSegments } from '@/components/client/general/ClientStatsSegments/ClientStatsSegments';
-import ReviewsTable from '@/components/review/general/ReviewsTable/ReviewsTable';
 import { PageContainer } from '@/components/global/PageContainer/PageContainer';
 import { useGetReviewById } from '@/lib/actions/review';
 import EditReviewButton from '@/components/review/crud/EditReviewButton/EditReviewButton';
@@ -135,9 +124,7 @@ export function ViewReviewByIDClient({ params }: { params: { reviewId: string } 
       </Skeleton>
       <Box style={{ marginTop: '16px' }}>
         {/* Adjust the margin as needed */}
-        <Skeleton visible={getReviewByIdQuery.isLoading}>
-          TODO: Transaction table
-        </Skeleton>
+        <Skeleton visible={getReviewByIdQuery.isLoading}>TODO: Transaction table</Skeleton>
       </Box>
     </PageContainer>
   );

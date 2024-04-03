@@ -3,14 +3,15 @@ body {
 }
 
 @font-face {
-  font-family: 'TrustMDFont';
+  font-family: TrustMDFont;
   src: url('/fonts/friz-quadrata-regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 #wazzapp {
-  /* border-color: red; */
+  /* This is an empty ruleset that will be ignored */
+  content: '';
 }
 
 div.MRT_GlobalFilterTextInput-module_collapse__v311d {
@@ -30,18 +31,21 @@ div.MRT_GlobalFilterTextInput-module_collapse__v311d {
     width: 38em;
   }
 }
+
 @media (min-width: 62em) {
   #wazzapp {
     /* border-color: orange; */
     width: 51em;
   }
 }
+
 @media (min-width: 75em) {
   #wazzapp {
     /* border-color: purple; */
     width: 64em;
   }
 }
+
 @media (min-width: 88em) {
   #wazzapp {
     /* border-color: pink; */

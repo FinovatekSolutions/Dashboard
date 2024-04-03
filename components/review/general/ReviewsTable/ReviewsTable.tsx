@@ -4,7 +4,6 @@ import { useEffect, useMemo } from 'react';
 import { MantineReactTable, useMantineReactTable, type MRT_ColumnDef } from 'mantine-react-table';
 import { notifications } from '@mantine/notifications';
 
-import { Review, User } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { ActionIcon, Flex, Tooltip, useMantineTheme } from '@mantine/core';
 import { IconEye, IconX } from '@tabler/icons-react';

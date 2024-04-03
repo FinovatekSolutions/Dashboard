@@ -16,7 +16,6 @@ import { IconX, IconTrash, IconDownload } from '@tabler/icons-react';
 import { useForm } from '@mantine/form';
 import { Dropzone, MIME_TYPES } from '@mantine/dropzone';
 import classes from './BankStatementsDragAndDrop.module.css';
-import { useGetBankTypes } from '@/lib/actions/banktype';
 import { SelectBankTypeDropdown } from '@/components/review/crud/SelectBankTypeDropdown/SelectBankTypeDropdown';
 
 interface FormValues {
@@ -29,7 +28,6 @@ interface FormValues {
 export function BankStatementsDragAndDrop() {
   const theme = useMantineTheme();
   const openRef = useRef<() => void>(null);
-  const getBankTypesQuery = useGetBankTypes();
   const form = useForm<FormValues>({ initialValues: { files: [], name: '', size: '', type: '' } });
 
   const selectedBankStatements = form.values.files.map((files, index) => (

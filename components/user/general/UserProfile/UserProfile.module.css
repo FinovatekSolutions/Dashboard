@@ -1,8 +1,5 @@
-
 .name {
-  font-family:
-    Greycliff CF,
-    var(--mantine-font-family);
+  font-family: 'Greycliff CF', var(--mantine-font-family);
 }
 
 .nameWrap {

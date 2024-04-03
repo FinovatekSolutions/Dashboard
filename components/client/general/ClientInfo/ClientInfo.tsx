@@ -1,4 +1,4 @@
-import { Avatar, Group, Stack, Text, Title, Tooltip } from '@mantine/core';
+import { Group, Stack, Text, Title, Tooltip } from '@mantine/core';
 import { IconAt, IconBuilding, IconMapPin, IconPhoneCall } from '@tabler/icons-react';
 
 import classes from './ClientInfo.module.css';

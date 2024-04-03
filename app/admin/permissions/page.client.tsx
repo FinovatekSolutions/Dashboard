@@ -1,18 +1,7 @@
 'use client';
 
 import type { ReactElement } from 'react';
-import {
-  Paper,
-  Title,
-  Text,
-  Space,
-  Center,
-  Flex,
-  Box,
-  useMantineTheme,
-  Divider,
-  Button,
-} from '@mantine/core';
+import { Title, Text, Flex, Box, Divider, Button } from '@mantine/core';
 import { IconRefresh } from '@tabler/icons-react';
 import PermissionsTable from '@/components/permission/general/PermissionsTable/PermissionsTable';
 import CreatePermissionButton from '@/components/permission/crud/CreatePermissionButton/CreatePermissionButton';
@@ -20,7 +9,6 @@ import { useGetPermissions } from '@/lib/actions/permission';
 import { PageContainer } from '@/components/global/PageContainer/PageContainer';
 
 export function ClientsClient(): ReactElement {
-  const theme = useMantineTheme();
   const getPermissionsQuery = useGetPermissions();
 
   return (

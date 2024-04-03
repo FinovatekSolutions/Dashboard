@@ -1,6 +1,6 @@
 import type { UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { Prisma, Permission, Review, User } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
 
 import {
   getReviews,

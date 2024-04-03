@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import { getProviders } from 'next-auth/react';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';

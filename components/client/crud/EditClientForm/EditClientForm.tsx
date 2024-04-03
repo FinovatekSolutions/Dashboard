@@ -1,16 +1,6 @@
 'use client';
 
-import {
-  Button,
-  TextInput,
-  Group,
-  Title,
-  Box,
-  useMantineTheme,
-  Stack,
-  Flex,
-  Space,
-} from '@mantine/core';
+import { Button, TextInput, Group, Box, useMantineTheme, Stack, Flex } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useForm } from '@mantine/form';
 import { zodResolver } from 'mantine-form-zod-resolver';
@@ -18,7 +8,7 @@ import { IconCheck, IconX } from '@tabler/icons-react';
 import type { Prisma } from '@prisma/client';
 
 import { ClientUpdateInputSchema } from '@prisma/zod';
-import { useCreateClient, useGetClientById, useUpdateClient } from '@/lib/actions/client';
+import { useGetClientById, useUpdateClient } from '@/lib/actions/client';
 
 interface EditClientFormProps {
   setOpened: (opened: boolean) => void;

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Button, Modal, Group, Text, ButtonProps, useMantineTheme, Title } from '@mantine/core';
+import { Button, Modal, ButtonProps, useMantineTheme, Title } from '@mantine/core';
 import { IconCirclePlus } from '@tabler/icons-react';
 import { useMediaQuery } from '@mantine/hooks';
 
