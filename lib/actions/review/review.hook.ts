@@ -69,8 +69,35 @@ export function useUpdateReview(onSuccessCb?: onSuccessCallback, onErrorCb?: onE
 
   return useMutation({
     mutationFn: async (input: Prisma.ReviewUpdateInput) => updateReview(input),
+    onMutate: async (updatedReview) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: [getReviewsQueryKey] });
+      await queryClient.cancelQueries({ queryKey: [getReviewByIdQueryKey, updatedReview.id] });
 
-    onError: (error) => {
+      // Snapshot the previous value
+      const previousReviews = queryClient.getQueryData([getReviewsQueryKey]);
+      const previousReviewById = queryClient.getQueryData([
+        getReviewByIdQueryKey,
+        updatedReview.id,
+      ]);
+
+      // Optimistically update to the new value
+      queryClient.setQueryData([getReviewsQueryKey], (old: ReviewWithUser[]) =>
+        old.map((review) =>
+          review.id === updatedReview.id ? { ...review, ...updatedReview } : review
+        )
+      );
+      queryClient.setQueryData([getReviewByIdQueryKey, updatedReview.id], updatedReview);
+
+      return { previousReviews, previousReviewById };
+    },
+    onError: (error, updatedReview, context) => {
+      // Rollback on error
+      queryClient.setQueryData([getReviewsQueryKey], context?.previousReviews);
+      queryClient.setQueryData(
+        [getReviewByIdQueryKey, updatedReview.id],
+        context?.previousReviewById
+      );
       if (onErrorCb) {
         onErrorCb(error);
       }
