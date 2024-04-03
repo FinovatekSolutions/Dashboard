@@ -27,7 +27,8 @@ export async function getClientById(clientId: string): Promise<
       id: clientId,
     },
     include: {
-      reviews: { // Includes the reviews for the client
+      reviews: {
+        // Includes the reviews for the client
         include: {
           user: true, // This includes the user for each review
         },

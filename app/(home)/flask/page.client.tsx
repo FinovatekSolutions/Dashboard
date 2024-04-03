@@ -21,7 +21,9 @@ export function FlaskClient(): ReactElement {
     return (
       <Center>
         <IconMoodSad stroke={1} color="red" />
-        <Text pl={2} c="red">Failed to load data</Text>
+        <Text pl={2} c="red">
+          Failed to load data
+        </Text>
       </Center>
     );
   }

@@ -1,10 +1,4 @@
-import {
-  Paper,
-  Space,
-  Center,
-  useMantineTheme,
-  PaperProps,
-} from '@mantine/core';
+import { Paper, Space, Center, useMantineTheme, PaperProps } from '@mantine/core';
 
 interface PageContainerProps extends PaperProps {
   children: React.ReactNode;
