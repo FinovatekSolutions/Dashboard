@@ -93,11 +93,11 @@ export function useUpdateClient(onSuccessCb?: onSuccessCallback, onErrorCb?: onE
 
       return { previousClients, previousClientById };
     },
-    onError: (error, updatedTodo, context) => {
+    onError: (error, updatedClient, context) => {
       // Rollback on error
       queryClient.setQueryData([getClientsQueryKey], context?.previousClients);
       queryClient.setQueryData(
-        [getClientByIdQueryKey, updatedTodo.id],
+        [getClientByIdQueryKey, updatedClient.id],
         context?.previousClientById
       );
       if (onErrorCb) {
