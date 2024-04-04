@@ -1,10 +1,11 @@
 'use server';
 
-import type { Prisma, Client, Review, User } from '@prisma/client';
+import type { Prisma, Client } from '@prisma/client';
 import { ClientCreateInputSchema, ClientUpdateInputSchema } from '@prisma/zod';
 import { z } from 'zod';
 
 import prisma from '@/lib/utils/prisma';
+import { ClientWithReviews } from '@/lib/utils/types';
 
 export async function getClients(): Promise<Client[]> {
   return prisma.client.findMany({
@@ -14,14 +15,7 @@ export async function getClients(): Promise<Client[]> {
   });
 }
 
-export async function getClientById(clientId: string): Promise<
-  | (Client & {
-      reviews: (Review & {
-        user: User;
-      })[];
-    })
-  | null
-> {
+export async function getClientById(clientId: string): Promise<ClientWithReviews | null> {
   return prisma.client.findUnique({
     where: {
       id: clientId,
