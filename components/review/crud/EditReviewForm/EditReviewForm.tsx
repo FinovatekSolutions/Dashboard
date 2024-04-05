@@ -66,7 +66,14 @@ export function EditReviewForm({ setOpened, reviewId }: EditReviewFormProps) {
       withCloseButton: false,
     });
 
-    updateReviewMutation.mutate({ id: reviewId, ...values });
+    updateReviewMutation.mutate({
+      input: {
+        id: reviewId,
+        ...values,
+      },
+      clientId: getReviewByIdQuery.data?.clientId || '',
+      userEmail: getReviewByIdQuery.data?.user?.email || '',
+    });
   };
 
   return (
