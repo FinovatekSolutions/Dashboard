@@ -4,10 +4,10 @@
 <!-- markdownlint-disable MD041 -->
 
 <h1 align="center">
-  Finovatek Dashboard
+  IReNE Dashboard
 </h1>
 
-The latest in automated financial management.
+**[Repo](https://github.com/Diego-Paris/Dashboard/tree/irene-master)**
 
 **Behold the savings!**
 
