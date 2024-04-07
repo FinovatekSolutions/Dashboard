@@ -11,12 +11,17 @@ import {
   Image,
   Text,
   Anchor,
+  Box,
+  Center,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Link from 'next/link';
+import { IconChartDots3 } from '@tabler/icons-react';
+
 import classes from './HomeNavBar.module.css';
 
 import { UserMenu } from '@/components/user/general/UserMenu/UserMenu';
+import { bioRhyme } from '@/lib/utils/fonts';
 
 export function HomeNavBar({ children }: { children: any }) {
   const theme = useMantineTheme();
@@ -43,15 +48,16 @@ export function HomeNavBar({ children }: { children: any }) {
     <AppShell
       header={{ height: { base: rem(60), sm: rem(90) } }}
       navbar={{ width: 300, breakpoint: 'sm', collapsed: { desktop: true, mobile: !opened } }}
+      withBorder={false}
       styles={{
         header: {
-          backgroundColor: '#1A1C27',
+          backgroundColor: theme.colors['irene-dark-blue'][6],
           marginBottom: '12px',
           boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-          borderBottom: `1px solid ${theme.colors.gray[7]}`, // Change '#FF5733' to your desired border color
         },
         navbar: {
-          backgroundColor: '#1A1C27',
+          backgroundColor: theme.colors['irene-dark-blue'][6],
+          borderTop: `1px solid ${theme.colors.gray[7]}`, // Change '#FF5733' to your desired border color
         },
       }}
     >
@@ -69,31 +75,38 @@ export function HomeNavBar({ children }: { children: any }) {
             <Group>
               <Anchor href="/" component={Link} style={{ textDecoration: 'none' }}>
                 <Group gap={5}>
-                  <Image
-                    src="/trustmd-full-logo.webp"
-                    alt="TrustMD Logo"
-                    w={{ base: 113, sm: 225 }}
-                    h={{ base: 32, sm: 63 }}
-                    visibleFrom="sm"
-                  />
-                  <Image
-                    src="/trustmd-tree.png"
-                    alt="TrustMD Logo"
-                    w={{ base: 30, sm: 40 }}
-                    h={{ base: 30, sm: 40 }}
-                    hiddenFrom="sm"
-                  />
+                  <Box ml={5} visibleFrom="sm">
+                    <Center>
+                      <IconChartDots3
+                        color={theme.colors['irene-orange'][4]}
+                        size={50}
+                        stroke={1.4}
+                      />
+                    </Center>
+                  </Box>
+                  <Box hiddenFrom="sm">
+                    <Center>
+                      <IconChartDots3
+                        color={theme.colors['irene-orange'][4]}
+                        size={35}
+                        stroke={1.7}
+                      />
+                    </Center>
+                  </Box>
+
                   <Group gap={0}>
-                    <Text size="xl" c="white" style={{ fontFamily: 'TrustMDFont' }} hiddenFrom="sm">
-                      TRUST
+                    <Text size="1.7rem" c="white" className={bioRhyme.className}>
+                      I
                     </Text>
                     <Text
-                      size="xl"
-                      c={theme.colors['trust-md-light-blue'][4]}
-                      style={{ fontFamily: 'TrustMDFont' }}
-                      hiddenFrom="sm"
+                      size="1.7rem"
+                      c={theme.colors['irene-orange'][4]}
+                      className={bioRhyme.className}
                     >
-                      MD
+                      Re
+                    </Text>
+                    <Text size="1.7rem" c="white" className={bioRhyme.className}>
+                      NE
                     </Text>
                   </Group>
                 </Group>
@@ -112,7 +125,6 @@ export function HomeNavBar({ children }: { children: any }) {
       </AppShell.Navbar>
 
       <AppShell.Main>
-        <Space h="sm" />
         {children}
         <Space h="sm" hiddenFrom="sm" />
       </AppShell.Main>

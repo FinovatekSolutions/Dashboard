@@ -6,10 +6,10 @@
   color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-white));
 
   @mixin hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(255, 255, 255, 0.09);
 
     &:hover {
-      color: #44c5f8;
+      color: #ff533d;
     }
   }
 }
