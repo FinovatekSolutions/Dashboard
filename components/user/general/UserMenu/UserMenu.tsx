@@ -106,7 +106,7 @@ export function UserMenu({ fullWidth = false, closeDrawer }: UserMenuProps) {
 
         <Menu.Item
           onClick={async () => {
-            await signOut();
+            await signOut({ callbackUrl: '/' });
             if (closeDrawer) closeDrawer();
           }}
           leftSection={<IconLogout style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
