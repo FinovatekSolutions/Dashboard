@@ -47,6 +47,7 @@ export default function HeroText() {
           <HomeSearchInput />
         </Center>
         <Space h="xl" />
+        <Space h="sm" />
         <Text
           c="white"
           size="24px"
