@@ -9,27 +9,32 @@ import {
   rem,
   useMantineTheme,
 } from '@mantine/core';
+import Link from 'next/link';
 import { IconSearch, IconMapPin, IconCalendarMonth, IconGraph } from '@tabler/icons-react';
 import classes from './FeaturesCards.module.css';
 
 const mockdata = [
   {
     title: 'Browse',
+    link: '/browse',
     description: 'Search case studies in the database and apply different filters.',
     icon: IconSearch,
   },
   {
     title: 'Map',
+    link: '/map',
     description: 'Select filters for the documents and show the locations of it in a map.',
     icon: IconMapPin,
   },
   {
     title: 'Timeline',
+    link: '/timeline',
     description: 'Select document to visualize the timeline of it.',
     icon: IconCalendarMonth,
   },
   {
     title: 'Graph',
+    link: '/graph',
     description: 'Select filters and view a X vs Y plot to visualize the correlation.',
     icon: IconGraph,
   },
@@ -38,7 +43,15 @@ const mockdata = [
 export function FeaturesCards() {
   const theme = useMantineTheme();
   const features = mockdata.map((feature) => (
-    <Card key={feature.title} shadow="md" radius="md" className={classes.card} padding="xl">
+    <Card
+      key={feature.title}
+      component={Link}
+      href={feature.link}
+      shadow="md"
+      radius="md"
+      className={classes.card}
+      padding="xl"
+    >
       <feature.icon
         style={{ width: rem(50), height: rem(50) }}
         stroke={2}
