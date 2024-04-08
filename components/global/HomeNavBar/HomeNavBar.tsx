@@ -5,17 +5,18 @@ import {
   Burger,
   Group,
   rem,
-  Space,
   UnstyledButton,
   useMantineTheme,
   Text,
   Anchor,
   Box,
   Center,
+  Button,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Link from 'next/link';
 import { IconChartDots3 } from '@tabler/icons-react';
+import { signIn, useSession } from 'next-auth/react';
 
 import classes from './HomeNavBar.module.css';
 
@@ -23,6 +24,7 @@ import { UserMenu } from '@/components/user/general/UserMenu/UserMenu';
 import { bioRhyme } from '@/lib/utils/fonts';
 
 export function HomeNavBar({ children }: { children: any }) {
+  const { data: session } = useSession();
   const theme = useMantineTheme();
   const [opened, { toggle, close }] = useDisclosure();
 
@@ -114,7 +116,18 @@ export function HomeNavBar({ children }: { children: any }) {
                 {renderLinks}
               </Group>
             </Group>
-            <UserMenu />
+            {session ? (
+              <UserMenu />
+            ) : (
+              <Button
+                variant="subtle"
+                size="md"
+                color={theme.colors.orange[7]}
+                onClick={() => signIn()}
+              >
+                Sign in
+              </Button>
+            )}
           </Group>
         </Group>
       </AppShell.Header>
