@@ -48,8 +48,8 @@ export function HomeNavBar({ children }: { children: any }) {
 
   return (
     <AppShell
-      header={{ height: { base: rem(60), sm: rem(90) } }}
-      navbar={{ width: 300, breakpoint: 'sm', collapsed: { desktop: true, mobile: !opened } }}
+      header={{ height: { base: rem(60), navSm: rem(90) } }}
+      navbar={{ width: 300, breakpoint: 'navSm', collapsed: { desktop: true, mobile: !opened } }}
       withBorder={false}
       styles={{
         header: {
@@ -70,7 +70,7 @@ export function HomeNavBar({ children }: { children: any }) {
             color={theme.colors.gray[2]}
             opened={opened}
             onClick={toggle}
-            hiddenFrom="sm"
+            hiddenFrom="navSm"
             size="sm"
           />
           <Group justify="space-between" style={{ flex: 1 }}>
@@ -78,12 +78,12 @@ export function HomeNavBar({ children }: { children: any }) {
             <Group>
               <Anchor href="/" component={Link} style={{ textDecoration: 'none' }}>
                 <Group gap={5}>
-                  <Box ml={5} visibleFrom="sm">
+                  <Box ml={5} visibleFrom="navSm">
                     <Center>
                       <IconChartDots3 color={theme.colors.orange[7]} size={50} stroke={1.4} />
                     </Center>
                   </Box>
-                  <Box hiddenFrom="sm">
+                  <Box hiddenFrom="navSm">
                     <Center>
                       <IconChartDots3 color={theme.colors.orange[7]} size={35} stroke={1.7} />
                     </Center>
@@ -110,7 +110,7 @@ export function HomeNavBar({ children }: { children: any }) {
                   </Group>
                 </Group>
               </Anchor>
-              <Group ml="xl" gap={0} visibleFrom="sm">
+              <Group ml="xl" gap={0} visibleFrom="navSm">
                 {renderLinks}
               </Group>
             </Group>
@@ -125,7 +125,7 @@ export function HomeNavBar({ children }: { children: any }) {
 
       <AppShell.Main>
         {children}
-        <Space h="sm" hiddenFrom="sm" />
+        <Space h="sm" hiddenFrom="navSm" />
       </AppShell.Main>
     </AppShell>
   );

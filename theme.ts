@@ -10,6 +10,7 @@ export const theme = createTheme({
     md: '64em',
     lg: '74em',
     xl: '90em',
+    navSm: '55em',
   },
   headings: { fontFamily: 'Inter, sans-serif' },
   colors: {
