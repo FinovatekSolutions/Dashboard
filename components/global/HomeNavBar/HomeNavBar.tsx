@@ -123,10 +123,7 @@ export function HomeNavBar({ children }: { children: any }) {
         {renderLinks}
       </AppShell.Navbar>
 
-      <AppShell.Main>
-        {children}
-        <Space h="sm" hiddenFrom="navSm" />
-      </AppShell.Main>
+      <AppShell.Main>{children}</AppShell.Main>
     </AppShell>
   );
 }
