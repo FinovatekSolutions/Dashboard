@@ -7,11 +7,13 @@ import {
   Group,
   Space,
   Divider,
+  Center,
 } from '@mantine/core';
 import { IconExternalLink } from '@tabler/icons-react';
 import { Dots } from './Dots';
 import classes from './HeroText.module.css';
 import { bioRhyme } from '@/lib/utils/fonts';
+import HomeSearchInput from '@/components/examples/HomeSearchInput/HomeSearchInput';
 
 export default function HeroText() {
   const theme = useMantineTheme();
@@ -40,6 +42,10 @@ export default function HeroText() {
           </Text>{' '}
           Network Extension
         </Title>
+        <Space h="xl" />
+        <Center>
+          <HomeSearchInput />
+        </Center>
         <Space h="xl" />
         <Text
           c="white"
