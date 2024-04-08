@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Paper, Text, Container, Center, Space, Alert } from '@mantine/core';
+import { Paper, Container, Center, Space, Alert } from '@mantine/core';
 import { ClientSafeProvider, signIn } from 'next-auth/react';
 import Image from 'next/image';
 import { IconInfoCircle } from '@tabler/icons-react';
