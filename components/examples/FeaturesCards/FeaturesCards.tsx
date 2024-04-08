@@ -29,7 +29,7 @@ const mockdata = [
   {
     title: 'Timeline',
     link: '/timeline',
-    description: 'Select document to visualize the timeline of it.',
+    description: 'Select a document to visualize its timeline.',
     icon: IconCalendarMonth,
   },
   {
