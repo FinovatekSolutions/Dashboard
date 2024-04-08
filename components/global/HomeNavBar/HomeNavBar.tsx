@@ -8,7 +8,6 @@ import {
   Space,
   UnstyledButton,
   useMantineTheme,
-  Image,
   Text,
   Anchor,
   Box,
@@ -51,12 +50,12 @@ export function HomeNavBar({ children }: { children: any }) {
       withBorder={false}
       styles={{
         header: {
-          backgroundColor: theme.colors['irene-dark-blue'][6],
+          backgroundColor: theme.colors['irene-dark-blue'][9],
           marginBottom: '12px',
           boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
         },
         navbar: {
-          backgroundColor: theme.colors['irene-dark-blue'][6],
+          backgroundColor: theme.colors['irene-dark-blue'][9],
           borderTop: `1px solid ${theme.colors.gray[7]}`, // Change '#FF5733' to your desired border color
         },
       }}
@@ -77,17 +76,13 @@ export function HomeNavBar({ children }: { children: any }) {
                 <Group gap={5}>
                   <Box ml={5} visibleFrom="sm">
                     <Center>
-                      <IconChartDots3
-                        color={theme.colors['irene-orange'][4]}
-                        size={50}
-                        stroke={1.4}
-                      />
+                      <IconChartDots3 color={theme.colors.orange[7]} size={50} stroke={1.4} />
                     </Center>
                   </Box>
                   <Box hiddenFrom="sm">
                     <Center>
                       <IconChartDots3
-                        color={theme.colors['irene-orange'][4]}
+                        color={theme.colors.orange[7]}
                         size={35}
                         stroke={1.7}
                       />
@@ -100,7 +95,11 @@ export function HomeNavBar({ children }: { children: any }) {
                     </Text>
                     <Text
                       size="1.7rem"
-                      c={theme.colors['irene-orange'][4]}
+                      variant="gradient"
+                      gradient={{
+                        from: theme.colors['irene-orange'][4],
+                        to: theme.colors.yellow[6],
+                      }}
                       className={bioRhyme.className}
                     >
                       Re

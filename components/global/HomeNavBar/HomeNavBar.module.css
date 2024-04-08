@@ -9,7 +9,17 @@
     background-color: rgba(255, 255, 255, 0.09);
 
     &:hover {
-      color: #ff533d;
+      color: var(--mantine-color-orange-7);
     }
   }
+}
+
+.icongradient {
+  /* Define your gradient here */
+  background-image: linear-gradient(to right, #ff4c36, #facd48);
+
+  /* Necessary styles for the gradient mask */
+  display: inline-block;
+  -webkit-mask-size: cover;
+  mask-size: cover;
 }
