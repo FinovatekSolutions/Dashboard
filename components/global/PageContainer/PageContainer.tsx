@@ -16,7 +16,7 @@ export function PageContainer({ children, ...props }: PageContainerProps) {
           w={{ base: '97%' }}
           maw={`${theme.breakpoints.lg}`}
           style={{
-            backgroundColor: theme.colors['irene-dark-blue'][6],
+            backgroundColor: theme.colors['irene-dark-blue'][9],
           }}
           {...props}
         >
