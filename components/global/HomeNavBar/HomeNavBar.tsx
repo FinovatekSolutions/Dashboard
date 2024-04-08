@@ -56,6 +56,7 @@ export function HomeNavBar({ children }: { children: any }) {
       styles={{
         header: {
           backdropFilter: 'blur(10px)', // Apply a blur effect
+          WebkitBackdropFilter: 'blur(10px)', // For Safari
           backgroundColor: 'rgba(15, 22, 38, 0.8)', // Transparent white background
           marginBottom: '12px',
           boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
