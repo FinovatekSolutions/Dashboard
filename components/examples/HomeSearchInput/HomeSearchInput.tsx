@@ -1,11 +1,9 @@
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from '@mantine/form';
 import { Box, rem, TextInput } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
 
 export default function HomeSearchInput() {
-  const [inputValue, setInputValue] = useState('');
   const router = useRouter();
   const form = useForm({
     initialValues: {
