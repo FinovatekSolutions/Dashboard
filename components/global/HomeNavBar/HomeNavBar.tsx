@@ -28,7 +28,10 @@ export function HomeNavBar({ children }: { children: any }) {
 
   const navLinks = [
     { href: '/', label: 'Home' },
-    { href: '/clients', label: 'Clients' },
+    { href: '/browse', label: 'Browse' },
+    { href: '/map', label: 'Map' },
+    { href: '/timeline', label: 'Timeline' },
+    { href: '/graph', label: 'Graph' },
   ];
 
   const renderLinks = navLinks.map((link) => (
@@ -50,7 +53,8 @@ export function HomeNavBar({ children }: { children: any }) {
       withBorder={false}
       styles={{
         header: {
-          backgroundColor: theme.colors['irene-dark-blue'][9],
+          backdropFilter: 'blur(10px)', // Apply a blur effect
+          backgroundColor: 'rgba(15, 22, 38, 0.8)', // Transparent white background
           marginBottom: '12px',
           boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
         },
@@ -81,11 +85,7 @@ export function HomeNavBar({ children }: { children: any }) {
                   </Box>
                   <Box hiddenFrom="sm">
                     <Center>
-                      <IconChartDots3
-                        color={theme.colors.orange[7]}
-                        size={35}
-                        stroke={1.7}
-                      />
+                      <IconChartDots3 color={theme.colors.orange[7]} size={35} stroke={1.7} />
                     </Center>
                   </Box>
 
