@@ -36,17 +36,9 @@ export function AuthenticationTitle({ providers }: LoginClientProps) {
           radius="md"
           style={{ backgroundColor: '#FFFFFF' }}
         >
-          <Space h="xl" />
           <Center>
-            <Image
-              src="/trustmd-last-logo.png"
-              alt="TrustMD Logo"
-              layout="responsive"
-              width={390}
-              height={106}
-            />
+            <Image src="/irene_logo.png" alt="IReNE Logo" width={200} height={200} />
           </Center>
-          <Space h="xl" />
           {providers &&
             Object.values(providers).map((provider) => (
               <div key={provider.name}>
@@ -57,19 +49,16 @@ export function AuthenticationTitle({ providers }: LoginClientProps) {
                       mt="xl"
                       size="md"
                       variant="outline"
+                      color="black"
                       loading={loading}
                       onClick={() => handleSignIn(provider.id)}
                     >
-                      Sign in with Google
+                      Sign in with UPR
                     </GoogleButton>
                   </Center>
                 )}
               </div>
             ))}
-          <Space h="xl" />
-          <Text c="dimmed" ta="center">
-            Finovatek Solutions 2024
-          </Text>
         </Paper>
         <Space h="md" />
         {error === 'AccessDenied' ? (
