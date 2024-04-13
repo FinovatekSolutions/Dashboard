@@ -4696,41 +4696,41 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-table@npm:8.12.0":
-  version: 8.12.0
-  resolution: "@tanstack/react-table@npm:8.12.0"
+"@tanstack/react-table@npm:8.15.0":
+  version: 8.15.0
+  resolution: "@tanstack/react-table@npm:8.15.0"
   dependencies:
-    "@tanstack/table-core": "npm:8.12.0"
+    "@tanstack/table-core": "npm:8.14.0"
   peerDependencies:
-    react: ">=16"
-    react-dom: ">=16"
-  checksum: 9692fcb23779cc457f74c395b1f79dc700eae246315014879c3a312275a11c8e49fd14a16a122843b8eb14f6f1b71c8fb648ba7fec300806be6d589d7c902c21
+    react: ">=16.8"
+    react-dom: ">=16.8"
+  checksum: fa82e413d66127090b33ff4a8e13cbad275bc3c3295c37031a7cccd5fa881ee36fa627c2b7a65300cb0c0e889fca6055939802776f2df8a997533d71686fde98
   languageName: node
   linkType: hard
 
-"@tanstack/react-virtual@npm:3.1.2":
-  version: 3.1.2
-  resolution: "@tanstack/react-virtual@npm:3.1.2"
+"@tanstack/react-virtual@npm:3.2.0":
+  version: 3.2.0
+  resolution: "@tanstack/react-virtual@npm:3.2.0"
   dependencies:
-    "@tanstack/virtual-core": "npm:3.1.2"
+    "@tanstack/virtual-core": "npm:3.2.0"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 4879bdaf19273bd53600109d544629c094caebec78cb8cd76e97135a084942badbfef6d71f6405dfcafde502a7838cd85c6de2fbb88d656a3bec835fa763e546
+  checksum: e736cfa35a6381a2dfcf3f2aa29e07cd842a1ee586aa88c4851dea1c5887a6d4c262f6cbf87d8aad668e137a14612a5f1197793d222d1233d70764f2614ef164
   languageName: node
   linkType: hard
 
-"@tanstack/table-core@npm:8.12.0":
-  version: 8.12.0
-  resolution: "@tanstack/table-core@npm:8.12.0"
-  checksum: 3300b37dc73e8959718d73ad7a981c5c8e1561c7b1f4ee6c86f056be49d2d20571808cacfc281801b2eb8fb9ead93165a71f933bc209e939d2ca4bd6556bc0a5
+"@tanstack/table-core@npm:8.14.0":
+  version: 8.14.0
+  resolution: "@tanstack/table-core@npm:8.14.0"
+  checksum: 1ace39fd500c32f110512c4ba519d7c0e3c57d3b4f353e114d1ec12d069265678fb37b9063cfcfe1cb1fb35f57959a6e2536914093b0b33d3aef9861be32b117
   languageName: node
   linkType: hard
 
-"@tanstack/virtual-core@npm:3.1.2":
-  version: 3.1.2
-  resolution: "@tanstack/virtual-core@npm:3.1.2"
-  checksum: edba704b678b489cca773a96dba3daa04da80cd1f6ff3f606293ed4f2f273d8a571e08d5b9aa218cf03e3d160b8ee031506e8ee2ee6c43164aafd9f7a6c752c3
+"@tanstack/virtual-core@npm:3.2.0":
+  version: 3.2.0
+  resolution: "@tanstack/virtual-core@npm:3.2.0"
+  checksum: 04e14e238bd3246d15990b93a11f4986fe8168fbe3cec9e631adaf0cf17d1a9eed6e939f7594bae959ceeb4d16e6e58189e2c1a787c2feea7f5f5b4269a17229
   languageName: node
   linkType: hard
 
@@ -11849,7 +11849,7 @@ __metadata:
     jest: "npm:^29.7.0"
     jest-environment-jsdom: "npm:^29.7.0"
     mantine-form-zod-resolver: "npm:^1.1.0"
-    mantine-react-table: "npm:^2.0.0-beta.0"
+    mantine-react-table: "npm:^2.0.0-beta.1"
     next: "npm:14.0.1"
     next-auth: "npm:^4.24.5"
     node-fetch: "npm:^3.3.2"
@@ -11872,23 +11872,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"mantine-react-table@npm:^2.0.0-beta.0":
-  version: 2.0.0-beta.0
-  resolution: "mantine-react-table@npm:2.0.0-beta.0"
+"mantine-react-table@npm:^2.0.0-beta.1":
+  version: 2.0.0-beta.1
+  resolution: "mantine-react-table@npm:2.0.0-beta.1"
   dependencies:
     "@tanstack/match-sorter-utils": "npm:8.11.8"
-    "@tanstack/react-table": "npm:8.12.0"
-    "@tanstack/react-virtual": "npm:3.1.2"
+    "@tanstack/react-table": "npm:8.15.0"
+    "@tanstack/react-virtual": "npm:3.2.0"
   peerDependencies:
-    "@mantine/core": ^7.5
-    "@mantine/dates": ^7.5
-    "@mantine/hooks": ^7.5
+    "@mantine/core": ^7.6
+    "@mantine/dates": ^7.6
+    "@mantine/hooks": ^7.6
     "@tabler/icons-react": ">=2.23.0"
     clsx: ">=2"
     dayjs: ">=1.11"
     react: ">=18.0"
     react-dom: ">=18.0"
-  checksum: a3a04a5a1ba77f3d84c663ae95c8726b2bea73df6181d2948f48d4cf2f4254edc50422fdce7ef999dbdd3c9a0e7386292b0cba94f7381c207e3b8a8b2c51098c
+  checksum: 76324e752bddb9eb41b5f1e4dda63d4e2436a11fb17b13ea118a40d6c292edd218dcdcedd44627019f326f97afc309b88e75fef4db2c52ea2afb0a3c8cae1f85
   languageName: node
   linkType: hard
 

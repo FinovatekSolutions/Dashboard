@@ -39,7 +39,7 @@
     "clsx": "^2.1.0",
     "dayjs": "^1.11.10",
     "mantine-form-zod-resolver": "^1.1.0",
-    "mantine-react-table": "^2.0.0-beta.0",
+    "mantine-react-table": "^2.0.0-beta.1",
     "next": "14.0.1",
     "next-auth": "^4.24.5",
     "node-fetch": "^3.3.2",
