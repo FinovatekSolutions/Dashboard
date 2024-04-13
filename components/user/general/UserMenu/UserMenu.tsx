@@ -71,9 +71,9 @@ export function UserMenu({ fullWidth = false, closeDrawer }: UserMenuProps) {
             <IconLayoutDashboard style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
           }
           component={Link}
-          href="/my-reviews"
+          href="/my-documents"
         >
-          My Reviews
+          My Documents
         </Menu.Item>
         <Menu.Divider />
         <Menu.Label display={getPermissionQuery.data?.role !== Role.ADMIN ? 'none' : undefined}>
