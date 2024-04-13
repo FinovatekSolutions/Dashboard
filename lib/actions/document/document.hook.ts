@@ -1,59 +1,48 @@
 import type { UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { Prisma, Client, Review, User } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
 
 import {
-  getClients,
-  getClientById,
-  createClient,
-  updateClient,
-  removeClient,
-} from '@/lib/actions/client';
-import { onSuccessCallback, onErrorCallback } from '@/lib/utils/types';
+  getDocuments,
+  getFullDocumentById,
+  createDocument,
+  updateDocument,
+  removeDocument,
+} from '@/lib/actions/document';
+import {
+  onSuccessCallback,
+  onErrorCallback,
+  DocumentDetails,
+  FullDocument,
+} from '@/lib/utils/types';
 
-const getClientsQueryKey = 'getClients';
-const getClientByIdQueryKey = 'getClientById';
+const getDocumentsQueryKey = 'getDocuments';
+const getDocumentByIdQueryKey = 'getDocumentById';
 
 // Queries:
-export function useGetClients(): UseQueryResult<Client[]> {
-  return useQuery<Client[]>({
-    queryKey: [getClientsQueryKey],
-    queryFn: () => getClients(),
-  } satisfies UseQueryOptions<Client[]>);
+export function useGetDocuments(): UseQueryResult<DocumentDetails[]> {
+  return useQuery<DocumentDetails[]>({
+    queryKey: [getDocumentsQueryKey],
+    queryFn: () => getDocuments(),
+  } satisfies UseQueryOptions<DocumentDetails[]>);
 }
 
-// prettier-ignore
-export function useGetClientById(clientId: string): UseQueryResult<
-  | (Client & {
-      reviews: (Review & {
-        user: User;
-      })[];
-    })
-  | null
-> {
-  return useQuery<(Client & {
-    reviews: (Review & {
-      user: User;
-    })[];
-  }) | null>({
-    queryKey: [getClientByIdQueryKey, clientId], // Unique query key for each client
-    queryFn: () => getClientById(clientId),
-    enabled: !!clientId, // Only fetch if clientId is present
-  } satisfies UseQueryOptions<(Client & {
-    reviews: (Review & {
-      user: User;
-    })[];
-  }) | null>);
+export function useGetFullDocumentById(documentId: string): UseQueryResult<FullDocument | null> {
+  return useQuery<FullDocument | null>({
+    queryKey: [getDocumentByIdQueryKey, documentId],
+    queryFn: () => getFullDocumentById(documentId),
+    enabled: !!documentId,
+  } satisfies UseQueryOptions<FullDocument | null>);
 }
 
 // Mutations:
-export function useCreateClient(onSuccessCb?: onSuccessCallback, onErrorCb?: onErrorCallback) {
+export function useCreateDocument(onSuccessCb?: onSuccessCallback, onErrorCb?: onErrorCallback) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (input: Prisma.ClientCreateInput) => createClient(input),
+    mutationFn: async (input: Prisma.DocumentCreateInput) => createDocument(input),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [getClientsQueryKey] });
+      queryClient.invalidateQueries({ queryKey: [getDocumentsQueryKey] });
       if (onSuccessCb) {
         onSuccessCb(data);
       }
@@ -66,47 +55,50 @@ export function useCreateClient(onSuccessCb?: onSuccessCallback, onErrorCb?: onE
   });
 }
 
-export function useUpdateClient(onSuccessCb?: onSuccessCallback, onErrorCb?: onErrorCallback) {
+export function useUpdateDocument(onSuccessCb?: onSuccessCallback, onErrorCb?: onErrorCallback) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (input: Prisma.ClientUpdateInput) => updateClient(input),
-    onMutate: async (updatedClient) => {
+    mutationFn: async (input: Prisma.DocumentUpdateInput) => updateDocument(input),
+    onMutate: async (updatedDocument) => {
       // Cancel any outgoing refetches
-      await queryClient.cancelQueries({ queryKey: [getClientsQueryKey] });
-      await queryClient.cancelQueries({ queryKey: [getClientByIdQueryKey, updatedClient.id] });
+      await queryClient.cancelQueries({ queryKey: [getDocumentByIdQueryKey, updatedDocument.id] });
 
       // Snapshot the previous value
-      const previousClients = queryClient.getQueryData([getClientsQueryKey]);
-      const previousClientById = queryClient.getQueryData([
-        getClientByIdQueryKey,
-        updatedClient.id,
+      const previousDocumentById = queryClient.getQueryData([
+        getDocumentByIdQueryKey,
+        updatedDocument.id,
       ]);
 
-      // Optimistically update to the new value
-      queryClient.setQueryData([getClientsQueryKey], (old: Client[]) =>
-        old.map((client) =>
-          client.id === updatedClient.id ? { ...client, ...updatedClient } : client
-        )
-      );
-      queryClient.setQueryData([getClientByIdQueryKey, updatedClient.id], updatedClient);
+      // If there's existing review data, merge it with the updates
+      const mergedDocument = previousDocumentById
+        ? {
+            ...previousDocumentById,
+            ...updatedDocument,
+            // If there are nested objects you need to merge them individually
+            // For example, if 'user' is a nested object and you only want to update 'user.name', you'd do:
+            // user: { ...previousReviewById.user, ...updatedReview.user },
+          }
+        : updatedDocument; // Fallback to updatedReview directly if no previous data
 
-      return { previousClients, previousClientById };
+      // Optimistically update to the new value
+      queryClient.setQueryData([getDocumentByIdQueryKey, updatedDocument.id], mergedDocument);
+
+      return { previousDocumentById };
     },
-    onError: (error, updatedClient, context) => {
+    onError: (error, updatedDocument, context) => {
       // Rollback on error
-      queryClient.setQueryData([getClientsQueryKey], context?.previousClients);
       queryClient.setQueryData(
-        [getClientByIdQueryKey, updatedClient.id],
-        context?.previousClientById
+        [getDocumentByIdQueryKey, updatedDocument.id],
+        context?.previousDocumentById
       );
       if (onErrorCb) {
         onErrorCb(error);
       }
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [getClientsQueryKey] });
-      queryClient.invalidateQueries({ queryKey: [getClientByIdQueryKey, data.id] });
+      queryClient.invalidateQueries({ queryKey: [getDocumentsQueryKey] });
+      queryClient.invalidateQueries({ queryKey: [getDocumentByIdQueryKey, data.id] });
       if (onSuccessCb) {
         onSuccessCb(data);
       }
@@ -114,14 +106,14 @@ export function useUpdateClient(onSuccessCb?: onSuccessCallback, onErrorCb?: onE
   });
 }
 
-export function useRemoveClient(onSuccessCb?: onSuccessCallback, onErrorCb?: onErrorCallback) {
+export function useRemoveDocument(onSuccessCb?: onSuccessCallback, onErrorCb?: onErrorCallback) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (clientId: string) => removeClient(clientId),
+    mutationFn: (documentId: string) => removeDocument(documentId),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [getClientsQueryKey] });
-      queryClient.invalidateQueries({ queryKey: [getClientByIdQueryKey, data.id] });
+      queryClient.invalidateQueries({ queryKey: [getDocumentsQueryKey] });
+      queryClient.invalidateQueries({ queryKey: [getDocumentByIdQueryKey, data.id] });
       if (onSuccessCb) {
         onSuccessCb();
       }
