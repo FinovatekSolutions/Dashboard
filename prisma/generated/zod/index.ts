@@ -703,7 +703,7 @@ export const TownSelectSchema: z.ZodType<Prisma.TownSelect> = z.object({
 //------------------------------------------------------
 
 export const EventIncludeSchema: z.ZodType<Prisma.EventInclude> = z.object({
-  Document: z.union([z.boolean(),z.lazy(() => DocumentArgsSchema)]).optional(),
+  document: z.union([z.boolean(),z.lazy(() => DocumentArgsSchema)]).optional(),
 }).strict()
 
 export const EventArgsSchema: z.ZodType<Prisma.EventDefaultArgs> = z.object({
@@ -718,7 +718,7 @@ export const EventSelectSchema: z.ZodType<Prisma.EventSelect> = z.object({
   documentId: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
-  Document: z.union([z.boolean(),z.lazy(() => DocumentArgsSchema)]).optional(),
+  document: z.union([z.boolean(),z.lazy(() => DocumentArgsSchema)]).optional(),
 }).strict()
 
 // DOCUMENT
@@ -1658,7 +1658,7 @@ export const EventWhereInputSchema: z.ZodType<Prisma.EventWhereInput> = z.object
   documentId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
-  Document: z.union([ z.lazy(() => DocumentRelationFilterSchema),z.lazy(() => DocumentWhereInputSchema) ]).optional(),
+  document: z.union([ z.lazy(() => DocumentRelationFilterSchema),z.lazy(() => DocumentWhereInputSchema) ]).optional(),
 }).strict();
 
 export const EventOrderByWithRelationInputSchema: z.ZodType<Prisma.EventOrderByWithRelationInput> = z.object({
@@ -1668,7 +1668,7 @@ export const EventOrderByWithRelationInputSchema: z.ZodType<Prisma.EventOrderByW
   documentId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
-  Document: z.lazy(() => DocumentOrderByWithRelationInputSchema).optional()
+  document: z.lazy(() => DocumentOrderByWithRelationInputSchema).optional()
 }).strict();
 
 export const EventWhereUniqueInputSchema: z.ZodType<Prisma.EventWhereUniqueInput> = z.object({
@@ -1684,7 +1684,7 @@ export const EventWhereUniqueInputSchema: z.ZodType<Prisma.EventWhereUniqueInput
   documentId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
-  Document: z.union([ z.lazy(() => DocumentRelationFilterSchema),z.lazy(() => DocumentWhereInputSchema) ]).optional(),
+  document: z.union([ z.lazy(() => DocumentRelationFilterSchema),z.lazy(() => DocumentWhereInputSchema) ]).optional(),
 }).strict());
 
 export const EventOrderByWithAggregationInputSchema: z.ZodType<Prisma.EventOrderByWithAggregationInput> = z.object({
@@ -2865,7 +2865,7 @@ export const EventCreateInputSchema: z.ZodType<Prisma.EventCreateInput> = z.obje
   date: z.coerce.date(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
-  Document: z.lazy(() => DocumentCreateNestedOneWithoutEventsInputSchema)
+  document: z.lazy(() => DocumentCreateNestedOneWithoutEventsInputSchema)
 }).strict();
 
 export const EventUncheckedCreateInputSchema: z.ZodType<Prisma.EventUncheckedCreateInput> = z.object({
@@ -2883,7 +2883,7 @@ export const EventUpdateInputSchema: z.ZodType<Prisma.EventUpdateInput> = z.obje
   date: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-  Document: z.lazy(() => DocumentUpdateOneRequiredWithoutEventsNestedInputSchema).optional()
+  document: z.lazy(() => DocumentUpdateOneRequiredWithoutEventsNestedInputSchema).optional()
 }).strict();
 
 export const EventUncheckedUpdateInputSchema: z.ZodType<Prisma.EventUncheckedUpdateInput> = z.object({

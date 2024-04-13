@@ -226,7 +226,7 @@ model Event {
   title String
   date  DateTime
 
-  Document   Document @relation(fields: [documentId], references: [id])
+  document   Document @relation(fields: [documentId], references: [id])
   documentId String
 
   createdAt DateTime @default(now())
