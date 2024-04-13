@@ -9,46 +9,15 @@ body {
   font-style: normal;
 }
 
-#wazzapp {
-  /* This is an empty ruleset that will be ignored */
-  content: '';
-}
+
 
 div.MRT_GlobalFilterTextInput-module_collapse__v311d {
-  margin-left: -0.5em;
+  
+  width: 100%;
 }
 
-@media (min-width: 36em) {
-  #wazzapp {
-    /* border-color: green; */
-    width: 25em;
-  }
+.MRT_GlobalFilterTextInput-module_root__Xmcpv {
+  width: 100%; /*this is it goddamit*/
 }
 
-@media (min-width: 49em) {
-  #wazzapp {
-    /* border-color: blue; */
-    width: 38em;
-  }
-}
 
-@media (min-width: 62em) {
-  #wazzapp {
-    /* border-color: orange; */
-    width: 51em;
-  }
-}
-
-@media (min-width: 75em) {
-  #wazzapp {
-    /* border-color: purple; */
-    width: 64em;
-  }
-}
-
-@media (min-width: 88em) {
-  #wazzapp {
-    /* border-color: pink; */
-    width: 68em;
-  }
-}
