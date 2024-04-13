@@ -16,8 +16,8 @@ import {
   FullDocument,
 } from '@/lib/utils/types';
 
-const getDocumentsQueryKey = 'getDocuments';
-const getDocumentByIdQueryKey = 'getDocumentById';
+export const getDocumentsQueryKey = 'getDocuments';
+export const getDocumentByIdQueryKey = 'getDocumentById';
 
 // Queries:
 export function useGetDocuments(): UseQueryResult<DocumentDetails[]> {
