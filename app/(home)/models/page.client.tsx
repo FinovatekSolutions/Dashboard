@@ -33,8 +33,7 @@ export function ModelsClient(): ReactElement {
           onClick={() => getAllModelsQuery.refetch()}
           leftSection={<IconRefresh size={14} />}
           size="md"
-          variant="outline"
-          color="white"
+          variant="default"
         >
           Refresh
         </Button>
