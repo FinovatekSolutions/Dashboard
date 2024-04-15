@@ -22,34 +22,33 @@ export function EditModelForm({ setOpened, modelId }: EditModelFormProps) {
   const [model, setModel] = useState<Model | null>(null);
   const [hasLoaded, setHasLoaded] = useState(false);
 
-  useEffect(() => {
-    if (getAllModelsQuery.data && getAllModelsQuery.isSuccess) {
-      const foundModel = getAllModelsQuery.data.find((m) => m.id === modelId);
-      setModel(foundModel ?? null);
-    }
-  }, [getAllModelsQuery.data, getAllModelsQuery.isSuccess, modelId]);
-
   const form = useForm({
     initialValues: {
-      name: model?.name || '',
+      name: '',
     },
     validate: zodResolver(ModelUpdateInputSchema),
   });
 
-  // Update form values when model data is set or changed
   useEffect(() => {
-    if (model && !hasLoaded) {
-      form.setValues({
-        name: model.name,
-      });
-      setHasLoaded(true);
+    if (getAllModelsQuery.data && getAllModelsQuery.isSuccess && !hasLoaded) {
+      const foundModel = getAllModelsQuery.data.find((m) => m.id === modelId);
+      if (foundModel) {
+        form.setValues({ name: foundModel.name });
+        setHasLoaded(true);
+      }
     }
-  }, [model, form, hasLoaded]);
+  }, [getAllModelsQuery.data, modelId, form, hasLoaded]);
+
+  useEffect(() => {
+    // This useEffect will ensure to reset the dirty state after the form values have been initially set
+    if (hasLoaded && form) {
+      form.resetDirty();
+    }
+  }, [hasLoaded]);
 
   const updateModelMutation = useUpdateModel(
-    // onSuccess callback
     () => {
-      form.reset();
+      form.reset(); // This will set the form back to initial values and reset dirty state
       notifications.update({
         id: 'model-update',
         color: 'teal',
@@ -61,7 +60,6 @@ export function EditModelForm({ setOpened, modelId }: EditModelFormProps) {
       });
       setOpened(false);
     },
-    // onError callback
     () => {
       notifications.update({
         id: 'model-update',
@@ -76,7 +74,6 @@ export function EditModelForm({ setOpened, modelId }: EditModelFormProps) {
   );
 
   const handleSubmit = async (values: Prisma.ModelUpdateInput) => {
-    // Show loading notification
     notifications.show({
       id: 'model-update',
       loading: true,
