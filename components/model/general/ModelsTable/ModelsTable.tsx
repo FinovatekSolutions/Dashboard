@@ -78,12 +78,11 @@ export const ModelsTable = () => {
     },
     mantineSearchTextInputProps: {
       placeholder: `Search ${getAllModelsQuery?.data?.length || 0} rows`,
-      id: 'wazzapp',
       variant: 'filled',
       size: 'sm',
     },
     mantineTopToolbarProps: {
-      style: { marginBottom: 5 },
+      style: { marginBottom: 0 },
     },
     mantinePaperProps: {
       shadow: 'none',
@@ -93,7 +92,18 @@ export const ModelsTable = () => {
       striped: true,
       withColumnBorders: true,
     },
-
+    displayColumnDefOptions: {
+      'mrt-row-actions': {
+        header: 'Actions',
+        size: 20,
+        grow: false,
+      },
+    },
+    paginationDisplayMode: 'pages',
+    mantinePaginationProps: {
+      radius: 'sm',
+      size: 'md',
+    },
     renderRowActionMenuItems: ({ row }) => (
       <>
         <Menu.Item
