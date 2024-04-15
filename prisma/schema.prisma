@@ -262,6 +262,13 @@ model Document {
   updatedAt DateTime @updatedAt
 }
 
+model Model {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 // DO NOT EDIT BELOW, USED FOR AUTHENTICATION
 model Account {
   id                String  @id @default(cuid())
