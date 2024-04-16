@@ -1,0 +1,131 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { Button, TextInput, Group, Box, useMantineTheme, Stack, Flex, Text } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
+import { useForm } from '@mantine/form';
+import { zodResolver } from 'mantine-form-zod-resolver';
+import { IconCheck, IconX } from '@tabler/icons-react';
+import type { {{pascalCase singular}} } from '@prisma/client';
+
+import { {{pascalCase singular}}UpdateInputSchema } from '@prisma/zod';
+import { useGetAll{{pascalCase plural}}, useRemove{{pascalCase singular}} } from '@/lib/actions/{{camelCase singular}}';
+
+interface Delete{{pascalCase singular}}FormProps {
+  setOpened: (opened: boolean) => void;
+  {{camelCase singular}}Id: string;
+}
+
+export function Delete{{pascalCase singular}}Form({ setOpened, {{camelCase singular}}Id }: Delete{{pascalCase singular}}FormProps) {
+  const theme = useMantineTheme();
+  const getAll{{pascalCase plural}}Query = useGetAll{{pascalCase plural}}();
+  const [{{camelCase singular}}, set{{pascalCase singular}}] = useState<{{pascalCase singular}} | null>(null);
+  const [hasLoaded, setHasLoaded] = useState(false);
+
+  useEffect(() => {
+    if (getAll{{pascalCase plural}}Query.data && getAll{{pascalCase plural}}Query.isSuccess) {
+      const found{{pascalCase singular}} = getAll{{pascalCase plural}}Query.data.find((m) => m.id === {{camelCase singular}}Id);
+      set{{pascalCase singular}}(found{{pascalCase singular}} ?? null);
+    }
+  }, [getAll{{pascalCase plural}}Query.data, getAll{{pascalCase plural}}Query.isSuccess, {{camelCase singular}}Id]);
+
+  const form = useForm({
+    initialValues: {
+      firstName: {{camelCase singular}}?.firstName || '',
+      lastName: {{camelCase singular}}?.lastName || '',
+    },
+    validate: zodResolver({{pascalCase singular}}UpdateInputSchema),
+  });
+
+  // Update form values when {{singular}} data is set or changed
+  useEffect(() => {
+    if ({{camelCase singular}} && !hasLoaded) {
+      form.setValues({
+        firstName: {{camelCase singular}}.firstName,
+        lastName: {{camelCase singular}}.lastName,
+      });
+      setHasLoaded(true);
+    }
+  }, [{{camelCase singular}}, form, hasLoaded]);
+
+  const delete{{pascalCase singular}}Mutation = useRemove{{pascalCase singular}}(
+    // onSuccess callback
+    () => {
+      form.reset();
+      notifications.update({
+        id: '{{camelCase singular}}-delete',
+        color: 'teal',
+        title: '{{pascalCase singular}} was deleted',
+        message: 'The {{singular}} has been deleted successfully.',
+        icon: <IconCheck size={theme.fontSizes.md} />,
+        loading: false,
+        autoClose: 2000,
+      });
+      setOpened(false);
+    },
+    // onError callback
+    () => {
+      notifications.update({
+        id: '{{camelCase singular}}-delete',
+        color: 'red',
+        title: 'Failed to delete {{singular}}',
+        message: 'An error occurred. Please try again.',
+        icon: <IconX size={theme.fontSizes.md} />,
+        loading: false,
+        autoClose: 2000,
+      });
+    }
+  );
+
+  const handleSubmit = async () => {
+    // Show loading notification
+    notifications.show({
+      id: '{{camelCase singular}}-delete',
+      loading: true,
+      title: 'Deleting {{singular}}',
+      message: 'Please wait...',
+      autoClose: false,
+      withCloseButton: false,
+    });
+
+    delete{{pascalCase singular}}Mutation.mutate({{camelCase singular}}Id);
+  };
+
+  return (
+    <Box component="form" onSubmit={form.onSubmit(handleSubmit)}>
+      <Stack>
+        <Text c="darkred">
+          Are you sure you want to delete the following {{singular}}? This action cannot be undone.
+        </Text>
+        <Group grow>
+          <TextInput
+            readOnly
+            label="First Name"
+            placeholder="John"
+            pointer
+            {...form.getInputProps('firstName')}
+          />
+          <TextInput
+            readOnly
+            label="Last Name"
+            placeholder="Doe"
+            pointer
+            {...form.getInputProps('lastName')}
+          />
+        </Group>
+        <Flex direction={{ base: 'column', sm: 'row' }} justify="flex-end">
+          <Button
+            size="md"
+            style={{ minWidth: '200px' }}
+            variant="filled"
+            color="red"
+            mt={10}
+            type="submit"
+          >
+            Delete {{pascalCase singular}}
+          </Button>
+        </Flex>
+      </Stack>
+    </Box>
+  );
+}

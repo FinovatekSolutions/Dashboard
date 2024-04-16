@@ -1,0 +1,111 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { Button, TextInput, Group, Box, useMantineTheme, Stack, Flex } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
+import { useForm } from '@mantine/form';
+import { zodResolver } from 'mantine-form-zod-resolver';
+import { IconCheck, IconX } from '@tabler/icons-react';
+import type { Prisma } from '@prisma/client';
+
+import { {{pascalCase singular}}UpdateInputSchema } from '@prisma/zod';
+import { useGetAll{{pascalCase plural}}, useUpdate{{pascalCase singular}} } from '@/lib/actions/{{camelCase singular}}';
+
+interface Edit{{pascalCase singular}}FormProps {
+  setOpened: (opened: boolean) => void;
+  {{camelCase singular}}Id: string;
+}
+
+export function Edit{{pascalCase singular}}Form({ setOpened, {{camelCase singular}}Id }: Edit{{pascalCase singular}}FormProps) {
+  const theme = useMantineTheme();
+  const getAll{{pascalCase plural}}Query = useGetAll{{pascalCase plural}}();
+  const [hasLoaded, setHasLoaded] = useState(false);
+
+  const form = useForm({
+    initialValues: {
+      firstName: '',
+      lastName: '',
+    },
+    validate: zodResolver({{pascalCase singular}}UpdateInputSchema),
+  });
+
+  useEffect(() => {
+    if (getAll{{pascalCase plural}}Query.data && getAll{{pascalCase plural}}Query.isSuccess && !hasLoaded) {
+      const found{{pascalCase singular}} = getAll{{pascalCase plural}}Query.data.find((m) => m.id === {{camelCase singular}}Id);
+      if (found{{pascalCase singular}}) {
+        form.setValues({ firstName: found{{pascalCase singular}}.firstName, lastName: found{{pascalCase singular}}.lastName });
+        setHasLoaded(true);
+      }
+    }
+  }, [getAll{{pascalCase plural}}Query.data, {{camelCase singular}}Id, form, hasLoaded]);
+
+  useEffect(() => {
+    // This useEffect will ensure to reset the dirty state after the form values have been initially set
+    if (hasLoaded && form) {
+      form.resetDirty();
+    }
+  }, [hasLoaded]);
+
+  const update{{pascalCase singular}}Mutation = useUpdate{{pascalCase singular}}(
+    () => {
+      form.reset(); // This will set the form back to initial values and reset dirty state
+      notifications.update({
+        id: '{{camelCase singular}}-update',
+        color: 'teal',
+        title: '{{pascalCase singular}} was updated',
+        message: 'The {{singular}} has been updated successfully.',
+        icon: <IconCheck size={theme.fontSizes.md} />,
+        loading: false,
+        autoClose: 2000,
+      });
+      setOpened(false);
+    },
+    () => {
+      notifications.update({
+        id: '{{camelCase singular}}-update',
+        color: 'red',
+        title: 'Failed to update {{singular}}',
+        message: 'An error occurred. Please try again.',
+        icon: <IconX size={theme.fontSizes.md} />,
+        loading: false,
+        autoClose: 2000,
+      });
+    }
+  );
+
+  const handleSubmit = async (values: Prisma.{{pascalCase singular}}UpdateInput) => {
+    notifications.show({
+      id: '{{camelCase singular}}-update',
+      loading: true,
+      title: 'Updating {{singular}}',
+      message: 'Please wait...',
+      autoClose: false,
+      withCloseButton: false,
+    });
+
+    update{{pascalCase singular}}Mutation.mutate({ id: {{camelCase singular}}Id, ...values });
+  };
+
+  return (
+    <Box component="form" onSubmit={form.onSubmit(handleSubmit)}>
+      <Stack>
+        <Group grow>
+          <TextInput label="First Name" placeholder="John" {...form.getInputProps('firstName')} />
+          <TextInput label="Last Name" placeholder="Doe" {...form.getInputProps('lastName')} />
+        </Group>
+        <Flex direction={{ base: 'column', sm: 'row' }} justify="flex-end">
+          <Button
+            size="md"
+            style={{ minWidth: '200px' }}
+            variant="filled"
+            mt={10}
+            type="submit"
+            disabled={!form.isDirty()}
+          >
+            Update {{pascalCase singular}}
+          </Button>
+        </Flex>
+      </Stack>
+    </Box>
+  );
+}
