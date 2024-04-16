@@ -10,14 +10,11 @@ body {
 }
 
 
-
+/* classes necessary for the mantine table react's search bar to be 100% wide */
 div.MRT_GlobalFilterTextInput-module_collapse__v311d {
-  
   width: 100%;
 }
 
 .MRT_GlobalFilterTextInput-module_root__Xmcpv {
-  width: 100%; /*this is it goddamit*/
+  width: 100%; 
 }
-
-

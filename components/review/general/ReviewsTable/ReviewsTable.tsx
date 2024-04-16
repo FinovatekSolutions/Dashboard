@@ -3,7 +3,6 @@
 import { useEffect, useMemo } from 'react';
 import { MantineReactTable, useMantineReactTable, type MRT_ColumnDef } from 'mantine-react-table';
 import { notifications } from '@mantine/notifications';
-import clsx from 'clsx';
 
 import { useRouter } from 'next/navigation';
 import { ActionIcon, Flex, MantineProvider, Tooltip, useMantineTheme } from '@mantine/core';
