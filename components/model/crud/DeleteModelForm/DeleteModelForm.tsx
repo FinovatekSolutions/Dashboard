@@ -31,7 +31,8 @@ export function DeleteModelForm({ setOpened, modelId }: DeleteModelFormProps) {
 
   const form = useForm({
     initialValues: {
-      name: model?.name || '',
+      firstName: model?.firstName || '',
+      lastName: model?.lastName || '',
     },
     validate: zodResolver(ModelUpdateInputSchema),
   });
@@ -40,7 +41,8 @@ export function DeleteModelForm({ setOpened, modelId }: DeleteModelFormProps) {
   useEffect(() => {
     if (model && !hasLoaded) {
       form.setValues({
-        name: model.name,
+        firstName: model.firstName,
+        lastName: model.lastName,
       });
       setHasLoaded(true);
     }
@@ -98,10 +100,17 @@ export function DeleteModelForm({ setOpened, modelId }: DeleteModelFormProps) {
         <Group grow>
           <TextInput
             readOnly
-            label="Name"
+            label="First Name"
             placeholder="John"
             pointer
-            {...form.getInputProps('name')}
+            {...form.getInputProps('firstName')}
+          />
+          <TextInput
+            readOnly
+            label="Last Name"
+            placeholder="Doe"
+            pointer
+            {...form.getInputProps('lastName')}
           />
         </Group>
         <Flex direction={{ base: 'column', sm: 'row' }} justify="flex-end">

@@ -19,10 +19,14 @@ export function NewModelForm({ setOpened }: NewModelFormProps) {
 
   const form = useForm({
     initialValues: {
-      name: '',
+      firstName: '',
+      lastName: '',
     },
     validate: zodResolver(ModelCreateInputSchema),
   });
+
+  // Function to check if all fields are dirty
+  const allFieldsDirty = () => Object.keys(form.values).every((key) => form.isDirty(key));
 
   const createModelMutation = useCreateModel(
     // onSuccess callback
@@ -71,7 +75,8 @@ export function NewModelForm({ setOpened }: NewModelFormProps) {
     <Box component="form" onSubmit={form.onSubmit(handleSubmit)}>
       <Stack>
         <Group grow>
-          <TextInput label="Name" placeholder="John" {...form.getInputProps('name')} />
+          <TextInput label="First Name" placeholder="John" {...form.getInputProps('firstName')} />
+          <TextInput label="Last Name" placeholder="Doe" {...form.getInputProps('lastName')} />
         </Group>
 
         <Flex direction={{ base: 'column', sm: 'row' }} justify="flex-end">
@@ -81,7 +86,7 @@ export function NewModelForm({ setOpened }: NewModelFormProps) {
             variant="filled"
             mt={10}
             type="submit"
-            disabled={!form.isDirty()}
+            disabled={!allFieldsDirty()}
           >
             Add Model
           </Button>

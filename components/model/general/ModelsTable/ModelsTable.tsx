@@ -38,8 +38,12 @@ export const ModelsTable = () => {
   const columns = useMemo<MRT_ColumnDef<Model>[]>(
     () => [
       {
-        accessorKey: 'name', //access nested data with dot notation
-        header: 'Name',
+        accessorKey: 'firstName', //access nested data with dot notation
+        header: 'First Name',
+      },
+      {
+        accessorKey: 'lastName',
+        header: 'Last Name',
       },
       {
         header: 'Created On',

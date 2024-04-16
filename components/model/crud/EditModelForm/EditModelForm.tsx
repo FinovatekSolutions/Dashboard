@@ -24,7 +24,8 @@ export function EditModelForm({ setOpened, modelId }: EditModelFormProps) {
 
   const form = useForm({
     initialValues: {
-      name: '',
+      firstName: '',
+      lastName: '',
     },
     validate: zodResolver(ModelUpdateInputSchema),
   });
@@ -33,7 +34,7 @@ export function EditModelForm({ setOpened, modelId }: EditModelFormProps) {
     if (getAllModelsQuery.data && getAllModelsQuery.isSuccess && !hasLoaded) {
       const foundModel = getAllModelsQuery.data.find((m) => m.id === modelId);
       if (foundModel) {
-        form.setValues({ name: foundModel.name });
+        form.setValues({ firstName: foundModel.firstName, lastName: foundModel.lastName });
         setHasLoaded(true);
       }
     }
@@ -90,7 +91,8 @@ export function EditModelForm({ setOpened, modelId }: EditModelFormProps) {
     <Box component="form" onSubmit={form.onSubmit(handleSubmit)}>
       <Stack>
         <Group grow>
-          <TextInput label="Name" placeholder="John" {...form.getInputProps('name')} />
+          <TextInput label="First Name" placeholder="John" {...form.getInputProps('firstName')} />
+          <TextInput label="Last Name" placeholder="Doe" {...form.getInputProps('lastName')} />
         </Group>
         <Flex direction={{ base: 'column', sm: 'row' }} justify="flex-end">
           <Button
