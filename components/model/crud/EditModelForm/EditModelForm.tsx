@@ -6,7 +6,7 @@ import { notifications } from '@mantine/notifications';
 import { useForm } from '@mantine/form';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { IconCheck, IconX } from '@tabler/icons-react';
-import type { Model, Prisma } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
 
 import { ModelUpdateInputSchema } from '@prisma/zod';
 import { useGetAllModels, useUpdateModel } from '@/lib/actions/model';
@@ -19,7 +19,6 @@ interface EditModelFormProps {
 export function EditModelForm({ setOpened, modelId }: EditModelFormProps) {
   const theme = useMantineTheme();
   const getAllModelsQuery = useGetAllModels();
-  const [model, setModel] = useState<Model | null>(null);
   const [hasLoaded, setHasLoaded] = useState(false);
 
   const form = useForm({
