@@ -20,9 +20,9 @@ export function {{pascalCase plural}}Client(): ReactElement {
       </Title>
       {/* Container for the first two components */}
       <Flex
-        direction={{ base: 'column', sm: 'row' }}
+        direction=\{{ base: 'column', sm: 'row' }}
         justify="space-between"
-        style={{ gap: '16px' }} // Adjust the gap size as needed
+        style=\{{ gap: '16px' }} // Adjust the gap size as needed
         mt={16}
       >
         {/* Component 1 */}
@@ -41,7 +41,7 @@ export function {{pascalCase plural}}Client(): ReactElement {
 
       {/* Component 3 - Always below the first two */}
       <Divider my="md" color={theme.colors.dark[3]} />
-      <Box style={{ marginTop: '16px' }}>
+      <Box style=\{{ marginTop: '16px' }}>
         {/* Adjust the margin as needed */}
         <{{pascalCase plural}}Table />
       </Box>

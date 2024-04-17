@@ -40,7 +40,7 @@ const Delete{{pascalCase singular}}Button = ({ {{camelCase singular}}Id, ...prop
           </Title>
         }
       >
-        <Delete{{pascalCase singular}}Form {{camelCase singular}}Id={{camelCase singular}}Id setOpened={setOpened} />
+        <Delete{{pascalCase singular}}Form {{camelCase singular}}Id={{#bracket 1}}{{camelCase singular}}Id{{/bracket}} setOpened={setOpened} />
       </Modal>
     </>
   );

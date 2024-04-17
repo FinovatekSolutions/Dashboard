@@ -40,7 +40,7 @@ const Edit{{pascalCase singular}}Button = ({ {{camelCase singular}}Id, ...props 
           </Title>
         }
       >
-        <Edit{{pascalCase singular}}Form {{camelCase singular}}Id={{camelCase singular}}Id setOpened={setOpened} />
+        <Edit{{pascalCase singular}}Form {{camelCase singular}}Id={{#bracket 1}}{{camelCase singular}}Id{{/bracket}} setOpened={setOpened} />
       </Modal>
     </>
   );
