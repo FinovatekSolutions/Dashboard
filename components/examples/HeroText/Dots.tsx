@@ -1,18 +1,14 @@
-import { useMantineTheme } from '@mantine/core';
-
 export interface DotsProps extends React.ComponentPropsWithoutRef<'svg'> {
   size?: number;
   radius?: number;
 }
 
 export function Dots({ size = 185, radius = 2.5, ...others }: DotsProps) {
-  const theme = useMantineTheme();
-
   return (
     <svg
       aria-hidden
       xmlns="http://www.w3.org/2000/svg"
-      fill={theme.colors['irene-dark-blue'][8]}
+      fill="currentColor"
       viewBox="0 0 185 185"
       width={size}
       height={size}

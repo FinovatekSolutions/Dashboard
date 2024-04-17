@@ -6,20 +6,10 @@
   color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-white));
 
   @mixin hover {
-    background-color: rgba(255, 255, 255, 0.09);
+    background-color: rgba(255, 255, 255, 0.05);
 
     &:hover {
-      color: var(--mantine-color-orange-7);
+      color: #44c5f8;
     }
   }
-}
-
-.icongradient {
-  /* Define your gradient here */
-  background-image: linear-gradient(to right, #ff4c36, #facd48);
-
-  /* Necessary styles for the gradient mask */
-  display: inline-block;
-  -webkit-mask-size: cover;
-  mask-size: cover;
 }

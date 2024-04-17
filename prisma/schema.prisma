@@ -1,7 +1,7 @@
 datasource db {
   provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 generator client {
@@ -182,97 +182,7 @@ model Permission {
 
   role Role @default(USER)
 
-  uploadedDocuments Document[] @relation("DocumentUploader")
-  sharedDocuments   Document[] @relation("DocumentEditors")
-
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Infrastructure {
-  id   String @id @default(cuid())
-  name String
-
-  documents Document[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Damage {
-  id   String @id @default(cuid())
-  name String
-
-  documents Document[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Town {
-  id        String @id @default(cuid())
-  name      String
-  latitude  Float
-  longitude Float
-
-  documents Document[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Event {
-  id    String   @id @default(cuid())
-  title String
-  date  DateTime
-
-  document   Document @relation(fields: [documentId], references: [id])
-  documentId String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-enum Language {
-  English
-  Spanish
-}
-
-model Document {
-  id           String    @id @default(cuid())
-  title        String
-  description  String?
-  published    Boolean   @default(false)
-  locked       Boolean   @default(false)
-  incidentDate DateTime?
-  content      String?
-
-  language        Language         @default(English)
-  damages         Damage[]
-  infrastructures Infrastructure[]
-  towns           Town[]
-  events          Event[]
-
-  uploaderId String
-  uploader   Permission @relation("DocumentUploader", fields: [uploaderId], references: [id])
-
-  editors Permission[] @relation("DocumentEditors")
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Model {
-  id String @id @default(cuid())
-
-  /// @zod.string.min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" })
-  firstName String
-
-  /// @zod.string.min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" })
-  lastName String
-
-  createdAt DateTime @default(now())
-
   updatedAt DateTime @updatedAt
 }
 

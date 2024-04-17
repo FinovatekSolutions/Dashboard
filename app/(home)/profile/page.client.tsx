@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactElement } from 'react';
-import { Center, Divider, Paper, Space, Title, useMantineTheme } from '@mantine/core';
+import { Center, Divider, Space, Title, useMantineTheme } from '@mantine/core';
 import { PageContainer } from '@/components/global/PageContainer/PageContainer';
 import { UserProfile } from '@/components/user/general/UserProfile/UserProfile';
 
@@ -10,15 +10,13 @@ export function ProfileClient(): ReactElement {
 
   return (
     <PageContainer maw={`${theme.breakpoints.xs}`}>
-      <Title m={10} order={1} c="white">
+      <Title m={10} order={1}>
         Profile
       </Title>
       <Divider my="md" />
       <Space h="md" />
       <Center>
-        <Paper py="xl" px="lg" radius="md" withBorder>
-          <UserProfile />
-        </Paper>
+        <UserProfile />
       </Center>
       <Space h="md" />
     </PageContainer>

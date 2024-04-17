@@ -13,11 +13,10 @@ export function PageContainer({ children, ...props }: PageContainerProps) {
         <Space h="md" />
         <Paper
           p="xs"
+          shadow="xl"
+          withBorder
           w={{ base: '97%' }}
           maw={`${theme.breakpoints.lg}`}
-          style={{
-            backgroundColor: theme.colors['irene-dark-blue'][9],
-          }}
           {...props}
         >
           {children}

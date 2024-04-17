@@ -71,9 +71,9 @@ export function UserMenu({ fullWidth = false, closeDrawer }: UserMenuProps) {
             <IconLayoutDashboard style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
           }
           component={Link}
-          href="/my-documents"
+          href="/my-reviews"
         >
-          My Documents
+          My Reviews
         </Menu.Item>
         <Menu.Divider />
         <Menu.Label display={getPermissionQuery.data?.role !== Role.ADMIN ? 'none' : undefined}>
@@ -106,7 +106,7 @@ export function UserMenu({ fullWidth = false, closeDrawer }: UserMenuProps) {
 
         <Menu.Item
           onClick={async () => {
-            await signOut({ callbackUrl: '/' });
+            await signOut();
             if (closeDrawer) closeDrawer();
           }}
           leftSection={<IconLogout style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
