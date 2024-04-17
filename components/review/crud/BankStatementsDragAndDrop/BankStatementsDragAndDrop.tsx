@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import {
   Table,
   ActionIcon,
@@ -9,57 +9,144 @@ import {
   rem,
   useMantineTheme,
   Flex,
+  Code,
   Center,
 } from '@mantine/core';
 import { IconX, IconTrash, IconDownload } from '@tabler/icons-react';
-
 import { useForm } from '@mantine/form';
 import { Dropzone, MIME_TYPES } from '@mantine/dropzone';
 import classes from './BankStatementsDragAndDrop.module.css';
 import { SelectBankTypeDropdown } from '@/components/review/crud/SelectBankTypeDropdown/SelectBankTypeDropdown';
+import { BankType } from '@prisma/client';
+import { usePingHuggingFaceQuery } from '@/lib/actions/huggingface';
 
 interface FormValues {
-  files: File[];
+  bank_statements: BankStatement[];
+}
+
+interface BankStatement {
+  client_company: string;
   name: string;
-  size: string;
   type: string;
+  file: File | null;
+}
+
+interface FilestoModel {
+  files: File[];
 }
 
 export function BankStatementsDragAndDrop() {
   const theme = useMantineTheme();
   const openRef = useRef<() => void>(null);
-  const form = useForm<FormValues>({ initialValues: { files: [], name: '', size: '', type: '' } });
 
-  const selectedBankStatements = form.values.files.map((files, index) => (
-    <Table.Tr key={index}>
-      <Table.Td style={{ maxWidth: rem(250) }}>
-        <Tooltip arrowOffset={50} arrowSize={5} withArrow position="top-start" label={files.name}>
-          <Text truncate="end">{files.name}</Text>
-        </Tooltip>
-      </Table.Td>
-      <Table.Td style={{ minWidth: rem(78) }}>
-        <Text>{((files.size / 1024) * 0.001).toFixed(2)} mb</Text>
-      </Table.Td>
-      <Table.Td style={{ minWidth: rem(57) }}>
-        <SelectBankTypeDropdown />
-      </Table.Td>
-      <Table.Td>
-        <Center>
-          <ActionIcon color="red" onClick={() => form.removeListItem('files', index)}>
-            <IconTrash size="1rem" />
-          </ActionIcon>
-        </Center>
-      </Table.Td>
-    </Table.Tr>
-  ));
+  const form = useForm<FormValues>();
+  const formData = useForm<FilestoModel>();
+  const DataForm = new FormData();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  // const { data: pingHuggingFaceData, isLoading, isError } = usePingHuggingFaceQuery();
+
+  const handleDrop = (files: File[]) => {
+    // Update the form values with the dropped files
+    const updatedBankStatements = files.map((file) => ({
+      client_company: '',
+      name: file.name,
+      type: '',
+      file: file,
+    }));
+
+    form.setFieldValue('bank_statements', updatedBankStatements);
+  };
+
+  const handleBankTypeChange = (selectedBankType: BankType | null, index: number) => {
+    const updatedBankStatements = form.values.bank_statements.map((statement, i) => {
+      if (i === index) {
+        return { ...statement, type: selectedBankType?.name || '' };
+      }
+      return statement;
+    });
+    form.setFieldValue('bank_statements', updatedBankStatements);
+  };
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+    try {
+      const files: File[] = [];
+      form.values.bank_statements.forEach((bankStatement, index) => {
+        if (bankStatement.file) {
+          files.push(bankStatement.file);
+        }
+      });
+      formData.setFieldValue('files', files);
+
+      files.forEach((file) => {
+        DataForm.append('file', file);
+      });
+
+      // Perform form submission using fetch
+      const response = await fetch('http://localhost:5000/upload', {
+        method: 'POST',
+        body: DataForm,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to submit form: ${response.statusText}`);
+      } else {
+        console.log('Form submitted successfully');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitError('An error occurred while submitting the form.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const selectedBankStatements =
+    form.values.bank_statements?.map((bankStatement, index) => (
+      <Table.Tr key={index}>
+        <Table.Td style={{ maxWidth: rem(250) }}>
+          <Tooltip
+            arrowOffset={50}
+            arrowSize={5}
+            withArrow
+            position="top-start"
+            label={bankStatement.file ? `${bankStatement.file.name}` : 'Unknown'}
+          >
+            <Text truncate="end">
+              {bankStatement.file ? `${bankStatement.file.name}` : 'Unknown'}
+            </Text>
+          </Tooltip>
+        </Table.Td>
+        <Table.Td style={{ minWidth: rem(78) }}>
+          <Text>
+            {bankStatement.file
+              ? `${((bankStatement.file.size / 1024) * 0.001).toFixed(2)} mb`
+              : 'Unknown'}
+          </Text>
+        </Table.Td>
+        <Table.Td style={{ minWidth: rem(57) }}>
+          <SelectBankTypeDropdown
+            onChange={(selectedBankType) => handleBankTypeChange(selectedBankType, index)}
+          />
+        </Table.Td>
+        <Table.Td>
+          <Center>
+            <ActionIcon color="red" onClick={() => form.removeListItem('bank_statements', index)}>
+              <IconTrash size="1rem" />
+            </ActionIcon>
+          </Center>
+        </Table.Td>
+      </Table.Tr>
+    )) || [];
 
   return (
     <div>
       <div className={classes.wrapper}>
         <Dropzone
           openRef={openRef}
-          onDrop={(file) => form.setFieldValue('files', file)}
-          onReject={() => form.setFieldError('files', 'Select PDf or Excel Type Files only')} //change to make a fancy notification
+          onDrop={handleDrop}
+          onReject={() => console.log('ja')} //change to make a fancy notification
           className={classes.dropzone}
           radius="sm"
           accept={[MIME_TYPES.pdf, MIME_TYPES.csv, MIME_TYPES.xls, MIME_TYPES.xlsx]}
@@ -113,6 +200,7 @@ export function BankStatementsDragAndDrop() {
           </Group>
         </Dropzone>
       </div>
+      <div></div>
       <Text pb={1} ta="center" fw={700}>
         Selected Bank Statements
       </Text>
@@ -131,6 +219,26 @@ export function BankStatementsDragAndDrop() {
           </Table>
         </Table.ScrollContainer>
       </Flex>
+      <Button
+        disabled={isSubmitting}
+        onClick={handleSubmit}
+        className={classes.submitButton}
+        loading={isSubmitting}
+      >
+        Submit
+      </Button>
+      <Text size="sm" fw={500} mt="md">
+        Form values:
+      </Text>
+      <Code block>{JSON.stringify(form.values, null, 2)}</Code>
+      <Text size="sm" fw={500} mt="md">
+        FormData values:
+      </Text>
+      <Code block>{JSON.stringify(formData.values, null, 2)}</Code>
+      <Text size="sm" fw={500} mt="md">
+        DataForm values:
+      </Text>
+      <Code block>{JSON.stringify(DataForm, null, 2)}</Code>
     </div>
   );
 }
