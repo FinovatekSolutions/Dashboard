@@ -3,6 +3,10 @@ import { useState, useEffect } from 'react';
 import { Client } from '@prisma/client';
 import { useGetClients } from '@/lib/actions/client';
 
+interface SelectClientDropdownProps {
+  onSelectClient: (client: Client | null) => void;
+}
+
 export function SelectClientDropdown() {
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const getClientQuery = useGetClients();
