@@ -5,7 +5,7 @@ import { MantineReactTable, useMantineReactTable, type MRT_ColumnDef } from 'man
 import { notifications } from '@mantine/notifications';
 
 import { useRouter } from 'next/navigation';
-import { ActionIcon, Flex, Tooltip, useMantineTheme } from '@mantine/core';
+import { ActionIcon, Flex, MantineProvider, Tooltip, useMantineTheme } from '@mantine/core';
 import { IconEye, IconX } from '@tabler/icons-react';
 
 import { useGetClientById } from '@/lib/actions/client';
@@ -13,6 +13,8 @@ import { useGetReviewsByUserEmail } from '@/lib/actions/review';
 
 import { ReviewWithUser } from '@/lib/utils/types';
 import { calculatePeriod, formatDate } from '@/lib/utils/helpers';
+
+import classes from './ReviewsTable.module.css';
 
 type ReviewsTableProps = {
   clientId?: string;
@@ -79,6 +81,9 @@ const ReviewsTable = ({ clientId, userEmail }: ReviewsTableProps) => {
     columns,
     data: reviewsData,
     enableFullScreenToggle: false,
+    enableHiding: false,
+    enableFilters: false,
+    enableDensityToggle: false,
     positionGlobalFilter: 'left',
     enableRowActions: true,
     getRowId: (originalRow) => originalRow.id,
@@ -92,22 +97,26 @@ const ReviewsTable = ({ clientId, userEmail }: ReviewsTableProps) => {
     },
     mantineSearchTextInputProps: {
       placeholder: `Search ${reviewsData?.length || 0} rows`,
+      value: 'wow',
       id: 'wazzapp',
-      variant: 'filled',
-      size: 'sm',
+      variant: 'default',
+      size: 'md',
     },
     mantineTopToolbarProps: {
       // Ensure the toolbar spans the full width and provides space for the search input to grow
       style: { marginBottom: 5 },
+      className: classes.toolbars,
     },
     mantinePaperProps: {
       shadow: 'none',
-      style: { border: '0px solid #e0e0e0' },
+      style: { border: `0px solid ${theme.colors.orange[9]}` },
+      className: classes.paper,
     },
     mantineTableProps: {
       striped: true,
       withColumnBorders: true,
     },
+    mantineBottomToolbarProps: { className: classes.toolbars },
     renderRowActions: ({ row }) => (
       <Flex gap="md">
         <Tooltip label="View Review">
@@ -125,7 +134,9 @@ const ReviewsTable = ({ clientId, userEmail }: ReviewsTableProps) => {
 
   return (
     <>
-      <MantineReactTable table={table} />
+      <MantineProvider theme={{ ...theme, primaryColor: 'orange' }}>
+        <MantineReactTable table={table} />
+      </MantineProvider>
     </>
   );
 };

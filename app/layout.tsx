@@ -14,10 +14,12 @@ import { TanStackQuery } from '@/lib/providers/tanstack-query';
 import SessionProvider from '@/lib/providers/session-provider';
 import { authOptions } from './api/auth/[...nextauth]/route';
 import { PermissionProvider } from '@/lib/providers/permission-provider';
+import { inter } from '@/lib/utils/fonts';
 
 export const metadata = {
-  title: 'Finovatek',
-  description: 'I am using Mantine with Next.js!',
+  title: 'IReNE',
+  description:
+    "IReNE is a pioneering web application developed by University of Puerto Rico students to enhance the understanding and management of natural disaster impacts on Puerto Rico's infrastructure. It offers an intuitive platform for the creation, search, and modification of case studies, promoting documentation and collaboration under the RISE-UP initiative. Join our effort to build a resilient future for Puerto Rico through comprehensive case studies and shared knowledge.",
 };
 
 export default async function RootLayout({ children }: { children: any }) {
@@ -33,7 +35,7 @@ export default async function RootLayout({ children }: { children: any }) {
           content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
         />
       </head>
-      <body>
+      <body className={inter.className}>
         <MantineProvider theme={theme} forceColorScheme="light">
           <SessionProvider session={session}>
             <Notifications />

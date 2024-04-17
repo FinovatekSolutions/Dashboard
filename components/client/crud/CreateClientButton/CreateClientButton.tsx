@@ -16,8 +16,8 @@ const CreateClientButton = (props: ButtonProps & React.ComponentPropsWithoutRef<
     <>
       <Button
         rightSection={<IconCirclePlus stroke={1.5} />}
-        variant="light"
-        color={theme.colors['trust-md-light-blue'][4]}
+        variant="outline"
+        color={theme.colors['irene-orange'][4]}
         size="md"
         onClick={() => setOpened(true)}
         {...props}

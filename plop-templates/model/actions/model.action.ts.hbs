@@ -1,0 +1,49 @@
+'use server';
+
+import type { Prisma, {{pascalCase singular}} } from '@prisma/client';
+import { {{pascalCase singular}}CreateInputSchema, {{pascalCase singular}}UpdateInputSchema } from '@prisma/zod';
+import { z } from 'zod';
+
+import prisma from '@/lib/utils/prisma';
+
+export async function getAll{{pascalCase plural}}(): Promise<{{pascalCase singular}}[]> {
+  return prisma.{{camelCase singular}}.findMany({
+    orderBy: {
+      createdAt: 'desc', // Use 'desc' for descending order (newest first)
+    },
+  });
+}
+
+export async function get{{pascalCase singular}}ById(id: string): Promise<{{pascalCase singular}} | null> {
+  return prisma.{{camelCase singular}}.findUnique({
+    where: {
+      id,
+    },
+  });
+}
+
+export async function create{{pascalCase singular}}(input: Prisma.{{pascalCase singular}}CreateInput): Promise<{{pascalCase singular}}> {
+  const data = {{pascalCase singular}}CreateInputSchema.parse(input);
+
+  return prisma.{{camelCase singular}}.create({
+    data,
+  });
+}
+
+export async function update{{pascalCase singular}}(input: Prisma.{{pascalCase singular}}UpdateInput): Promise<{{pascalCase singular}}> {
+  const data = {{pascalCase singular}}UpdateInputSchema.parse(input);
+  const id = z.string().parse(data.id); // Makes sure that the id must be a string
+
+  // throws an error if not found
+  return prisma.{{camelCase singular}}.update({
+    where: { id },
+    data,
+  });
+}
+
+export async function remove{{pascalCase singular}}(id: string): Promise<{{pascalCase singular}}> {
+  // throws an error if not found
+  return prisma.{{camelCase singular}}.delete({
+    where: { id },
+  });
+}

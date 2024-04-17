@@ -1,0 +1,50 @@
+'use client';
+
+import type { ReactElement } from 'react';
+import { Title, Flex, Box, Divider, Button, useMantineTheme } from '@mantine/core';
+import { IconRefresh } from '@tabler/icons-react';
+import { PageContainer } from '@/components/global/PageContainer/PageContainer';
+
+import { Create{{pascalCase singular}}Button } from '@/components/{{camelCase singular}}/crud/New{{pascalCase singular}}Button/New{{pascalCase singular}}Button';
+import { useGetAll{{pascalCase plural}} } from '@/lib/actions/{{camelCase singular}}';
+import { {{pascalCase plural}}Table } from '@/components/{{camelCase singular}}/general/{{pascalCase plural}}Table/{{pascalCase plural}}Table';
+
+export function {{pascalCase plural}}Client(): ReactElement {
+  const theme = useMantineTheme();
+  const getAll{{pascalCase plural}}Query = useGetAll{{pascalCase plural}}();
+
+  return (
+    <PageContainer>
+      <Title m={10} order={1} c="white">
+        {{pascalCase plural}}
+      </Title>
+      {/* Container for the first two components */}
+      <Flex
+        direction=\{{ base: 'column', sm: 'row' }}
+        justify="space-between"
+        style=\{{ gap: '16px' }} // Adjust the gap size as needed
+        mt={16}
+      >
+        {/* Component 1 */}
+        <Create{{pascalCase singular}}Button />
+
+        {/* Component 2 */}
+        <Button
+          onClick={() => getAll{{pascalCase plural}}Query.refetch()}
+          leftSection={<IconRefresh size={14} />}
+          size="md"
+          variant="default"
+        >
+          Refresh
+        </Button>
+      </Flex>
+
+      {/* Component 3 - Always below the first two */}
+      <Divider my="md" color={theme.colors.dark[3]} />
+      <Box style=\{{ marginTop: '16px' }}>
+        {/* Adjust the margin as needed */}
+        <{{pascalCase plural}}Table />
+      </Box>
+    </PageContainer>
+  );
+}

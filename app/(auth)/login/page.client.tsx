@@ -14,7 +14,6 @@ export function LoginClient({ providers }: LoginClientProps): ReactElement {
   return (
     <Box
       style={{
-        backgroundColor: '#1A1C27',
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
