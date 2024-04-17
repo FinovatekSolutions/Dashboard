@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactElement } from 'react';
-import { Title, Flex, Box, Divider, Button, useMantineTheme } from '@mantine/core';
+import { Title, Flex, Box, Divider, Button } from '@mantine/core';
 import { IconRefresh } from '@tabler/icons-react';
 import ClientsTable from '@/components/client/general/ClientsTable/ClientsTable';
 import CreateClientButton from '@/components/client/crud/CreateClientButton/CreateClientButton';
@@ -9,12 +9,11 @@ import { useGetClients } from '@/lib/actions/client';
 import { PageContainer } from '@/components/global/PageContainer/PageContainer';
 
 export function ClientsClient(): ReactElement {
-  const theme = useMantineTheme();
   const getClientsQuery = useGetClients();
 
   return (
     <PageContainer>
-      <Title m={10} order={1} c="white">
+      <Title m={10} order={1}>
         Clients
       </Title>
       {/* Container for the first two components */}
@@ -31,16 +30,15 @@ export function ClientsClient(): ReactElement {
         <Button
           onClick={() => getClientsQuery.refetch()}
           leftSection={<IconRefresh size={14} />}
+          variant="default"
           size="md"
-          variant="outline"
-          color="white"
         >
           Refresh
         </Button>
       </Flex>
 
       {/* Component 3 - Always below the first two */}
-      <Divider my="md" color={theme.colors.dark[3]} />
+      <Divider my="md" />
       <Box style={{ marginTop: '16px' }}>
         {/* Adjust the margin as needed */}
         <ClientsTable />

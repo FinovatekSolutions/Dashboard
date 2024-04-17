@@ -5,35 +5,26 @@ import {
   Burger,
   Group,
   rem,
+  Space,
   UnstyledButton,
   useMantineTheme,
+  Image,
   Text,
   Anchor,
-  Box,
-  Center,
-  Button,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Link from 'next/link';
-import { IconChartDots3 } from '@tabler/icons-react';
-import { signIn, useSession } from 'next-auth/react';
-
 import classes from './HomeNavBar.module.css';
 
 import { UserMenu } from '@/components/user/general/UserMenu/UserMenu';
-import { bioRhyme } from '@/lib/utils/fonts';
 
 export function HomeNavBar({ children }: { children: any }) {
-  const { data: session } = useSession();
   const theme = useMantineTheme();
   const [opened, { toggle, close }] = useDisclosure();
 
   const navLinks = [
     { href: '/', label: 'Home' },
-    { href: '/browse', label: 'Browse' },
-    { href: '/map', label: 'Map' },
-    { href: '/timeline', label: 'Timeline' },
-    { href: '/graph', label: 'Graph' },
+    { href: '/clients', label: 'Clients' },
   ];
 
   const renderLinks = navLinks.map((link) => (
@@ -50,20 +41,17 @@ export function HomeNavBar({ children }: { children: any }) {
 
   return (
     <AppShell
-      header={{ height: { base: rem(60), navSm: rem(90) } }}
-      navbar={{ width: 300, breakpoint: 'navSm', collapsed: { desktop: true, mobile: !opened } }}
-      withBorder={false}
+      header={{ height: { base: rem(60), sm: rem(90) } }}
+      navbar={{ width: 300, breakpoint: 'sm', collapsed: { desktop: true, mobile: !opened } }}
       styles={{
         header: {
-          backdropFilter: 'blur(10px)', // Apply a blur effect
-          WebkitBackdropFilter: 'blur(10px)', // For Safari
-          backgroundColor: 'rgba(15, 22, 38, 0.8)', // Transparent white background
+          backgroundColor: '#1A1C27',
           marginBottom: '12px',
           boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+          borderBottom: `1px solid ${theme.colors.gray[7]}`, // Change '#FF5733' to your desired border color
         },
         navbar: {
-          backgroundColor: theme.colors['irene-dark-blue'][9],
-          borderTop: `1px solid ${theme.colors.gray[7]}`, // Change '#FF5733' to your desired border color
+          backgroundColor: '#1A1C27',
         },
       }}
     >
@@ -73,7 +61,7 @@ export function HomeNavBar({ children }: { children: any }) {
             color={theme.colors.gray[2]}
             opened={opened}
             onClick={toggle}
-            hiddenFrom="navSm"
+            hiddenFrom="sm"
             size="sm"
           />
           <Group justify="space-between" style={{ flex: 1 }}>
@@ -81,54 +69,40 @@ export function HomeNavBar({ children }: { children: any }) {
             <Group>
               <Anchor href="/" component={Link} style={{ textDecoration: 'none' }}>
                 <Group gap={5}>
-                  <Box ml={5} visibleFrom="navSm">
-                    <Center>
-                      <IconChartDots3 color={theme.colors.orange[7]} size={50} stroke={1.4} />
-                    </Center>
-                  </Box>
-                  <Box hiddenFrom="navSm">
-                    <Center>
-                      <IconChartDots3 color={theme.colors.orange[7]} size={35} stroke={1.7} />
-                    </Center>
-                  </Box>
-
+                  <Image
+                    src="/trustmd-full-logo.webp"
+                    alt="TrustMD Logo"
+                    w={{ base: 113, sm: 225 }}
+                    h={{ base: 32, sm: 63 }}
+                    visibleFrom="sm"
+                  />
+                  <Image
+                    src="/trustmd-tree.png"
+                    alt="TrustMD Logo"
+                    w={{ base: 30, sm: 40 }}
+                    h={{ base: 30, sm: 40 }}
+                    hiddenFrom="sm"
+                  />
                   <Group gap={0}>
-                    <Text size="1.7rem" c="white" className={bioRhyme.className}>
-                      I
+                    <Text size="xl" c="white" style={{ fontFamily: 'TrustMDFont' }} hiddenFrom="sm">
+                      TRUST
                     </Text>
                     <Text
-                      size="1.7rem"
-                      variant="gradient"
-                      gradient={{
-                        from: theme.colors['irene-orange'][4],
-                        to: theme.colors.yellow[6],
-                      }}
-                      className={bioRhyme.className}
+                      size="xl"
+                      c={theme.colors['trust-md-light-blue'][4]}
+                      style={{ fontFamily: 'TrustMDFont' }}
+                      hiddenFrom="sm"
                     >
-                      Re
-                    </Text>
-                    <Text size="1.7rem" c="white" className={bioRhyme.className}>
-                      NE
+                      MD
                     </Text>
                   </Group>
                 </Group>
               </Anchor>
-              <Group ml="xl" gap={0} visibleFrom="navSm">
+              <Group ml="xl" gap={0} visibleFrom="sm">
                 {renderLinks}
               </Group>
             </Group>
-            {session ? (
-              <UserMenu />
-            ) : (
-              <Button
-                variant="subtle"
-                size="md"
-                color={theme.colors.orange[7]}
-                onClick={() => signIn()}
-              >
-                Sign in
-              </Button>
-            )}
+            <UserMenu />
           </Group>
         </Group>
       </AppShell.Header>
@@ -137,7 +111,11 @@ export function HomeNavBar({ children }: { children: any }) {
         {renderLinks}
       </AppShell.Navbar>
 
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main>
+        <Space h="sm" />
+        {children}
+        <Space h="sm" hiddenFrom="sm" />
+      </AppShell.Main>
     </AppShell>
   );
 }

@@ -83,24 +83,6 @@ To access the following hosting resources, you must be logged into the Finovatek
 - `build` – Bundle application for production
 - `analyze` – Analyzes application bundle with [@next/bundle-analyzer](https://www.npmjs.com/package/@next/bundle-analyzer)
 
-### Code generation script
-
-- `plop`
-  - Prompts for the singular and plural nouns of the new model
-  - Prompts for the which route group the new model belongs to
-  - Generates fullstack CRUD capabilities for the model
-    - Creates Server Actions
-    - Creates React Query Hooks
-    - Creates CRUD components and forms
-    - Creates a Mantine React Table
-    - Creates full page at /{model} in requested route group
-  - **Important**: You must copy paste the model example in the prisma schema and replace 'Model' with the pascal case version of your model
-    - e.g. model -> Model
-    - e.g. person -> Person 
-  - Run `yarn migrate` to push the changes to the database
-  - _Finally_, run `yarn gen` to ensure the prisma client is up to date
-
-
 ### Testing scripts
 
 - `typecheck` – Checks TypeScript types

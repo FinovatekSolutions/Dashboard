@@ -10,9 +10,7 @@ export const theme = createTheme({
     md: '64em',
     lg: '74em',
     xl: '90em',
-    navSm: '55em',
   },
-  headings: { fontFamily: 'Inter, sans-serif' },
   colors: {
     'trust-md-dark-blue': [
       '#e4fbff',
@@ -97,78 +95,6 @@ export const theme = createTheme({
       '#5d6281',
       '#535775',
       '#454b68', // 9, main theme color
-    ],
-    'irene-light': [
-      '#FEFDFB',
-      '#FCF1CF', // 1, main theme color
-      '#F1E0AC',
-      '#E1CE93',
-      '#CFBC80',
-      '#BCAA71',
-      '#AA9965',
-      '#96885E',
-      '#000000',
-      '#000000',
-    ],
-    'irene-white': [
-      '#FCFAF0', // 0, main theme color
-      '#EFE9CB',
-      '#DFD7AF',
-      '#CDC59A',
-      '#BBB288',
-      '#A9A179',
-      '#98916D',
-      '#000000',
-      '#000000',
-      '#000000',
-    ],
-    'irene-dark-blue': [
-      '#DFE3ED',
-      '#BCC5DB',
-      '#95A5CA',
-      '#7589BC',
-      '#6078B4',
-      '#566FB1',
-      '#465E9C',
-      '#3D548B',
-      '#1d2b4a',
-      '#0f1626', // 9, main theme color
-    ],
-    'irene-orange': [
-      '#ffe9e6',
-      '#ffd3cd',
-      '#ffa69b',
-      '#ff7563',
-      '#ff4c36', // 4, main theme color
-      '#ff3218',
-      '#ff2307',
-      '#e41500',
-      '#cc0c00',
-      '#b20000',
-    ],
-    'irene-teal': [
-      '#548F8F',
-      '#458989',
-      '#378484',
-      '#2A8181',
-      '#1C7F7F',
-      '#0E7F7F',
-      '#008080', // 6, main theme color
-      '#0C6868',
-      '#135555',
-      '#174747',
-    ],
-    'irene-navy-blue': [
-      '#3C5A65',
-      '#325461',
-      '#284F5D',
-      '#1E4B5B',
-      '#15475A',
-      '#0B4459',
-      '#01425A', // 6, main theme color
-      '#093849',
-      '#0E2F3C',
-      '#112932',
     ],
   },
 });
