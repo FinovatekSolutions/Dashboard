@@ -68,39 +68,31 @@ export function BankStatementsDragAndDrop() {
     form.setFieldValue('bank_statements', updatedBankStatements);
   };
   const handleSubmit = async () => {
-    setIsSubmitting(true);
-    setSubmitError(null);
-    try {
-      const files: File[] = [];
-      form.values.bank_statements.forEach((bankStatement, index) => {
-        if (bankStatement.file) {
-          files.push(bankStatement.file);
-        }
-      });
-      formData.setFieldValue('files', files);
+  setIsSubmitting(true);  // Start submitting process
+  const formData = new FormData();
 
-      files.forEach((file) => {
-        DataForm.append('file', file);
-      });
-
-      // Perform form submission using fetch
-      const response = await fetch('http://localhost:5000/upload', {
-        method: 'POST',
-        body: DataForm,
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to submit form: ${response.statusText}`);
-      } else {
-        console.log('Form submitted successfully');
-      }
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      setSubmitError('An error occurred while submitting the form.');
-    } finally {
-      setIsSubmitting(false);
+  // Assuming you keep track of files in a state variable
+  form.values.bank_statements.forEach((statement) => {
+    if (statement.file) {
+      formData.append('files', statement.file, statement.file.name);
     }
-  };
+  });
+
+  try {
+    const response = await fetch('http://localhost:8000/process-csv', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const result = await response.json();
+    console.log(result);  // Handle the response based on your requirements
+    setIsSubmitting(false);
+  } catch (error) {
+    console.error('Failed to submit:', error);
+    setIsSubmitting(false);
+    setSubmitError('Failed to submit files. Please try again.');
+  }
+};
 
   const selectedBankStatements =
     form.values.bank_statements?.map((bankStatement, index) => (
