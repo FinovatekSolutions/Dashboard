@@ -74,7 +74,7 @@ export function BankStatementsDragAndDrop() {
   // Assuming you keep track of files in a state variable
   form.values.bank_statements.forEach((statement) => {
     if (statement.file) {
-      formData.append('files[]', statement.file, statement.file.name);
+      formData.append('files[]', statement.file, statement.type);
     }
   });
 
