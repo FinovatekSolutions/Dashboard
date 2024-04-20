@@ -18,7 +18,6 @@ import { Dropzone, MIME_TYPES } from '@mantine/dropzone';
 import classes from './BankStatementsDragAndDrop.module.css';
 import { SelectBankTypeDropdown } from '@/components/review/crud/SelectBankTypeDropdown/SelectBankTypeDropdown';
 import { BankType } from '@prisma/client';
-import { usePingHuggingFaceQuery } from '@/lib/actions/huggingface';
 
 interface FormValues {
   bank_statements: BankStatement[];
@@ -31,20 +30,12 @@ interface BankStatement {
   file: File | null;
 }
 
-interface FilestoModel {
-  files: File[];
-}
-
 export function BankStatementsDragAndDrop() {
   const theme = useMantineTheme();
   const openRef = useRef<() => void>(null);
-
   const form = useForm<FormValues>();
-  const formData = useForm<FilestoModel>();
-  const DataForm = new FormData();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  // const { data: pingHuggingFaceData, isLoading, isError } = usePingHuggingFaceQuery();
 
   const handleDrop = (files: File[]) => {
     // Update the form values with the dropped files
@@ -54,7 +45,6 @@ export function BankStatementsDragAndDrop() {
       type: '',
       file: file,
     }));
-
     form.setFieldValue('bank_statements', updatedBankStatements);
   };
 
@@ -67,35 +57,36 @@ export function BankStatementsDragAndDrop() {
     });
     form.setFieldValue('bank_statements', updatedBankStatements);
   };
+
   const handleSubmit = async () => {
-  setIsSubmitting(true);  // Start submitting process
-  const formData = new FormData();
+    setIsSubmitting(true); // Start submitting process
+    const formData = new FormData();
 
-  // Assuming you keep track of files in a state variable
-  form.values.bank_statements.forEach((statement) => {
-    if (statement.file) {
-      formData.append('files[]', statement.file, statement.type);
-    }
-  });
-
-  try {
-    const response = await fetch('http://localhost:8000/process-csv', {
-      method: 'POST',
-      body: formData,
+    // Assuming you keep track of files in a state variable
+    form.values.bank_statements.forEach((statement) => {
+      if (statement.file) {
+        formData.append('files[]', statement.file, statement.type);
+      }
     });
 
-    const result = await response.json();
-    console.log(result);  // Handle the response based on your requirements
-    setIsSubmitting(false);
-  } catch (error) {
-    console.error('Failed to submit:', error);
-    setIsSubmitting(false);
-    setSubmitError('Failed to submit files. Please try again.');
-  }
-};
+    try {
+      const response = await fetch('http://localhost:8000/process-csv', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+      console.log(result); // Handle the response based on your requirements
+      setIsSubmitting(false);
+    } catch (error) {
+      console.error('Failed to submit:', error);
+      setIsSubmitting(false);
+      setSubmitError('Failed to submit files. Please try again.');
+    }
+  };
 
   const selectedBankStatements =
-    form.values.bank_statements?.map((bankStatement, index) => (
+    form.values.bank_statements?.map((statement, index) => (
       <Table.Tr key={index}>
         <Table.Td style={{ maxWidth: rem(250) }}>
           <Tooltip
@@ -103,18 +94,14 @@ export function BankStatementsDragAndDrop() {
             arrowSize={5}
             withArrow
             position="top-start"
-            label={bankStatement.file ? `${bankStatement.file.name}` : 'Unknown'}
+            label={statement.file ? `${statement.file.name}` : 'Unknown'}
           >
-            <Text truncate="end">
-              {bankStatement.file ? `${bankStatement.file.name}` : 'Unknown'}
-            </Text>
+            <Text truncate="end">{statement.file ? `${statement.file.name}` : 'Unknown'}</Text>
           </Tooltip>
         </Table.Td>
         <Table.Td style={{ minWidth: rem(78) }}>
           <Text>
-            {bankStatement.file
-              ? `${((bankStatement.file.size / 1024) * 0.001).toFixed(2)} mb`
-              : 'Unknown'}
+            {statement.file ? `${((statement.file.size / 1024) * 0.001).toFixed(2)} mb` : 'Unknown'}
           </Text>
         </Table.Td>
         <Table.Td style={{ minWidth: rem(57) }}>
@@ -138,10 +125,10 @@ export function BankStatementsDragAndDrop() {
         <Dropzone
           openRef={openRef}
           onDrop={handleDrop}
-          onReject={() => console.log('ja')} //change to make a fancy notification
+          onReject={() => console.log('File is not supported or there is an error')} //change to make a fancy notification
           className={classes.dropzone}
           radius="sm"
-          accept={[MIME_TYPES.pdf, MIME_TYPES.csv, MIME_TYPES.xls, MIME_TYPES.xlsx]}
+          accept={[MIME_TYPES.csv]}
           maxSize={30 * 1024 ** 2}
           style={{ borderStyle: 'dashed', borderWidth: 2, borderRadius: 10, color: 'dimgray' }}
         >
@@ -175,8 +162,8 @@ export function BankStatementsDragAndDrop() {
                 <Dropzone.Idle>Upload Bank Statements</Dropzone.Idle>
               </Text>
               <Text ta="center" fz="sm" mt="xs" c="dimmed" pb="sm">
-                Drag&apos;n&apos;drop files here to upload. We can accept only{' '}
-                <i>.pdf, .csv, .xls, .xlsx</i> files that are less than 30mb in size.
+                Drag&apos;n&apos;drop files here to upload. We can accept only <i>.csv</i> files
+                that are less than 30mb in size.
               </Text>
             </div>
             <div>
@@ -223,14 +210,6 @@ export function BankStatementsDragAndDrop() {
         Form values:
       </Text>
       <Code block>{JSON.stringify(form.values, null, 2)}</Code>
-      <Text size="sm" fw={500} mt="md">
-        FormData values:
-      </Text>
-      <Code block>{JSON.stringify(formData.values, null, 2)}</Code>
-      <Text size="sm" fw={500} mt="md">
-        DataForm values:
-      </Text>
-      <Code block>{JSON.stringify(DataForm, null, 2)}</Code>
     </div>
   );
 }
