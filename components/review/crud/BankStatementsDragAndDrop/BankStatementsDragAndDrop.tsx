@@ -9,7 +9,6 @@ import {
   rem,
   useMantineTheme,
   Flex,
-  Code,
   Center,
 } from '@mantine/core';
 import { IconX, IconTrash, IconDownload } from '@tabler/icons-react';
@@ -17,6 +16,7 @@ import { useForm } from '@mantine/form';
 import { Dropzone, MIME_TYPES } from '@mantine/dropzone';
 import classes from './BankStatementsDragAndDrop.module.css';
 import { SelectBankTypeDropdown } from '@/components/review/crud/SelectBankTypeDropdown/SelectBankTypeDropdown';
+import CreateBankTypeButton from '@/components/banktype/crud/CreateBankTypeButton/CreateBankTypeButton';
 import { BankType } from '@prisma/client';
 
 interface FormValues {
@@ -199,18 +199,24 @@ export function BankStatementsDragAndDrop() {
           </Table>
         </Table.ScrollContainer>
       </Flex>
-      <Button
-        disabled={isSubmitting}
-        onClick={handleSubmit}
-        className={classes.submitButton}
-        loading={isSubmitting}
+      <Flex
+        direction={{ base: 'column', sm: 'row' }}
+        justify="space-between"
+        align="flex-end"
+        mt = {10}
+        mb={5}
+        style={{ gap: '16px' }}
       >
-        Submit
-      </Button>
-      <Text size="sm" fw={500} mt="md">
-        Form values:
-      </Text>
-      <Code block>{JSON.stringify(form.values, null, 2)}</Code>
+        <CreateBankTypeButton />
+        <Button
+          disabled={isSubmitting}
+          onClick={handleSubmit}
+          className={classes.submitButton}
+          loading={isSubmitting}
+        >
+          Submit
+        </Button>
+      </Flex>
     </div>
   );
 }

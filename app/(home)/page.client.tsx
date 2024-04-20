@@ -15,7 +15,6 @@ import {
 } from '@mantine/core';
 import CreateClientButton from '@/components/client/crud/CreateClientButton/CreateClientButton';
 import { BankStatementsDragAndDrop } from '@/components/review/crud/BankStatementsDragAndDrop/BankStatementsDragAndDrop';
-import CreateBankTypeButton from '@/components/banktype/crud/CreateBankTypeButton/CreateBankTypeButton';
 import { SelectClientDropdown } from '@/components/review/crud/SelectClientDropdown/SelectClientDropdown';
 
 export function MainPage(): ReactElement {
@@ -66,21 +65,6 @@ export function MainPage(): ReactElement {
             </Text>
             <Flex direction={{ base: 'column', sm: 'row' }} mb={10}>
               <BankStatementsDragAndDrop />
-            </Flex>
-
-            {/*Bank Type*/}
-            <Flex
-              direction={{ base: 'column', sm: 'row' }}
-              justify="space-between"
-              align="flex-end"
-              mb={5}
-              style={{ gap: '16px' }}
-            >
-              <CreateBankTypeButton />
-              <Button size="md" radius="xl">
-                Submit Bank Statements
-              </Button>{' '}
-              {/*Leaving in for now as filler*/}
             </Flex>
           </Paper>
 
