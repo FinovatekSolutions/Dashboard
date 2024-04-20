@@ -70,6 +70,7 @@ export function BankStatementsDragAndDrop() {
     });
 
     try {
+      console.log(formData);
       const response = await fetch('http://localhost:8000/process-csv', {
         method: 'POST',
         body: formData,
@@ -128,7 +129,7 @@ export function BankStatementsDragAndDrop() {
           onReject={() => console.log('File is not supported or there is an error')} //change to make a fancy notification
           className={classes.dropzone}
           radius="sm"
-          accept={[MIME_TYPES.csv]}
+          accept={[MIME_TYPES.csv, MIME_TYPES.xls]} //.xls takes my csv files but the .csv did not allow it
           maxSize={30 * 1024 ** 2}
           style={{ borderStyle: 'dashed', borderWidth: 2, borderRadius: 10, color: 'dimgray' }}
         >
