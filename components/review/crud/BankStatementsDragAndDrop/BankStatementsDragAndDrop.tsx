@@ -36,9 +36,12 @@ export function BankStatementsDragAndDrop() {
   const form = useForm<FormValues>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [selectedBankTypes, setSelectedBankTypes] = useState<(BankType | null)[]>([]); 
+  const [isDropzoneEmpty, setIsDropzoneEmpty] = useState(true); 
 
   const handleDrop = (files: File[]) => {
     // Update the form values with the dropped files
+    setIsDropzoneEmpty(files.length === 0); // Updated
     const updatedBankStatements = files.map((file) => ({
       client_company: '',
       name: file.name,
@@ -49,6 +52,12 @@ export function BankStatementsDragAndDrop() {
   };
 
   const handleBankTypeChange = (selectedBankType: BankType | null, index: number) => {
+    setSelectedBankTypes((prevSelectedBankTypes) => {
+      const updatedSelectedBankTypes = [...prevSelectedBankTypes];
+      updatedSelectedBankTypes[index] = selectedBankType;
+      return updatedSelectedBankTypes;
+    });
+
     const updatedBankStatements = form.values.bank_statements.map((statement, i) => {
       if (i === index) {
         return { ...statement, type: selectedBankType?.name || '' };
@@ -119,6 +128,9 @@ export function BankStatementsDragAndDrop() {
         </Table.Td>
       </Table.Tr>
     )) || [];
+
+  const isSubmitDisabled =
+    isDropzoneEmpty || form.values.bank_statements.some((statement) => !statement.type);
 
   return (
     <div>
@@ -203,13 +215,13 @@ export function BankStatementsDragAndDrop() {
         direction={{ base: 'column', sm: 'row' }}
         justify="space-between"
         align="flex-end"
-        mt = {10}
+        mt={10}
         mb={5}
         style={{ gap: '16px' }}
       >
         <CreateBankTypeButton />
         <Button
-          disabled={isSubmitting}
+          disabled={isSubmitting || isSubmitDisabled}
           onClick={handleSubmit}
           className={classes.submitButton}
           loading={isSubmitting}
