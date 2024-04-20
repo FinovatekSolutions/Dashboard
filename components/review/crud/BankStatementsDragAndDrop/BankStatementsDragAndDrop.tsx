@@ -234,14 +234,25 @@ export function BankStatementsDragAndDrop() {
         style={{ gap: '16px' }}
       >
         <CreateBankTypeButton />
-        <Button
-          disabled={isSubmitting || isSubmitDisabled}
-          onClick={handleSubmit}
-          className={classes.submitButton}
-          loading={isSubmitting}
-        >
-          Submit
-        </Button>
+        {isSubmitDisabled ? (
+          <Tooltip
+            label="Select a statement and ensure all have a bank type to enable submit."
+            position="bottom"
+            withArrow
+          >
+            <Button
+              disabled={isSubmitDisabled}
+              className={classes.submitButton}
+              loading={isSubmitting}
+            >
+              Submit
+            </Button>
+          </Tooltip>
+        ) : (
+          <Button onClick={handleSubmit} className={classes.submitButton} loading={isSubmitting}>
+            Submit
+          </Button>
+        )}
       </Flex>
     </div>
   );
