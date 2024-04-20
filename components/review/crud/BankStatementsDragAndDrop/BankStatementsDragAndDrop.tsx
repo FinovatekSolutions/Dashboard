@@ -36,12 +36,11 @@ export function BankStatementsDragAndDrop() {
   const form = useForm<FormValues>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [selectedBankTypes, setSelectedBankTypes] = useState<(BankType | null)[]>([]); 
-  const [isDropzoneEmpty, setIsDropzoneEmpty] = useState(true); 
+  const [selectedBankTypes, setSelectedBankTypes] = useState<(BankType | null)[]>([]);
+  const [isDropzoneEmpty, setIsDropzoneEmpty] = useState(true);
 
   const handleDrop = (files: File[]) => {
     // Update the form values with the dropped files
-    setIsDropzoneEmpty(files.length === 0); // Updated
     const updatedBankStatements = files.map((file) => ({
       client_company: '',
       name: file.name,
@@ -49,6 +48,17 @@ export function BankStatementsDragAndDrop() {
       file: file,
     }));
     form.setFieldValue('bank_statements', updatedBankStatements);
+  };
+
+  const handleRemoveFile = (indexToRemove: number) => {
+    form.removeListItem('bank_statements', indexToRemove);
+    const updatedBankStatements = form.values.bank_statements.filter(
+      (_, idx) => idx !== indexToRemove
+    );
+    setIsDropzoneEmpty(
+      updatedBankStatements.length === 0 ||
+        updatedBankStatements.every((statement) => !statement.file)
+    );
   };
 
   const handleBankTypeChange = (selectedBankType: BankType | null, index: number) => {
@@ -65,6 +75,7 @@ export function BankStatementsDragAndDrop() {
       return statement;
     });
     form.setFieldValue('bank_statements', updatedBankStatements);
+    setIsDropzoneEmpty(updatedBankStatements.length === 0);
   };
 
   const handleSubmit = async () => {
@@ -121,7 +132,8 @@ export function BankStatementsDragAndDrop() {
         </Table.Td>
         <Table.Td>
           <Center>
-            <ActionIcon color="red" onClick={() => form.removeListItem('bank_statements', index)}>
+            <ActionIcon color="red" onClick={() => handleRemoveFile(index)}>
+              {' '}
               <IconTrash size="1rem" />
             </ActionIcon>
           </Center>
@@ -130,7 +142,9 @@ export function BankStatementsDragAndDrop() {
     )) || [];
 
   const isSubmitDisabled =
-    isDropzoneEmpty || form.values.bank_statements.some((statement) => !statement.type);
+    isDropzoneEmpty ||
+    form.values.bank_statements.some((statement) => !statement.type) ||
+    selectedBankTypes.some((type) => type === null);
 
   return (
     <div>
