@@ -38,7 +38,7 @@ export function SelectClientDropdown() {
 
   return (
     <Select
-      placeholder="Pick a Client"
+      placeholder="Client"
       data={clientOptions}
       value={selectedClient?.id || ''}
       onChange={handleClientChange}

@@ -109,7 +109,7 @@ export function BankStatementsDragAndDrop() {
   const selectedBankStatements =
     form.values.bank_statements?.map((statement, index) => (
       <Table.Tr key={index}>
-        <Table.Td style={{ maxWidth: rem(250) }}>
+        <Table.Td style={{ maxWidth: rem(400) }}>
           <Tooltip
             arrowOffset={50}
             arrowSize={5}
@@ -146,6 +146,17 @@ export function BankStatementsDragAndDrop() {
     form.values.bank_statements.some((statement) => !statement.type) ||
     selectedBankTypes.some((type) => type === null);
 
+  const emptyRows =
+    !form.values.bank_statements || form.values.bank_statements.length === 0
+      ? Array.from({ length: 4 }, (_, index) => (
+          <Table.Tr key={index}>
+            <Table.Td colSpan={4} style={{ textAlign: 'center' }}>
+              -
+            </Table.Td>
+          </Table.Tr>
+        ))
+      : [];
+
   return (
     <div>
       <div className={classes.wrapper}>
@@ -155,12 +166,14 @@ export function BankStatementsDragAndDrop() {
           onReject={() => console.log('File is not supported or there is an error')} //change to make a fancy notification
           className={classes.dropzone}
           radius="sm"
-          accept={[MIME_TYPES.csv, MIME_TYPES.xls]} //.xls takes my csv files but the .csv did not allow it
+          accept={[MIME_TYPES.csv, MIME_TYPES.xls]}
           maxSize={30 * 1024 ** 2}
           style={{ borderStyle: 'dashed', borderWidth: 2, borderRadius: 10, color: 'dimgray' }}
         >
-          <Group justify="center">
-            <div style={{ pointerEvents: 'none' }}>
+          <Group justify="center" pt="sm">
+            <div style={{ height: rem(170), pointerEvents: 'none' }}>
+              {' '}
+              {/*Dropzone size */}
               <Group justify="center">
                 <Dropzone.Accept>
                   <IconDownload
@@ -180,8 +193,7 @@ export function BankStatementsDragAndDrop() {
                   <IconDownload style={{ width: rem(50), height: rem(50) }} stroke={1.5} />
                 </Dropzone.Idle>
               </Group>
-
-              <Text ta="center" fw={700} fz="lg" mt="sm">
+              <Text ta="center" fw={700} fz="lg" mt="lg">
                 <Dropzone.Accept>Drop the Bank Statements</Dropzone.Accept>
                 <Dropzone.Reject>
                   Incorrect file type or file size is more than 30mb{' '}
@@ -206,22 +218,24 @@ export function BankStatementsDragAndDrop() {
           </Group>
         </Dropzone>
       </div>
-      <div></div>
-      <Text pb={1} ta="center" fw={700}>
+
+      <Text pb={1} ta="center" fw={700} size="xl">
         Selected Bank Statements
       </Text>
       <Flex style={{ height: rem(200) }}>
-        <Table.ScrollContainer minWidth={500}>
+        <Table.ScrollContainer minWidth={1128}>
           <Table striped stickyHeader highlightOnHover withTableBorder withColumnBorders>
             <Table.Thead>
               <Table.Tr>
-                <Table.Th style={{ maxWidth: rem(250) }}>Bank Statement</Table.Th>
-                <Table.Th style={{ minWidth: rem(78) }}>Size</Table.Th>
-                <Table.Th style={{ minWidth: rem(57) }}>Type</Table.Th>
-                <Table.Th>Delete</Table.Th>
+                <Table.Th>Bank Statement</Table.Th>
+                <Table.Th>File Size</Table.Th>
+                <Table.Th>Bank Type</Table.Th>
+                <Table.Th>Remove</Table.Th>
               </Table.Tr>
             </Table.Thead>
-            <Table.Tbody>{selectedBankStatements}</Table.Tbody>
+            <Table.Tbody>
+              {selectedBankStatements.length > 0 ? selectedBankStatements : emptyRows}
+            </Table.Tbody>{' '}
           </Table>
         </Table.ScrollContainer>
       </Flex>
