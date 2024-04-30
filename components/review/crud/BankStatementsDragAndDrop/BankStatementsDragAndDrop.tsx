@@ -229,7 +229,7 @@ export function BankStatementsDragAndDrop() {
         Selected Bank Statements
       </Text>
       <Flex style={{ height: rem(200) }}>
-        <Table.ScrollContainer minWidth={1162}>
+        <Table.ScrollContainer minWidth={1130}>
           <Table striped stickyHeader highlightOnHover withTableBorder withColumnBorders>
             <Table.Thead>
               <Table.Tr>
