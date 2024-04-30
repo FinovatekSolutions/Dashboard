@@ -40,13 +40,21 @@ export function BankStatementsDragAndDrop() {
   const [isDropzoneEmpty, setIsDropzoneEmpty] = useState(true);
 
   const handleDrop = (files: File[]) => {
-    // Update the form values with the dropped files
-    const updatedBankStatements = files.map((file) => ({
+    // Retrieve existing bank statements
+    const existingBankStatements = form.values.bank_statements || [];
+
+    // Map newly dropped files to bank statement objects
+    const newBankStatements = files.map((file) => ({
       client_company: '',
       name: file.name,
       type: '',
       file: file,
     }));
+
+    // Concatenate existing and new bank statements
+    const updatedBankStatements = [...existingBankStatements, ...newBankStatements];
+
+    // Update form values with the updated bank statements
     form.setFieldValue('bank_statements', updatedBankStatements);
   };
 
