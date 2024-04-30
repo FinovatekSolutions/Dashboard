@@ -1,7 +1,17 @@
 'use client';
 
 import type { ReactElement } from 'react';
-import { Paper, Title, Text, Space, Center, Flex, rem, useMantineTheme } from '@mantine/core';
+import {
+  Paper,
+  Title,
+  Text,
+  Space,
+  Center,
+  Flex,
+  useMantineTheme,
+  rem,
+  Divider,
+} from '@mantine/core';
 import CreateClientButton from '@/components/client/crud/CreateClientButton/CreateClientButton';
 import { BankStatementsDragAndDrop } from '@/components/review/crud/BankStatementsDragAndDrop/BankStatementsDragAndDrop';
 import { SelectClientDropdown } from '@/components/review/crud/SelectClientDropdown/SelectClientDropdown';
@@ -23,20 +33,14 @@ export function MainPage(): ReactElement {
         <Title m={1} order={1}>
           Home
         </Title>
-        <Flex
-          direction={{ base: 'column', sm: 'row' }}
-          justify="space-between"
-          style={{ gap: '16px' }} // Adjust the gap size as needed
+        <Divider my="sm" />
+        <Paper
+          style={{ flex: 1, minHeight: '300px', backgroundColor: 'white' }} // Adjust min-height as needed
+          shadow="none"
+          mb="sm"
+          p="md"
         >
-          {/* Component 1 */}
-          <Paper
-            style={{ flex: 1, height: rem(650), backgroundColor: 'white' }}
-            shadow="xs"
-            withBorder
-            mb="sm"
-            p="md"
-          >
-            {/*Client*/}
+          <Flex direction="column" justify="space-between">
             <Text fw={700} size="xl">
               Select Client
             </Text>
@@ -49,21 +53,14 @@ export function MainPage(): ReactElement {
               <SelectClientDropdown />
               <CreateClientButton />
             </Flex>
-
-            {/*Bank Statements*/}
-            <Text ta="center" fw={700} size="xl">
+          </Flex>
+          <Flex direction="column" justify="space-between">
+            <Text fw={700} ta="center" size="xl" mb={3}>
               Bank Statements
             </Text>
-            <Flex
-              direction={{ base: 'row', sm: 'column' }}
-              mb={10}
-              justify="space-between"
-              style={{ gap: '16px' }}
-            >
-              <BankStatementsDragAndDrop />
-            </Flex>
-          </Paper>
-        </Flex>
+            <BankStatementsDragAndDrop />
+          </Flex>
+        </Paper>
       </Paper>
     </Center>
   );

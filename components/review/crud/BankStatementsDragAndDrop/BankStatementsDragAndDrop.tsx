@@ -133,7 +133,6 @@ export function BankStatementsDragAndDrop() {
         <Table.Td>
           <Center>
             <ActionIcon color="red" onClick={() => handleRemoveFile(index)}>
-              {' '}
               <IconTrash size="1rem" />
             </ActionIcon>
           </Center>
@@ -172,7 +171,6 @@ export function BankStatementsDragAndDrop() {
         >
           <Group justify="center" pt="sm">
             <div style={{ height: rem(170), pointerEvents: 'none' }}>
-              {' '}
               {/*Dropzone size */}
               <Group justify="center">
                 <Dropzone.Accept>
@@ -223,7 +221,7 @@ export function BankStatementsDragAndDrop() {
         Selected Bank Statements
       </Text>
       <Flex style={{ height: rem(200) }}>
-        <Table.ScrollContainer minWidth={1128}>
+        <Table.ScrollContainer minWidth={1162}>
           <Table striped stickyHeader highlightOnHover withTableBorder withColumnBorders>
             <Table.Thead>
               <Table.Tr>
