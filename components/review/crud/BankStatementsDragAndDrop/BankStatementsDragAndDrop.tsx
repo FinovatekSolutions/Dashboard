@@ -250,6 +250,7 @@ export function BankStatementsDragAndDrop() {
         mb={5}
         justify="space-between"
         style={{ gap: '16px' }}
+        pt={'sm'}
       >
         <CreateBankTypeButton />
         {isSubmitDisabled ? (
