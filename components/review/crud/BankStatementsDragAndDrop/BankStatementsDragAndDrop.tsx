@@ -13,11 +13,12 @@ import {
 } from '@mantine/core';
 import { IconX, IconTrash, IconDownload } from '@tabler/icons-react';
 import { useForm } from '@mantine/form';
-import { Dropzone, MIME_TYPES } from '@mantine/dropzone';
+import { Dropzone, FileRejection, MIME_TYPES } from '@mantine/dropzone';
 import classes from './BankStatementsDragAndDrop.module.css';
 import { SelectBankTypeDropdown } from '@/components/review/crud/SelectBankTypeDropdown/SelectBankTypeDropdown';
 import CreateBankTypeButton from '@/components/banktype/crud/CreateBankTypeButton/CreateBankTypeButton';
 import { BankType } from '@prisma/client';
+import { notifications } from '@mantine/notifications';
 
 interface FormValues {
   bank_statements: BankStatement[];
@@ -164,13 +165,37 @@ export function BankStatementsDragAndDrop() {
         ))
       : [];
 
+  const handleRejectedFiles = (fileRejections: FileRejection[]) => {
+    fileRejections.forEach((fileRejection) => {
+      if (fileRejection.errors[0].code === 'file-invalid-type') {
+        notifications.show({
+          color: 'red',
+          title: 'Invalid File Type',
+          message: `The file "${fileRejection.file.name}" is invalid. Please upload only .csv or .xls files.`,
+          icon: <IconX size={theme.fontSizes.md} />,
+          loading: false,
+          autoClose: 2000,
+        });
+      } else if (fileRejection.errors[0].code === 'file-too-large') {
+        notifications.show({
+          color: 'red',
+          title: 'File Size Exceeded',
+          message: `The file "${fileRejection.file.name}" exceeds the size limit. File size must be less than 30MB.`,
+          icon: <IconX size={theme.fontSizes.md} />,
+          loading: false,
+          autoClose: 2000,
+        });
+      }
+    });
+  };
+
   return (
     <div>
       <div className={classes.wrapper}>
         <Dropzone
           openRef={openRef}
           onDrop={handleDrop}
-          onReject={() => console.log('File is not supported or there is an error')} //change to make a fancy notification
+          onReject={handleRejectedFiles}
           className={classes.dropzone}
           radius="sm"
           accept={[MIME_TYPES.csv, MIME_TYPES.xls]}
