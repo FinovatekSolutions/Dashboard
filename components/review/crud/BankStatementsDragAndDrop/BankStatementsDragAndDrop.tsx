@@ -239,10 +239,8 @@ export function BankStatementsDragAndDrop() {
       </Flex>
       <Flex
         direction={{ base: 'column', sm: 'row' }}
-        justify="space-between"
-        align="flex-end"
-        mt={10}
         mb={5}
+        justify="space-between"
         style={{ gap: '16px' }}
       >
         <CreateBankTypeButton />
