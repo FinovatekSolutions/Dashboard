@@ -1,17 +1,7 @@
 'use client';
 
 import type { ReactElement } from 'react';
-import {
-  Paper,
-  Title,
-  Text,
-  Space,
-  Center,
-  Flex,
-  useMantineTheme,
-  rem,
-  Divider,
-} from '@mantine/core';
+import { Paper, Title, Text, Space, Center, Flex, useMantineTheme, Divider } from '@mantine/core';
 import CreateClientButton from '@/components/client/crud/CreateClientButton/CreateClientButton';
 import { BankStatementsDragAndDrop } from '@/components/review/crud/BankStatementsDragAndDrop/BankStatementsDragAndDrop';
 import { SelectClientDropdown } from '@/components/review/crud/SelectClientDropdown/SelectClientDropdown';
