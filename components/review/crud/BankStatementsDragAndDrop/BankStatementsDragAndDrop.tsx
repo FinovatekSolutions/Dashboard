@@ -174,7 +174,7 @@ export function BankStatementsDragAndDrop() {
           message: `The file "${fileRejection.file.name}" is invalid. Please upload only .csv or .xls files.`,
           icon: <IconX size={theme.fontSizes.md} />,
           loading: false,
-          autoClose: 2000,
+          autoClose: 6000,
         });
       } else if (fileRejection.errors[0].code === 'file-too-large') {
         notifications.show({
@@ -183,7 +183,7 @@ export function BankStatementsDragAndDrop() {
           message: `The file "${fileRejection.file.name}" exceeds the size limit. File size must be less than 30MB.`,
           icon: <IconX size={theme.fontSizes.md} />,
           loading: false,
-          autoClose: 2000,
+          autoClose: 5000,
         });
       }
     });
