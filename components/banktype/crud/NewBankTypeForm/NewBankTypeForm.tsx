@@ -70,11 +70,7 @@ export function NewBankTypeForm({ setOpened }: NewBankTypeFormProps) {
     <Box component="form" onSubmit={form.onSubmit(handleSubmit)}>
       <Stack>
         <Group grow>
-          <TextInput
-            label="Bank Type Name"
-            placeholder="Banco Popular"
-            {...form.getInputProps('name')}
-          />
+          <TextInput label="Bank Type Name" placeholder="Type" {...form.getInputProps('name')} />
         </Group>
         <Flex direction={{ base: 'column', sm: 'row' }} justify="flex-end">
           <Button

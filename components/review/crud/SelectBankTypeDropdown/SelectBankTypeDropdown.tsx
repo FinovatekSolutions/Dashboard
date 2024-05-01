@@ -27,7 +27,7 @@ export function SelectBankTypeDropdown({ onChange }: SelectBankTypeDropdownProps
 
   return (
     <Select
-      placeholder="Pick a Bank Type"
+      placeholder="Type"
       data={bankTypeOptions}
       value={selectedBankType?.id || ''}
       onChange={handleBankTypeChange}
