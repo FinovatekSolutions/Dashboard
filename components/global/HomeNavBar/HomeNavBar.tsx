@@ -13,7 +13,6 @@ import {
   Anchor,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { MantineLogo } from '@mantinex/mantine-logo';
 import Link from 'next/link';
 import classes from './HomeNavBar.module.css';
 

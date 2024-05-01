@@ -1,7 +1,6 @@
 import React from 'react';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { HeaderMegaMenu } from '@/components/global/HeaderMegaMenu/HeaderMegaMenu';
 import { authOptions } from '../api/auth/[...nextauth]/route';
 import { LockWhenSignedOut } from '@/lib/providers/lock-when-signed-out';
 import { HomeNavBar } from '@/components/global/HomeNavBar/HomeNavBar';

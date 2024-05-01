@@ -1,6 +1,6 @@
 'use server';
 
-import type { Prisma, Permission, Review, User } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
 import { ReviewCreateInputSchema, ReviewUpdateInputSchema } from '@prisma/zod';
 import { z } from 'zod';
 

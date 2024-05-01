@@ -1,11 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { Button, Modal, Group, Text, ButtonProps, useMantineTheme, Title } from '@mantine/core';
-import { IconCirclePlus, IconEdit } from '@tabler/icons-react';
+import { Button, Modal, ButtonProps, useMantineTheme, Title } from '@mantine/core';
+import { IconEdit } from '@tabler/icons-react';
 import { useMediaQuery } from '@mantine/hooks';
 
-import { EditClientForm } from '@/components/client/crud/EditClientForm/EditClientForm';
 import { EditReviewForm } from '../EditReviewForm/EditReviewForm';
 
 interface EditReviewButtonProps extends ButtonProps {

@@ -1,11 +1,5 @@
-import { Avatar, Text, Group, Title, Stack, Tooltip } from '@mantine/core';
-import {
-  IconPhoneCall,
-  IconAt,
-  IconBuilding,
-  IconMapPin,
-  IconUserCircle,
-} from '@tabler/icons-react';
+import { Avatar, Text, Group, Title, Tooltip } from '@mantine/core';
+import { IconAt, IconUserCircle } from '@tabler/icons-react';
 import { useSession } from 'next-auth/react';
 
 import { useGetPermissionByEmail } from '@/lib/actions/permission';

@@ -1,18 +1,7 @@
 'use client';
 
 import type { ReactElement } from 'react';
-import {
-  Paper,
-  Title,
-  Text,
-  Space,
-  Center,
-  Flex,
-  Box,
-  useMantineTheme,
-  Divider,
-  Button,
-} from '@mantine/core';
+import { Title, Flex, Box, Divider, Button } from '@mantine/core';
 import { IconRefresh } from '@tabler/icons-react';
 import ClientsTable from '@/components/client/general/ClientsTable/ClientsTable';
 import CreateClientButton from '@/components/client/crud/CreateClientButton/CreateClientButton';
@@ -20,7 +9,6 @@ import { useGetClients } from '@/lib/actions/client';
 import { PageContainer } from '@/components/global/PageContainer/PageContainer';
 
 export function ClientsClient(): ReactElement {
-  const theme = useMantineTheme();
   const getClientsQuery = useGetClients();
 
   return (

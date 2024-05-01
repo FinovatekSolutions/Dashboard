@@ -13,3 +13,7 @@ export type FullReviewDetails = Review & {
   user: User;
   transactions: Transaction[];
 };
+
+export type ClientWithReviews = Client & {
+  reviews: ReviewWithUser[];
+};

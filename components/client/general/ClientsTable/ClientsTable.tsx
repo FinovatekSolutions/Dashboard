@@ -7,7 +7,7 @@ import { notifications } from '@mantine/notifications';
 import { Client } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { ActionIcon, Flex, Tooltip, useMantineTheme } from '@mantine/core';
-import { IconEdit, IconEye, IconTrash, IconX } from '@tabler/icons-react';
+import { IconEye, IconX } from '@tabler/icons-react';
 
 import { useGetClients } from '@/lib/actions/client';
 

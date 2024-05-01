@@ -19,8 +19,6 @@ export const authOptions = {
   callbacks: {
     async signIn({
       user,
-      account,
-      profile,
     }: {
       user: User | any;
       account: Account | null;

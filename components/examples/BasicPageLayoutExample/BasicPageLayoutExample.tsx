@@ -1,5 +1,4 @@
-import type { ReactElement } from 'react';
-import { Paper, Title, Text, Space, Center, Flex, Box, useMantineTheme } from '@mantine/core';
+import { Paper, Space, Center, Flex, Box, useMantineTheme } from '@mantine/core';
 
 export function BasicPageLayoutExample() {
   const theme = useMantineTheme();

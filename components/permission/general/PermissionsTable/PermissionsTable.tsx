@@ -5,7 +5,6 @@ import { MantineReactTable, useMantineReactTable, type MRT_ColumnDef } from 'man
 import { notifications } from '@mantine/notifications';
 
 import { Permission } from '@prisma/client';
-import { useRouter } from 'next/navigation';
 import { ActionIcon, Flex, Modal, Tooltip, useMantineTheme, Title } from '@mantine/core';
 import { IconEdit, IconTrash, IconX } from '@tabler/icons-react';
 import { useMediaQuery } from '@mantine/hooks';
@@ -17,7 +16,6 @@ import { DeletePermissionForm } from '@/components/permission/crud/DeletePermiss
 const PermissionsTable = () => {
   const getPermissionsQuery = useGetPermissions();
   const theme = useMantineTheme();
-  const router = useRouter();
   const [openedEdit, setOpenedEdit] = useState(false);
   const [openedDelete, setOpenedDelete] = useState(false);
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);

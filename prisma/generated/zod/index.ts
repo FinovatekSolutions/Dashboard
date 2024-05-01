@@ -30,6 +30,8 @@ export const CategoryScalarFieldEnumSchema = z.enum(['id','name','createdAt','up
 
 export const PermissionScalarFieldEnumSchema = z.enum(['id','firstName','lastName','email','role','createdAt','updatedAt']);
 
+export const ModelScalarFieldEnumSchema = z.enum(['id','firstName','lastName','createdAt','updatedAt']);
+
 export const AccountScalarFieldEnumSchema = z.enum(['id','userId','type','provider','providerAccountId','refresh_token','access_token','expires_at','token_type','scope','id_token','session_state']);
 
 export const SessionScalarFieldEnumSchema = z.enum(['id','sessionToken','userId','expires']);
@@ -191,6 +193,20 @@ export const PermissionSchema = z.object({
 })
 
 export type Permission = z.infer<typeof PermissionSchema>
+
+/////////////////////////////////////////
+// MODEL SCHEMA
+/////////////////////////////////////////
+
+export const ModelSchema = z.object({
+  id: z.string().cuid(),
+  firstName: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
+  lastName: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
+  createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
+})
+
+export type Model = z.infer<typeof ModelSchema>
 
 /////////////////////////////////////////
 // ACCOUNT SCHEMA
@@ -490,6 +506,17 @@ export const PermissionSelectSchema: z.ZodType<Prisma.PermissionSelect> = z.obje
   lastName: z.boolean().optional(),
   email: z.boolean().optional(),
   role: z.boolean().optional(),
+  createdAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
+}).strict()
+
+// MODEL
+//------------------------------------------------------
+
+export const ModelSelectSchema: z.ZodType<Prisma.ModelSelect> = z.object({
+  id: z.boolean().optional(),
+  firstName: z.boolean().optional(),
+  lastName: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
 }).strict()
@@ -1189,6 +1216,61 @@ export const PermissionScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Pe
   lastName: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   email: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   role: z.union([ z.lazy(() => EnumRoleWithAggregatesFilterSchema),z.lazy(() => RoleSchema) ]).optional(),
+  createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  updatedAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+}).strict();
+
+export const ModelWhereInputSchema: z.ZodType<Prisma.ModelWhereInput> = z.object({
+  AND: z.union([ z.lazy(() => ModelWhereInputSchema),z.lazy(() => ModelWhereInputSchema).array() ]).optional(),
+  OR: z.lazy(() => ModelWhereInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => ModelWhereInputSchema),z.lazy(() => ModelWhereInputSchema).array() ]).optional(),
+  id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  firstName: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  lastName: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+}).strict();
+
+export const ModelOrderByWithRelationInputSchema: z.ZodType<Prisma.ModelOrderByWithRelationInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  firstName: z.lazy(() => SortOrderSchema).optional(),
+  lastName: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const ModelWhereUniqueInputSchema: z.ZodType<Prisma.ModelWhereUniqueInput> = z.object({
+  id: z.string().cuid()
+})
+.and(z.object({
+  id: z.string().cuid().optional(),
+  AND: z.union([ z.lazy(() => ModelWhereInputSchema),z.lazy(() => ModelWhereInputSchema).array() ]).optional(),
+  OR: z.lazy(() => ModelWhereInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => ModelWhereInputSchema),z.lazy(() => ModelWhereInputSchema).array() ]).optional(),
+  firstName: z.union([ z.lazy(() => StringFilterSchema),z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }) ]).optional(),
+  lastName: z.union([ z.lazy(() => StringFilterSchema),z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }) ]).optional(),
+  createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+}).strict());
+
+export const ModelOrderByWithAggregationInputSchema: z.ZodType<Prisma.ModelOrderByWithAggregationInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  firstName: z.lazy(() => SortOrderSchema).optional(),
+  lastName: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  _count: z.lazy(() => ModelCountOrderByAggregateInputSchema).optional(),
+  _max: z.lazy(() => ModelMaxOrderByAggregateInputSchema).optional(),
+  _min: z.lazy(() => ModelMinOrderByAggregateInputSchema).optional()
+}).strict();
+
+export const ModelScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.ModelScalarWhereWithAggregatesInput> = z.object({
+  AND: z.union([ z.lazy(() => ModelScalarWhereWithAggregatesInputSchema),z.lazy(() => ModelScalarWhereWithAggregatesInputSchema).array() ]).optional(),
+  OR: z.lazy(() => ModelScalarWhereWithAggregatesInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => ModelScalarWhereWithAggregatesInputSchema),z.lazy(() => ModelScalarWhereWithAggregatesInputSchema).array() ]).optional(),
+  id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  firstName: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  lastName: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
 }).strict();
@@ -2057,6 +2139,62 @@ export const PermissionUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Permissi
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
+export const ModelCreateInputSchema: z.ZodType<Prisma.ModelCreateInput> = z.object({
+  id: z.string().cuid().optional(),
+  firstName: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
+  lastName: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional()
+}).strict();
+
+export const ModelUncheckedCreateInputSchema: z.ZodType<Prisma.ModelUncheckedCreateInput> = z.object({
+  id: z.string().cuid().optional(),
+  firstName: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
+  lastName: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional()
+}).strict();
+
+export const ModelUpdateInputSchema: z.ZodType<Prisma.ModelUpdateInput> = z.object({
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  firstName: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  lastName: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const ModelUncheckedUpdateInputSchema: z.ZodType<Prisma.ModelUncheckedUpdateInput> = z.object({
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  firstName: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  lastName: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const ModelCreateManyInputSchema: z.ZodType<Prisma.ModelCreateManyInput> = z.object({
+  id: z.string().cuid().optional(),
+  firstName: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
+  lastName: z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional()
+}).strict();
+
+export const ModelUpdateManyMutationInputSchema: z.ZodType<Prisma.ModelUpdateManyMutationInput> = z.object({
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  firstName: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  lastName: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const ModelUncheckedUpdateManyInputSchema: z.ZodType<Prisma.ModelUncheckedUpdateManyInput> = z.object({
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  firstName: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  lastName: z.union([ z.string().min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
 export const AccountCreateInputSchema: z.ZodType<Prisma.AccountCreateInput> = z.object({
   id: z.string().cuid().optional(),
   type: z.string(),
@@ -2791,6 +2929,30 @@ export const EnumRoleWithAggregatesFilterSchema: z.ZodType<Prisma.EnumRoleWithAg
   _count: z.lazy(() => NestedIntFilterSchema).optional(),
   _min: z.lazy(() => NestedEnumRoleFilterSchema).optional(),
   _max: z.lazy(() => NestedEnumRoleFilterSchema).optional()
+}).strict();
+
+export const ModelCountOrderByAggregateInputSchema: z.ZodType<Prisma.ModelCountOrderByAggregateInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  firstName: z.lazy(() => SortOrderSchema).optional(),
+  lastName: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const ModelMaxOrderByAggregateInputSchema: z.ZodType<Prisma.ModelMaxOrderByAggregateInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  firstName: z.lazy(() => SortOrderSchema).optional(),
+  lastName: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const ModelMinOrderByAggregateInputSchema: z.ZodType<Prisma.ModelMinOrderByAggregateInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  firstName: z.lazy(() => SortOrderSchema).optional(),
+  lastName: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const IntNullableFilterSchema: z.ZodType<Prisma.IntNullableFilter> = z.object({
@@ -5426,6 +5588,63 @@ export const PermissionFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.PermissionF
   where: PermissionWhereUniqueInputSchema,
 }).strict() ;
 
+export const ModelFindFirstArgsSchema: z.ZodType<Prisma.ModelFindFirstArgs> = z.object({
+  select: ModelSelectSchema.optional(),
+  where: ModelWhereInputSchema.optional(),
+  orderBy: z.union([ ModelOrderByWithRelationInputSchema.array(),ModelOrderByWithRelationInputSchema ]).optional(),
+  cursor: ModelWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: z.union([ ModelScalarFieldEnumSchema,ModelScalarFieldEnumSchema.array() ]).optional(),
+}).strict() ;
+
+export const ModelFindFirstOrThrowArgsSchema: z.ZodType<Prisma.ModelFindFirstOrThrowArgs> = z.object({
+  select: ModelSelectSchema.optional(),
+  where: ModelWhereInputSchema.optional(),
+  orderBy: z.union([ ModelOrderByWithRelationInputSchema.array(),ModelOrderByWithRelationInputSchema ]).optional(),
+  cursor: ModelWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: z.union([ ModelScalarFieldEnumSchema,ModelScalarFieldEnumSchema.array() ]).optional(),
+}).strict() ;
+
+export const ModelFindManyArgsSchema: z.ZodType<Prisma.ModelFindManyArgs> = z.object({
+  select: ModelSelectSchema.optional(),
+  where: ModelWhereInputSchema.optional(),
+  orderBy: z.union([ ModelOrderByWithRelationInputSchema.array(),ModelOrderByWithRelationInputSchema ]).optional(),
+  cursor: ModelWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: z.union([ ModelScalarFieldEnumSchema,ModelScalarFieldEnumSchema.array() ]).optional(),
+}).strict() ;
+
+export const ModelAggregateArgsSchema: z.ZodType<Prisma.ModelAggregateArgs> = z.object({
+  where: ModelWhereInputSchema.optional(),
+  orderBy: z.union([ ModelOrderByWithRelationInputSchema.array(),ModelOrderByWithRelationInputSchema ]).optional(),
+  cursor: ModelWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+}).strict() ;
+
+export const ModelGroupByArgsSchema: z.ZodType<Prisma.ModelGroupByArgs> = z.object({
+  where: ModelWhereInputSchema.optional(),
+  orderBy: z.union([ ModelOrderByWithAggregationInputSchema.array(),ModelOrderByWithAggregationInputSchema ]).optional(),
+  by: ModelScalarFieldEnumSchema.array(),
+  having: ModelScalarWhereWithAggregatesInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+}).strict() ;
+
+export const ModelFindUniqueArgsSchema: z.ZodType<Prisma.ModelFindUniqueArgs> = z.object({
+  select: ModelSelectSchema.optional(),
+  where: ModelWhereUniqueInputSchema,
+}).strict() ;
+
+export const ModelFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.ModelFindUniqueOrThrowArgs> = z.object({
+  select: ModelSelectSchema.optional(),
+  where: ModelWhereUniqueInputSchema,
+}).strict() ;
+
 export const AccountFindFirstArgsSchema: z.ZodType<Prisma.AccountFindFirstArgs> = z.object({
   select: AccountSelectSchema.optional(),
   include: AccountIncludeSchema.optional(),
@@ -5966,6 +6185,43 @@ export const PermissionUpdateManyArgsSchema: z.ZodType<Prisma.PermissionUpdateMa
 
 export const PermissionDeleteManyArgsSchema: z.ZodType<Prisma.PermissionDeleteManyArgs> = z.object({
   where: PermissionWhereInputSchema.optional(),
+}).strict() ;
+
+export const ModelCreateArgsSchema: z.ZodType<Prisma.ModelCreateArgs> = z.object({
+  select: ModelSelectSchema.optional(),
+  data: z.union([ ModelCreateInputSchema,ModelUncheckedCreateInputSchema ]),
+}).strict() ;
+
+export const ModelUpsertArgsSchema: z.ZodType<Prisma.ModelUpsertArgs> = z.object({
+  select: ModelSelectSchema.optional(),
+  where: ModelWhereUniqueInputSchema,
+  create: z.union([ ModelCreateInputSchema,ModelUncheckedCreateInputSchema ]),
+  update: z.union([ ModelUpdateInputSchema,ModelUncheckedUpdateInputSchema ]),
+}).strict() ;
+
+export const ModelCreateManyArgsSchema: z.ZodType<Prisma.ModelCreateManyArgs> = z.object({
+  data: z.union([ ModelCreateManyInputSchema,ModelCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict() ;
+
+export const ModelDeleteArgsSchema: z.ZodType<Prisma.ModelDeleteArgs> = z.object({
+  select: ModelSelectSchema.optional(),
+  where: ModelWhereUniqueInputSchema,
+}).strict() ;
+
+export const ModelUpdateArgsSchema: z.ZodType<Prisma.ModelUpdateArgs> = z.object({
+  select: ModelSelectSchema.optional(),
+  data: z.union([ ModelUpdateInputSchema,ModelUncheckedUpdateInputSchema ]),
+  where: ModelWhereUniqueInputSchema,
+}).strict() ;
+
+export const ModelUpdateManyArgsSchema: z.ZodType<Prisma.ModelUpdateManyArgs> = z.object({
+  data: z.union([ ModelUpdateManyMutationInputSchema,ModelUncheckedUpdateManyInputSchema ]),
+  where: ModelWhereInputSchema.optional(),
+}).strict() ;
+
+export const ModelDeleteManyArgsSchema: z.ZodType<Prisma.ModelDeleteManyArgs> = z.object({
+  where: ModelWhereInputSchema.optional(),
 }).strict() ;
 
 export const AccountCreateArgsSchema: z.ZodType<Prisma.AccountCreateArgs> = z.object({

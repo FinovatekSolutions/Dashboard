@@ -1,12 +1,7 @@
 'use client';
 
-import type { ReactElement } from 'react';
 import {
-  Paper,
-  Title,
   Text,
-  Space,
-  Center,
   Flex,
   Box,
   useMantineTheme,
@@ -16,16 +11,14 @@ import {
   Breadcrumbs,
   LoadingOverlay,
   Skeleton,
-  Group,
   Stack,
 } from '@mantine/core';
-import { IconArrowLeft, IconChevronLeft, IconRefresh } from '@tabler/icons-react';
+import { IconArrowLeft, IconRefresh } from '@tabler/icons-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import ClientsTable from '@/components/client/general/ClientsTable/ClientsTable';
 import EditClientButton from '@/components/client/crud/EditClientButton/EditClientButton';
-import { useGetClients, useGetClientById } from '@/lib/actions/client';
+import { useGetClientById } from '@/lib/actions/client';
 import { ClientInfo } from '@/components/client/general/ClientInfo/ClientInfo';
 import { ClientStatsSegments } from '@/components/client/general/ClientStatsSegments/ClientStatsSegments';
 import ReviewsTable from '@/components/review/general/ReviewsTable/ReviewsTable';
@@ -33,7 +26,6 @@ import { PageContainer } from '@/components/global/PageContainer/PageContainer';
 
 export function ViewClientByIDClient({ params }: { params: { clientId: string } }) {
   const theme = useMantineTheme();
-  const getClientsQuery = useGetClients();
   const getClientByIdQuery = useGetClientById(params.clientId);
   const router = useRouter();
 

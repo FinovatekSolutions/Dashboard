@@ -186,6 +186,20 @@ model Permission {
   updatedAt DateTime @updatedAt
 }
 
+model Model {
+  id String @id @default(cuid())
+
+  /// @zod.string.min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" })
+  firstName String
+
+  /// @zod.string.min(3, { message: "Must be at least 3 characters." }).max(100, { message: "Must be at most 100 characters" })
+  lastName String
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+}
+
 // DO NOT EDIT BELOW, USED FOR AUTHENTICATION
 model Account {
   id                String  @id @default(cuid())

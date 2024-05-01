@@ -3,8 +3,6 @@
 import type { ReactElement } from 'react';
 import { Title, Text, Paper, Center, useMantineTheme } from '@mantine/core';
 
-import { Welcome } from '@/components/examples/Welcome/Welcome';
-
 export function AdminClient(): ReactElement {
   const theme = useMantineTheme();
 
@@ -23,7 +21,10 @@ export function AdminClient(): ReactElement {
               inherit
               variant="gradient"
               component="span"
-              gradient={{ from: theme.colors['trust-md-light-blue'][4], to: theme.colors['trust-md-light-green'][7] }}
+              gradient={{
+                from: theme.colors['trust-md-light-blue'][4],
+                to: theme.colors['trust-md-light-green'][7],
+              }}
             >
               Admin Dashboard
             </Text>

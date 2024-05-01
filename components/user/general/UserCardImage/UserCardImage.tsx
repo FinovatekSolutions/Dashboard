@@ -1,27 +1,10 @@
-import { Card, Avatar, Text, Group, Button, Space } from '@mantine/core';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { Card, Avatar, Text, Space } from '@mantine/core';
+import { useSession } from 'next-auth/react';
 
 import classes from './UserCardImage.module.css';
 
-const stats = [
-  { value: '34K', label: 'Followers' },
-  { value: '187', label: 'Follows' },
-  { value: '1.6K', label: 'Posts' },
-];
-
 export function UserCardImage() {
   const { data: session } = useSession();
-
-  const items = stats.map((stat) => (
-    <div key={stat.label}>
-      <Text ta="center" fz="lg" fw={500}>
-        {stat.value}
-      </Text>
-      <Text ta="center" fz="sm" c="dimmed" lh={1}>
-        {stat.label}
-      </Text>
-    </div>
-  ));
 
   return (
     <Card withBorder padding="xl" radius="md" className={classes.card} w="70%">

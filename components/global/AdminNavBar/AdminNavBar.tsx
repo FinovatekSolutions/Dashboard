@@ -16,7 +16,6 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 // import Image from 'next/image';
 import Link from 'next/link';
-import classes from './AdminNavBar.module.css';
 import { UserMenu } from '@/components/user/general/UserMenu/UserMenu';
 
 export function AdminNavBar({ children }: { children: any }) {
@@ -80,7 +79,13 @@ export function AdminNavBar({ children }: { children: any }) {
           <Text c={theme.colors.gray[2]}>Navigation</Text>
 
           <Divider my="md" color={theme.colors.dark[3]} />
-          <Button component={Link} href="/" variant="outline" color={theme.colors['trust-md-light-blue'][3]} size="md">
+          <Button
+            component={Link}
+            href="/"
+            variant="outline"
+            color={theme.colors['trust-md-light-blue'][3]}
+            size="md"
+          >
             Return to Home
           </Button>
           <Divider my="md" color={theme.colors.dark[3]} />

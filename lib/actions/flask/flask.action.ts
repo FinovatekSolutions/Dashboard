@@ -8,6 +8,7 @@ export async function pingFlaskApi() {
     throw new Error('FLASK_API_URL is not defined in environment variables');
   }
 
+  // eslint-disable-next-line no-useless-catch
   try {
     const response = await fetch(flaskApiUrl);
     if (!response.ok) {
@@ -17,7 +18,6 @@ export async function pingFlaskApi() {
     return data; // Assuming the API returns JSON data
   } catch (error) {
     // Handle errors more specifically based on your needs
-    console.error('Error fetching from Flask API:', error);
     throw error;
   }
 }
