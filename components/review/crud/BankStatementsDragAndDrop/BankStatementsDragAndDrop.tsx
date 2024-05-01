@@ -130,7 +130,7 @@ export function BankStatementsDragAndDrop() {
           </Tooltip>
         </Table.Td>
         <Table.Td style={{ minWidth: rem(78) }}>
-          <Text>
+          <Text ta="center">
             {statement.file ? `${((statement.file.size / 1024) * 0.001).toFixed(2)} mb` : 'Unknown'}
           </Text>
         </Table.Td>
@@ -259,14 +259,14 @@ export function BankStatementsDragAndDrop() {
             <Table.Thead>
               <Table.Tr>
                 <Table.Th>Bank Statement</Table.Th>
-                <Table.Th>File Size</Table.Th>
-                <Table.Th>Bank Type</Table.Th>
-                <Table.Th>Remove</Table.Th>
+                <Table.Th ta="center">File Size</Table.Th>
+                <Table.Th ta="center">Bank Type</Table.Th>
+                <Table.Th ta="center">Remove</Table.Th>
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
               {selectedBankStatements.length > 0 ? selectedBankStatements : emptyRows}
-            </Table.Tbody>{' '}
+            </Table.Tbody>
           </Table>
         </Table.ScrollContainer>
       </Flex>
