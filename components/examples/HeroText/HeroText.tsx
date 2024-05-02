@@ -25,7 +25,9 @@ export default function HeroText() {
 
       <div className={classes.inner}>
         <Title c="black" style={{ textAlign: 'center' }}>
-          Lorem{' '}
+          Financial Radiographies
+        </Title>
+        <Title c="black" style={{ textAlign: 'center' }}>
           <Text
             component="span"
             className={classes.highlight}
@@ -35,11 +37,9 @@ export default function HeroText() {
               from: '#1A1C27',
               to: '#44c5f8',
             }}
-          >
-            Ipsum
-          </Text>{' '}
-          Yucateke
+          ></Text>
         </Title>
+        <Title c="black" style={{ textAlign: 'center' }}></Title>
         <Space h="xl" />
         <Space h="xl" />
         <Space h="sm" />
@@ -73,10 +73,8 @@ export default function HeroText() {
         <Container p={0} size={600}>
           <Divider my="md" color={theme.colors.dark[9]} />
           <Text size="lg" c={theme.colors.dark[9]} fw={500} className={classes.description}>
-            This is a dasboard. This is a dasboard. This is a dasboard. This is a dasboard. This is
-            a dasboard. This is a dasboard. This is a dasboard. This is a dasboard. This is a
-            dasboard. This is a dasboard. This is a dasboard. This is a dasboard. This is a
-            dasboard.
+            This is an software that takes all of your clients bank statements and categorizes them
+            using state of the art Machine Learning technology in order to agilize the
           </Text>
         </Container>
 
