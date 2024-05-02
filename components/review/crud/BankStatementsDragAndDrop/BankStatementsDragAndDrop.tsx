@@ -11,14 +11,19 @@ import {
   Flex,
   Center,
 } from '@mantine/core';
-import { IconX, IconTrash, IconDownload } from '@tabler/icons-react';
+import { useSession } from 'next-auth/react';
+import { BankType, Client } from '@prisma/client';
+import { notifications } from '@mantine/notifications';
+import { IconX, IconTrash, IconDownload, IconCheck } from '@tabler/icons-react';
 import { useForm } from '@mantine/form';
+import { useRouter } from 'next/navigation';
+
 import { Dropzone, FileRejection, MIME_TYPES } from '@mantine/dropzone';
 import classes from './BankStatementsDragAndDrop.module.css';
 import { SelectBankTypeDropdown } from '@/components/review/crud/SelectBankTypeDropdown/SelectBankTypeDropdown';
 import CreateBankTypeButton from '@/components/banktype/crud/CreateBankTypeButton/CreateBankTypeButton';
-import { BankType } from '@prisma/client';
-import { notifications } from '@mantine/notifications';
+import { useCreateReview } from '@/lib/actions/review';
+import { generateUniqueFileName } from '@/lib/utils/helpers';
 
 interface FormValues {
   bank_statements: BankStatement[];
@@ -31,7 +36,15 @@ interface BankStatement {
   file: File | null;
 }
 
-export function BankStatementsDragAndDrop() {
+interface BankStatementsDragAndDropProps {
+  selectedClient: Client | null;
+  setSelectedClient: (client: Client | null) => void;
+}
+
+export function BankStatementsDragAndDrop({
+  selectedClient,
+  setSelectedClient,
+}: BankStatementsDragAndDropProps) {
   const theme = useMantineTheme();
   const openRef = useRef<() => void>(null);
   const form = useForm<FormValues>();
@@ -39,6 +52,37 @@ export function BankStatementsDragAndDrop() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [selectedBankTypes, setSelectedBankTypes] = useState<(BankType | null)[]>([]);
   const [isDropzoneEmpty, setIsDropzoneEmpty] = useState(true);
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  const createReviewMutation = useCreateReview(
+    // onSuccess callback
+    (data) => {
+      form.reset();
+      notifications.update({
+        id: 'review-create',
+        color: 'teal',
+        title: 'Review was created',
+        message: 'The review has been created successfully.',
+        icon: <IconCheck size={theme.fontSizes.md} />,
+        loading: false,
+        autoClose: 2000,
+      });
+      router.push(`/reviews/${data.id}`);
+    },
+    // onError callback
+    () => {
+      notifications.update({
+        id: 'review-create',
+        color: 'red',
+        title: 'Failed to create review',
+        message: 'An error occurred. Please try again.',
+        icon: <IconX size={theme.fontSizes.md} />,
+        loading: false,
+        autoClose: 2000,
+      });
+    }
+  );
 
   const handleDrop = (files: File[]) => {
     // Retrieve existing bank statements
@@ -49,7 +93,7 @@ export function BankStatementsDragAndDrop() {
       client_company: '',
       name: file.name,
       type: '',
-      file: file,
+      file,
     }));
 
     // Concatenate existing and new bank statements
@@ -94,19 +138,36 @@ export function BankStatementsDragAndDrop() {
     // Assuming you keep track of files in a state variable
     form.values.bank_statements.forEach((statement) => {
       if (statement.file) {
-        formData.append('files[]', statement.file, statement.name + '_' + statement.type);
+        formData.append('files[]', statement.file, `${statement.name}_${statement.type}`);
       }
     });
 
     try {
-      console.log(formData);
-      const response = await fetch('http://localhost:8000/process-csv', {
-        method: 'POST',
-        body: formData,
+      notifications.show({
+        id: 'review-create',
+        loading: true,
+        title: 'Creating review',
+        message: 'Please wait...',
+        autoClose: false,
+        withCloseButton: false,
       });
 
-      const result = await response.json();
-      console.log(result); // Handle the response based on your requirements
+      console.log(formData);
+      // const response = await fetch('http://localhost:8000/process-csv?reviewId=...', {
+      //   method: 'POST',
+      //   body: formData,
+      // });
+      // const result = await response.json();
+      // console.log(result); // Handle the response based on your requirements
+
+      await createReviewMutation.mutate({
+        name: generateUniqueFileName(),
+        startDate: new Date(),
+        endDate: new Date(),
+        client: { connect: { id: selectedClient?.id || '' } },
+        user: { connect: { email: session?.user?.email || '' } },
+      });
+
       setIsSubmitting(false);
     } catch (error) {
       console.error('Failed to submit:', error);
@@ -151,7 +212,7 @@ export function BankStatementsDragAndDrop() {
 
   const isSubmitDisabled =
     isDropzoneEmpty ||
-    form.values.bank_statements.some((statement) => !statement.type) ||
+    form.values.bank_statements?.some((statement) => !statement.type) ||
     selectedBankTypes.some((type) => type === null);
 
   const emptyRows =
@@ -275,7 +336,7 @@ export function BankStatementsDragAndDrop() {
         mb={5}
         justify="space-between"
         style={{ gap: '16px' }}
-        pt={'sm'}
+        pt="sm"
       >
         <CreateBankTypeButton />
         {isSubmitDisabled ? (

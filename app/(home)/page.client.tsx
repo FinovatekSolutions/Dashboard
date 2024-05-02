@@ -1,13 +1,16 @@
 'use client';
 
-import type { ReactElement } from 'react';
+import { useState, type ReactElement } from 'react';
 import { Paper, Title, Text, Space, Center, Flex, useMantineTheme, Divider } from '@mantine/core';
+import { Client } from '@prisma/client';
+
 import CreateClientButton from '@/components/client/crud/CreateClientButton/CreateClientButton';
 import { BankStatementsDragAndDrop } from '@/components/review/crud/BankStatementsDragAndDrop/BankStatementsDragAndDrop';
 import { SelectClientDropdown } from '@/components/review/crud/SelectClientDropdown/SelectClientDropdown';
 
 export function MainPage(): ReactElement {
   const theme = useMantineTheme();
+  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
 
   return (
     <Center>
@@ -40,7 +43,10 @@ export function MainPage(): ReactElement {
               justify="space-between"
               style={{ gap: '16px' }}
             >
-              <SelectClientDropdown />
+              <SelectClientDropdown
+                selectedClient={selectedClient}
+                setSelectedClient={setSelectedClient}
+              />
               <CreateClientButton />
             </Flex>
           </Flex>
@@ -48,7 +54,10 @@ export function MainPage(): ReactElement {
             <Text fw={700} ta="center" size="xl" mb={3}>
               Bank Statements
             </Text>
-            <BankStatementsDragAndDrop />
+            <BankStatementsDragAndDrop
+              selectedClient={selectedClient}
+              setSelectedClient={setSelectedClient}
+            />
           </Flex>
         </Paper>
       </Paper>

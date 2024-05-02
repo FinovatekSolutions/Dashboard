@@ -12,32 +12,38 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  await prisma.$transaction(async () => {
-    data.forEach(async (transactionData) => {
-      await Promise.all(
-        transactionData.map(async (transaction) => {
-          await prisma.transaction.create({
-            data: {
-              date: new Date(transaction.Date),
-              amount: transaction.Amount,
-              description: transaction.Description,
-              review: { connect: { id: reviewId } },
-              category: { connect: { name: transaction.Category } },
-            },
-          });
+  const prismaQueries = data
+    .map((transactionData) =>
+      transactionData.map((transaction) =>
+        prisma.transaction.create({
+          data: {
+            date: new Date(transaction.Date),
+            amount: transaction.Amount,
+            description: transaction.Description,
+            review: { connect: { id: reviewId } },
+            category: { connect: { name: transaction.Category } },
+          },
         })
-      );
+      )
+    )
+    .flat();
+
+  try {
+    await prisma.$transaction(prismaQueries);
+
+    await prisma.review.update({
+      where: { id: reviewId },
+      data: {
+        status: ReviewStatus.Done,
+      },
     });
-  });
 
-  await prisma.review.update({
-    where: { id: reviewId },
-    data: {
-      status: ReviewStatus.Done,
-    },
-  });
-
-  return new NextResponse(JSON.stringify({ answer: 'yipee' }), {
-    status: 200,
-  });
+    return new NextResponse(JSON.stringify({ answer: 'yipee' }), {
+      status: 200,
+    });
+  } catch (error) {
+    return new NextResponse(JSON.stringify({ error }), {
+      status: 500,
+    });
+  }
 }

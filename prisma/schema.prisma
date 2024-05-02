@@ -162,7 +162,7 @@ model Category {
   id String @id @default(cuid())
 
   /// @zod.string.min(1, { message: "Name cannot be empty." })
-  name String
+  name String @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

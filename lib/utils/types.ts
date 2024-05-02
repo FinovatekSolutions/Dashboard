@@ -21,3 +21,18 @@ export type ClientWithReviews = Client & {
 export type TransactionWithCategory = Transaction & {
   category: Category;
 };
+
+// model data types
+export type ModelTransaction = {
+  Date: string;
+  Description: string;
+  Amount: number;
+  Category: string;
+};
+
+export type ModelTransactionData = ModelTransaction[];
+
+export type ModelData = {
+  data: ModelTransactionData[];
+  reviewId: string;
+};
