@@ -1123,15 +1123,24 @@ export const CategoryOrderByWithRelationInputSchema: z.ZodType<Prisma.CategoryOr
   transactions: z.lazy(() => TransactionOrderByRelationAggregateInputSchema).optional()
 }).strict();
 
-export const CategoryWhereUniqueInputSchema: z.ZodType<Prisma.CategoryWhereUniqueInput> = z.object({
-  id: z.string().cuid()
-})
+export const CategoryWhereUniqueInputSchema: z.ZodType<Prisma.CategoryWhereUniqueInput> = z.union([
+  z.object({
+    id: z.string().cuid(),
+    name: z.string().min(1, { message: "Name cannot be empty." })
+  }),
+  z.object({
+    id: z.string().cuid(),
+  }),
+  z.object({
+    name: z.string().min(1, { message: "Name cannot be empty." }),
+  }),
+])
 .and(z.object({
   id: z.string().cuid().optional(),
+  name: z.string().min(1, { message: "Name cannot be empty." }).optional(),
   AND: z.union([ z.lazy(() => CategoryWhereInputSchema),z.lazy(() => CategoryWhereInputSchema).array() ]).optional(),
   OR: z.lazy(() => CategoryWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => CategoryWhereInputSchema),z.lazy(() => CategoryWhereInputSchema).array() ]).optional(),
-  name: z.union([ z.lazy(() => StringFilterSchema),z.string().min(1, { message: "Name cannot be empty." }) ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   transactions: z.lazy(() => TransactionListRelationFilterSchema).optional()

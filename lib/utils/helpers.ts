@@ -38,3 +38,12 @@ export const formatMoney = (amount: number): string => {
   // Return the formatted amount with the negative sign if necessary
   return isNegative ? `-${amountWithCommas}` : amountWithCommas;
 };
+
+export const generateUniqueFileName = (prefix: string = 'Review-'): string => {
+  const timestamp: number = Date.now();
+  const shortTimestamp: string = timestamp.toString().slice(-5); // Extract last 5 digits of the timestamp
+  const randomSuffix: string = Math.random().toString(36).substr(2, 3); // Generates 3 random alphanumeric characters
+
+  // Output example: Review-43601-abc
+  return `${prefix}${shortTimestamp}-${randomSuffix}`;
+};

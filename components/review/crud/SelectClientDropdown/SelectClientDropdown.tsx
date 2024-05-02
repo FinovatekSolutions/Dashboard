@@ -4,11 +4,14 @@ import { Client } from '@prisma/client';
 import { useGetClients } from '@/lib/actions/client';
 
 interface SelectClientDropdownProps {
-  onSelectClient: (client: Client | null) => void;
+  selectedClient: Client | null;
+  setSelectedClient: (client: Client | null) => void;
 }
 
-export function SelectClientDropdown() {
-  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
+export function SelectClientDropdown({
+  selectedClient,
+  setSelectedClient,
+}: SelectClientDropdownProps) {
   const getClientQuery = useGetClients();
 
   // State to hold the sorted clients
