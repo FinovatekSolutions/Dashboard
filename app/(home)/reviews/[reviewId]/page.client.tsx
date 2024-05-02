@@ -11,16 +11,22 @@ import {
   Breadcrumbs,
   LoadingOverlay,
   Skeleton,
+  Loader,
+  Center,
+  Stack,
+  Space,
 } from '@mantine/core';
 import { IconArrowLeft, IconRefresh } from '@tabler/icons-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { ReviewStatus } from '@prisma/client';
 
 import { ClientStatsSegments } from '@/components/client/general/ClientStatsSegments/ClientStatsSegments';
 import { PageContainer } from '@/components/global/PageContainer/PageContainer';
 import { useGetReviewById } from '@/lib/actions/review';
 import EditReviewButton from '@/components/review/crud/EditReviewButton/EditReviewButton';
 import { ReviewInfo } from '@/components/review/general/ReviewInfo/ReviewInfo';
+import { TransactionsTable } from '@/components/transaction/general/TransactionsTable/TransactionsTable';
 
 export function ViewReviewByIDClient({ params }: { params: { reviewId: string } }) {
   const theme = useMantineTheme();
@@ -124,7 +130,20 @@ export function ViewReviewByIDClient({ params }: { params: { reviewId: string } 
       </Skeleton>
       <Box style={{ marginTop: '16px' }}>
         {/* Adjust the margin as needed */}
-        <Skeleton visible={getReviewByIdQuery.isLoading}>TODO: Transaction table</Skeleton>
+        <Skeleton visible={getReviewByIdQuery.isLoading}>
+          {getReviewByIdQuery.data?.status === ReviewStatus.Pending ? (
+            <Center>
+              <Stack align="center" justify="center">
+                <Space />
+                <Loader />
+                <Text>Pending...</Text>
+                <Space />
+              </Stack>
+            </Center>
+          ) : (
+            <TransactionsTable reviewId={params.reviewId} />
+          )}
+        </Skeleton>
       </Box>
     </PageContainer>
   );

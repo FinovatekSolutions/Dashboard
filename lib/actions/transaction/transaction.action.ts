@@ -5,30 +5,39 @@ import { TransactionCreateInputSchema, TransactionUpdateInputSchema } from '@pri
 import { z } from 'zod';
 
 import prisma from '@/lib/utils/prisma';
+import { TransactionWithCategory } from '@/lib/utils/types';
 
-export async function getTransactions(): Promise<Transaction[]> {
+export async function getAllTransactions(): Promise<TransactionWithCategory[]> {
   return prisma.transaction.findMany({
+    include: {
+      category: true,
+    },
     orderBy: {
-      createdAt: 'desc', // Use 'desc' for descending order (newest first)
+      date: 'desc', // Use 'desc' for descending order (newest first)
     },
   });
 }
 
-export async function getTransactionsByReviewId(reviewId: string): Promise<Transaction[]> {
+export async function getAllTransactionsbyReviewId(
+  reviewId: string
+): Promise<TransactionWithCategory[]> {
   return prisma.transaction.findMany({
+    include: {
+      category: true,
+    },
     where: {
       reviewId,
     },
     orderBy: {
-      createdAt: 'desc',
+      date: 'desc', // Use 'desc' for descending order (newest first)
     },
   });
 }
 
-export async function getTransactionById(transactionId: string): Promise<Transaction | null> {
+export async function getTransactionById(id: string): Promise<Transaction | null> {
   return prisma.transaction.findUnique({
     where: {
-      id: transactionId,
+      id,
     },
   });
 }
@@ -38,45 +47,27 @@ export async function createTransaction(
 ): Promise<Transaction> {
   const data = TransactionCreateInputSchema.parse(input);
 
-  return prisma.transaction.create({ data });
+  return prisma.transaction.create({
+    data,
+  });
 }
 
 export async function updateTransaction(
   input: Prisma.TransactionUpdateInput
 ): Promise<Transaction> {
   const data = TransactionUpdateInputSchema.parse(input);
-  const transactionId = z.string().parse(data.id); // Make sure that data.id can only be string
+  const id = z.string().parse(data.id); // Makes sure that the id must be a string
 
   // throws an error if not found
   return prisma.transaction.update({
-    where: { id: transactionId },
+    where: { id },
     data,
   });
 }
 
-export async function updateTransactions(
-  inputs: Prisma.TransactionUpdateInput[]
-): Promise<Transaction[]> {
-  // First, validate and parse each input to ensure it's in the correct shape
-  const data = inputs.map((input) => {
-    // Validate each transaction input
-    const parsedInput = TransactionUpdateInputSchema.parse(input);
-    const transactionId = z.string().parse(parsedInput.id); // Ensure the id is a string
-    return { id: transactionId, transactionData: parsedInput };
-  });
-
-  // Execute all updates within a transaction
-  return prisma.$transaction(
-    data.map(({ id, transactionData }) =>
-      prisma.transaction.update({
-        where: { id },
-        data: transactionData,
-      })
-    )
-  );
-}
-
-export async function removeTransaction(transactionId: string): Promise<Transaction> {
+export async function removeTransaction(id: string): Promise<Transaction> {
   // throws an error if not found
-  return prisma.transaction.delete({ where: { id: transactionId } });
+  return prisma.transaction.delete({
+    where: { id },
+  });
 }

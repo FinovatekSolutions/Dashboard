@@ -1,5 +1,11 @@
 import { Group, Text, Title, Tooltip } from '@mantine/core';
-import { IconCalendar, IconCalendarMonth, IconPencil, IconUser } from '@tabler/icons-react';
+import {
+  IconCalendar,
+  IconCalendarMonth,
+  IconInfoCircle,
+  IconPencil,
+  IconUser,
+} from '@tabler/icons-react';
 
 import classes from './ReviewInfo.module.css';
 import { useGetReviewById } from '@/lib/actions/review';
@@ -15,11 +21,17 @@ export function ReviewInfo({ reviewId }: { reviewId: string }) {
           <Text fz="md" tt="uppercase" fw={500} c="dimmed">
             Review Information
           </Text>
-
           <Title order={2} fw={500}>
             {getReviewByIdQuery.data?.name}
           </Title>
-
+          <Group wrap="nowrap" gap={10} mt={3}>
+            <Tooltip label="Status">
+              <IconInfoCircle stroke={1.5} size="1.2rem" className={classes.icon} />
+            </Tooltip>
+            <Text fz="sm" c="dimmed">
+              {getReviewByIdQuery.data?.status}
+            </Text>
+          </Group>
           <Group wrap="nowrap" gap={10} mt={3}>
             <Tooltip label="Client">
               <IconUser stroke={1.5} size="1.2rem" className={classes.icon} />
@@ -30,7 +42,6 @@ export function ReviewInfo({ reviewId }: { reviewId: string }) {
               {getReviewByIdQuery.data?.client?.company})
             </Text>
           </Group>
-
           <Group wrap="nowrap" gap={10} mt={3}>
             <Tooltip label="Period">
               <IconCalendarMonth stroke={1.5} size="1.2rem" className={classes.icon} />
@@ -42,7 +53,6 @@ export function ReviewInfo({ reviewId }: { reviewId: string }) {
               )}
             </Text>
           </Group>
-
           <Group wrap="nowrap" gap={10} mt={5}>
             <Tooltip label="Author">
               <IconPencil stroke={1.5} size="1.2rem" className={classes.icon} />

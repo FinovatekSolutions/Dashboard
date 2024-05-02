@@ -74,11 +74,18 @@ model Client {
   reviews Review[]
 }
 
+enum ReviewStatus {
+  Pending
+  Done
+}
+
 model Review {
   id String @id @default(cuid())
 
   /// @zod.string.min(1, { message: "Name cannot be empty." })
   name String
+
+  status ReviewStatus @default(Pending)
 
   /// @zod.date
   startDate DateTime

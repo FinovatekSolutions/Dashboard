@@ -1,40 +1,42 @@
 'use client';
 
-import { Button, TextInput, Box, useMantineTheme, Stack, Flex } from '@mantine/core';
+import { Button, TextInput, Group, Box, useMantineTheme, Stack, Flex } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useForm } from '@mantine/form';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { IconCheck, IconX } from '@tabler/icons-react';
 import type { Prisma } from '@prisma/client';
 
-import { ReviewUpdateInputSchema } from '@prisma/zod';
-import { useGetReviewById, useUpdateReview } from '@/lib/actions/review';
+import { TransactionCreateInputSchema } from '@prisma/zod';
+import { useCreateTransaction } from '@/lib/actions/transaction';
 
-interface EditReviewFormProps {
+interface NewTransactionFormProps {
   setOpened: (opened: boolean) => void;
-  reviewId: string;
 }
 
-export function EditReviewForm({ setOpened, reviewId }: EditReviewFormProps) {
+export function NewTransactionForm({ setOpened }: NewTransactionFormProps) {
   const theme = useMantineTheme();
-  const getReviewByIdQuery = useGetReviewById(reviewId);
 
   const form = useForm({
     initialValues: {
-      name: getReviewByIdQuery.data?.name || '',
+      firstName: '',
+      lastName: '',
     },
-    validate: zodResolver(ReviewUpdateInputSchema),
+    validate: zodResolver(TransactionCreateInputSchema),
   });
 
-  const updateReviewMutation = useUpdateReview(
+  // Function to check if all fields are dirty
+  const allFieldsDirty = () => Object.keys(form.values).every((key) => form.isDirty(key));
+
+  const createTransactionMutation = useCreateTransaction(
     // onSuccess callback
     () => {
       form.reset();
       notifications.update({
-        id: 'review-update',
+        id: 'transaction-create',
         color: 'teal',
-        title: 'Review was updated',
-        message: 'The review has been updated successfully.',
+        title: 'Transaction was created',
+        message: 'The new transaction has been added successfully.',
         icon: <IconCheck size={theme.fontSizes.md} />,
         loading: false,
         autoClose: 2000,
@@ -44,9 +46,9 @@ export function EditReviewForm({ setOpened, reviewId }: EditReviewFormProps) {
     // onError callback
     () => {
       notifications.update({
-        id: 'review-update',
+        id: 'transaction-create',
         color: 'red',
-        title: 'Failed to update review',
+        title: 'Failed to create transaction',
         message: 'An error occurred. Please try again.',
         icon: <IconX size={theme.fontSizes.md} />,
         loading: false,
@@ -55,45 +57,38 @@ export function EditReviewForm({ setOpened, reviewId }: EditReviewFormProps) {
     }
   );
 
-  const handleSubmit = async (values: Prisma.ReviewUpdateInput) => {
+  const handleSubmit = async (values: Prisma.TransactionCreateInput) => {
     // Show loading notification
     notifications.show({
-      id: 'review-update',
+      id: 'transaction-create',
       loading: true,
-      title: 'Updating review',
+      title: 'Creating transaction',
       message: 'Please wait...',
       autoClose: false,
       withCloseButton: false,
     });
 
-    updateReviewMutation.mutate({
-      input: {
-        id: reviewId,
-        ...values,
-      },
-      clientId: getReviewByIdQuery.data?.clientId || '',
-      userEmail: getReviewByIdQuery.data?.user?.email || '',
-    });
+    createTransactionMutation.mutate(values);
   };
 
   return (
     <Box component="form" onSubmit={form.onSubmit(handleSubmit)}>
       <Stack>
-        <TextInput
-          label="Review Name"
-          placeholder="Radiography-1"
-          {...form.getInputProps('name')}
-        />
+        <Group grow>
+          <TextInput label="First Name" placeholder="John" {...form.getInputProps('firstName')} />
+          <TextInput label="Last Name" placeholder="Doe" {...form.getInputProps('lastName')} />
+        </Group>
+
         <Flex direction={{ base: 'column', sm: 'row' }} justify="flex-end">
           <Button
             size="md"
             style={{ minWidth: '200px' }}
-            color={theme.colors['trust-md-light-blue'][4]}
             variant="filled"
             mt={10}
             type="submit"
+            disabled={!allFieldsDirty()}
           >
-            Update Review
+            Add Transaction
           </Button>
         </Flex>
       </Stack>

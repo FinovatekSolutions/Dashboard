@@ -1,42 +1,43 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { Prisma, Transaction } from '@prisma/client';
 
 import {
-  getTransactions,
-  getTransactionsByReviewId,
+  getAllTransactions,
+  getAllTransactionsbyReviewId,
   getTransactionById,
   createTransaction,
-  updateTransactions,
   updateTransaction,
   removeTransaction,
 } from '@/lib/actions/transaction';
-import { onSuccessCallback, onErrorCallback } from '@/lib/utils/types';
+import { onSuccessCallback, onErrorCallback, TransactionWithCategory } from '@/lib/utils/types';
 
-const getTransactionsQueryKey = 'getTransactions';
-const getTransactionByIdQueryKey = 'getTransactionById';
+export const getAllTransactionsQueryKey = 'getAllTransactions';
+export const getTransactionByIdQueryKey = 'getTransactionById';
 
 // Queries:
-export function useGetTransactions(): UseQueryResult<Transaction[]> {
-  return useQuery<Transaction[]>({
-    queryKey: [getTransactionsQueryKey],
-    queryFn: () => getTransactions(),
-  } satisfies UseQueryOptions<Transaction[]>);
+export function useGetAllTransactions(): UseQueryResult<TransactionWithCategory[]> {
+  return useQuery<TransactionWithCategory[]>({
+    queryKey: [getAllTransactionsQueryKey],
+    queryFn: () => getAllTransactions(),
+  } satisfies UseQueryOptions<TransactionWithCategory[]>);
 }
 
-export function useGetTransactionsByReviewId(reviewId: string): UseQueryResult<Transaction[]> {
-  return useQuery<Transaction[]>({
-    queryKey: [getTransactionsQueryKey, reviewId],
-    queryFn: () => getTransactionsByReviewId(reviewId),
-  } satisfies UseQueryOptions<Transaction[]>);
+export function useGetAllTransactionsByReviewId(
+  reviewId: string
+): UseQueryResult<TransactionWithCategory[]> {
+  return useQuery<TransactionWithCategory[]>({
+    queryKey: [getAllTransactionsQueryKey, reviewId],
+    queryFn: () => getAllTransactionsbyReviewId(reviewId),
+    enabled: !!reviewId,
+  } satisfies UseQueryOptions<TransactionWithCategory[]>);
 }
 
-export function useGetTransactionById(transactionId: string): UseQueryResult<Transaction | null> {
+export function useGetTransactionById(id: string): UseQueryResult<Transaction | null> {
   return useQuery<Transaction | null>({
-    queryKey: [getTransactionByIdQueryKey, transactionId],
-    queryFn: () => getTransactionById(transactionId),
-    enabled: !!transactionId,
+    queryKey: [getTransactionByIdQueryKey, id],
+    queryFn: () => getTransactionById(id),
+    enabled: !!id,
   } satisfies UseQueryOptions<Transaction | null>);
 }
 
@@ -45,15 +46,9 @@ export function useCreateTransaction(onSuccessCb?: onSuccessCallback, onErrorCb?
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({
-      input,
-      reviewId,
-    }: {
-      input: Prisma.TransactionCreateInput;
-      reviewId: string;
-    }) => createTransaction(input),
-    onSuccess: (data, { reviewId }) => {
-      queryClient.invalidateQueries({ queryKey: [getTransactionsQueryKey, reviewId] });
+    mutationFn: async (input: Prisma.TransactionCreateInput) => createTransaction(input),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: [getAllTransactionsQueryKey] });
       if (onSuccessCb) {
         onSuccessCb(data);
       }
@@ -67,67 +62,59 @@ export function useCreateTransaction(onSuccessCb?: onSuccessCallback, onErrorCb?
 }
 
 export function useUpdateTransaction(onSuccessCb?: onSuccessCallback, onErrorCb?: onErrorCallback) {
-  return useMutation({
-    mutationFn: async (input: Prisma.TransactionUpdateInput) => updateTransaction(input),
-
-    onError: (error) => {
-      if (onErrorCb) {
-        onErrorCb(error);
-      }
-    },
-    onSuccess: (data) => {
-      if (onSuccessCb) {
-        onSuccessCb(data);
-      }
-    },
-  });
-}
-
-export function useUpdateTransactions(
-  onSuccessCb?: onSuccessCallback,
-  onErrorCb?: onErrorCallback
-) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({
-      inputs,
-      reviewId,
-    }: {
-      inputs: Prisma.TransactionUpdateInput[];
-      reviewId: string;
-    }) => updateTransactions(inputs),
-    onMutate: async ({ inputs: updatedTransactions, reviewId }) => {
-      // Cancel any outgoing refetches
-      await queryClient.cancelQueries({ queryKey: [getTransactionsQueryKey, reviewId] });
+    mutationFn: async (input: Prisma.TransactionUpdateInput) => updateTransaction(input),
+    onMutate: async (updatedTransaction) => {
+      await queryClient.cancelQueries({ queryKey: [getAllTransactionsQueryKey] });
+      await queryClient.cancelQueries({
+        queryKey: [getTransactionByIdQueryKey, updatedTransaction.id],
+      });
 
-      // Snapshot the previous value
-      const previousTransactions = queryClient.getQueryData([getTransactionsQueryKey, reviewId]);
+      const previousTransactionById = queryClient.getQueryData<Transaction | null>([
+        getTransactionByIdQueryKey,
+        updatedTransaction.id,
+      ]);
+      const previousTransactions = queryClient.getQueryData<Transaction[]>([
+        getAllTransactionsQueryKey,
+      ]);
 
-      // Optimistically update to the new value
-      queryClient.setQueryData([getTransactionsQueryKey, reviewId], (old: Transaction[]) =>
-        old.map((transaction) => {
-          const updateForThisTransaction = updatedTransactions.find(
-            (update) => update.id === transaction.id
-          );
-          return updateForThisTransaction
-            ? { ...transaction, ...updateForThisTransaction }
-            : transaction;
-        })
-      );
+      if (previousTransactionById) {
+        queryClient.setQueryData([getTransactionByIdQueryKey, updatedTransaction.id], {
+          ...previousTransactionById,
+          ...updatedTransaction,
+        });
+      }
 
-      return { previousTransactions };
+      if (previousTransactions) {
+        const updatedTransactions = previousTransactions.map((transaction) =>
+          transaction.id === updatedTransaction.id
+            ? { ...transaction, ...updatedTransaction }
+            : transaction
+        );
+        queryClient.setQueryData([getAllTransactionsQueryKey], updatedTransactions);
+      }
+
+      return { previousTransactionById, previousTransactions };
     },
-    onError: (error, { reviewId }, context) => {
-      // Rollback on error
-      queryClient.setQueryData([getTransactionsQueryKey, reviewId], context?.previousTransactions);
-
+    onError: (error, updatedTransaction, context) => {
+      if (context?.previousTransactionById) {
+        queryClient.setQueryData(
+          [getTransactionByIdQueryKey, updatedTransaction.id],
+          context.previousTransactionById
+        );
+      }
+      if (context?.previousTransactions) {
+        queryClient.setQueryData([getAllTransactionsQueryKey], context.previousTransactions);
+      }
       if (onErrorCb) {
         onErrorCb(error);
       }
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [getTransactionsQueryKey] });
+      queryClient.invalidateQueries({ queryKey: [getAllTransactionsQueryKey] });
+      queryClient.invalidateQueries({ queryKey: [getTransactionByIdQueryKey, data.id] });
       if (onSuccessCb) {
         onSuccessCb(data);
       }
@@ -139,12 +126,12 @@ export function useRemoveTransaction(onSuccessCb?: onSuccessCallback, onErrorCb?
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ transactionId, reviewId }: { transactionId: string; reviewId: string }) =>
-      removeTransaction(transactionId),
-    onSuccess: (data, { reviewId }) => {
-      queryClient.invalidateQueries({ queryKey: [getTransactionsQueryKey, reviewId] });
+    mutationFn: (id: string) => removeTransaction(id),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: [getAllTransactionsQueryKey] });
+      queryClient.invalidateQueries({ queryKey: [getTransactionByIdQueryKey, data.id] });
       if (onSuccessCb) {
-        onSuccessCb(data);
+        onSuccessCb();
       }
     },
     onError: (error) => {

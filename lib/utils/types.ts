@@ -1,4 +1,4 @@
-import { Review, User, Client, Transaction } from '@prisma/client';
+import { Review, User, Client, Transaction, Category } from '@prisma/client';
 
 export type onSuccessCallback<T = any> = (data?: T) => void;
 
@@ -16,4 +16,8 @@ export type FullReviewDetails = Review & {
 
 export type ClientWithReviews = Client & {
   reviews: ReviewWithUser[];
+};
+
+export type TransactionWithCategory = Transaction & {
+  category: Category;
 };
