@@ -24,33 +24,33 @@ export default function HeroText() {
       <Dots className={classes.dots} style={{ right: 0, top: 60 }} />
 
       <div className={classes.inner}>
-        <Title c="white" style={{ textAlign: 'center' }}>
-          Lorem{' '}
+        <Title c="black" style={{ textAlign: 'center' }}>
+          Financial Radiographies
+        </Title>
+        <Title c="black" style={{ textAlign: 'center' }}>
           <Text
             component="span"
             className={classes.highlight}
             inherit
             variant="gradient"
             gradient={{
-              from: theme.colors.orange[4],
-              to: theme.colors.yellow[6],
+              from: '#1A1C27',
+              to: '#44c5f8',
             }}
-          >
-            Ipsum
-          </Text>{' '}
-          Yucateke
+          ></Text>
         </Title>
+        <Title c="black" style={{ textAlign: 'center' }}></Title>
         <Space h="xl" />
         <Space h="xl" />
         <Space h="sm" />
-        <Text c="white" size="24px" mb={5} style={{ textAlign: 'center' }}>
+        <Text c="black" size="24px" mb={5} style={{ textAlign: 'center' }}>
           Welcome to{' '}
           <Group
             component="span"
             gap={0}
             style={{ display: 'inline-flex', alignItems: 'baseline' }}
           >
-            <Text component="span" inherit c="white">
+            <Text component="span" inherit c="black">
               Fi
             </Text>
             <Text
@@ -58,25 +58,23 @@ export default function HeroText() {
               inherit
               variant="gradient"
               gradient={{
-                from: theme.colors.orange[4],
-                to: theme.colors.yellow[6],
+                from: '#1A1C27',
+                to: '#44c5f8',
               }}
             >
               nova
             </Text>
-            <Text component="span" inherit c="white">
+            <Text component="span" inherit c="black">
               tek
             </Text>
           </Group>
         </Text>
 
         <Container p={0} size={600}>
-          <Divider my="md" color={theme.colors.dark[3]} />
-          <Text size="lg" c={theme.colors.gray[3]} fw={500} className={classes.description}>
-            This is a dasboard. This is a dasboard. This is a dasboard. This is a dasboard. This is
-            a dasboard. This is a dasboard. This is a dasboard. This is a dasboard. This is a
-            dasboard. This is a dasboard. This is a dasboard. This is a dasboard. This is a
-            dasboard.
+          <Divider my="md" color={theme.colors.dark[9]} />
+          <Text size="lg" c={theme.colors.dark[9]} fw={500} className={classes.description}>
+            This is an software that takes all of your clients bank statements and categorizes them
+            using state of the art Machine Learning technology in order to agilize the
           </Text>
         </Container>
 
@@ -87,12 +85,15 @@ export default function HeroText() {
             target="_blank" // Open in a new tab
             rel="noopener noreferrer" // For security reasons
             className={classes.control}
+            bg={'#44c5f8'}
             size="lg"
             variant="default"
-            color="gray"
-            rightSection={<IconExternalLink size={20} />}
+            color="red"
+            rightSection={<IconExternalLink size={20} color="white" />}
           >
-            Click this if you dare...
+            <Text fw={500} c={'white'}>
+              Click this if you dare...
+            </Text>
           </Button>
         </div>
       </div>
