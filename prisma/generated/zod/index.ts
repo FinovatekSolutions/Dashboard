@@ -18,7 +18,7 @@ export const UserScalarFieldEnumSchema = z.enum(['id','name','email','emailVerif
 
 export const ClientScalarFieldEnumSchema = z.enum(['id','firstName','lastName','company','email','phone','address','city','state','zip','country','createdAt','updatedAt']);
 
-export const ReviewScalarFieldEnumSchema = z.enum(['id','name','startDate','endDate','userId','clientId','createdAt','updatedAt']);
+export const ReviewScalarFieldEnumSchema = z.enum(['id','name','status','startDate','endDate','userId','clientId','createdAt','updatedAt']);
 
 export const TransactionScalarFieldEnumSchema = z.enum(['id','date','description','amount','reviewId','categoryId','createdAt','updatedAt']);
 
@@ -43,6 +43,10 @@ export const SortOrderSchema = z.enum(['asc','desc']);
 export const QueryModeSchema = z.enum(['default','insensitive']);
 
 export const NullsOrderSchema = z.enum(['first','last']);
+
+export const ReviewStatusSchema = z.enum(['Pending','Done']);
+
+export type ReviewStatusType = `${z.infer<typeof ReviewStatusSchema>}`
 
 export const RoleSchema = z.enum(['USER','ADMIN']);
 
@@ -107,6 +111,7 @@ export type Client = z.infer<typeof ClientSchema>
 /////////////////////////////////////////
 
 export const ReviewSchema = z.object({
+  status: ReviewStatusSchema,
   id: z.string().cuid(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
   startDate: z.coerce.date(),
@@ -373,6 +378,7 @@ export const ReviewCountOutputTypeSelectSchema: z.ZodType<Prisma.ReviewCountOutp
 export const ReviewSelectSchema: z.ZodType<Prisma.ReviewSelect> = z.object({
   id: z.boolean().optional(),
   name: z.boolean().optional(),
+  status: z.boolean().optional(),
   startDate: z.boolean().optional(),
   endDate: z.boolean().optional(),
   userId: z.boolean().optional(),
@@ -815,6 +821,7 @@ export const ReviewWhereInputSchema: z.ZodType<Prisma.ReviewWhereInput> = z.obje
   NOT: z.union([ z.lazy(() => ReviewWhereInputSchema),z.lazy(() => ReviewWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  status: z.union([ z.lazy(() => EnumReviewStatusFilterSchema),z.lazy(() => ReviewStatusSchema) ]).optional(),
   startDate: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   endDate: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   userId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
@@ -830,6 +837,7 @@ export const ReviewWhereInputSchema: z.ZodType<Prisma.ReviewWhereInput> = z.obje
 export const ReviewOrderByWithRelationInputSchema: z.ZodType<Prisma.ReviewOrderByWithRelationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
+  status: z.lazy(() => SortOrderSchema).optional(),
   startDate: z.lazy(() => SortOrderSchema).optional(),
   endDate: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
@@ -851,6 +859,7 @@ export const ReviewWhereUniqueInputSchema: z.ZodType<Prisma.ReviewWhereUniqueInp
   OR: z.lazy(() => ReviewWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => ReviewWhereInputSchema),z.lazy(() => ReviewWhereInputSchema).array() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string().min(1, { message: "Name cannot be empty." }) ]).optional(),
+  status: z.union([ z.lazy(() => EnumReviewStatusFilterSchema),z.lazy(() => ReviewStatusSchema) ]).optional(),
   startDate: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   endDate: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   userId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
@@ -866,6 +875,7 @@ export const ReviewWhereUniqueInputSchema: z.ZodType<Prisma.ReviewWhereUniqueInp
 export const ReviewOrderByWithAggregationInputSchema: z.ZodType<Prisma.ReviewOrderByWithAggregationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
+  status: z.lazy(() => SortOrderSchema).optional(),
   startDate: z.lazy(() => SortOrderSchema).optional(),
   endDate: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
@@ -883,6 +893,7 @@ export const ReviewScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Review
   NOT: z.union([ z.lazy(() => ReviewScalarWhereWithAggregatesInputSchema),z.lazy(() => ReviewScalarWhereWithAggregatesInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   name: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  status: z.union([ z.lazy(() => EnumReviewStatusWithAggregatesFilterSchema),z.lazy(() => ReviewStatusSchema) ]).optional(),
   startDate: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   endDate: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   userId: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
@@ -1740,6 +1751,7 @@ export const ClientUncheckedUpdateManyInputSchema: z.ZodType<Prisma.ClientUnchec
 export const ReviewCreateInputSchema: z.ZodType<Prisma.ReviewCreateInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
+  status: z.lazy(() => ReviewStatusSchema).optional(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
   createdAt: z.coerce.date().optional(),
@@ -1753,6 +1765,7 @@ export const ReviewCreateInputSchema: z.ZodType<Prisma.ReviewCreateInput> = z.ob
 export const ReviewUncheckedCreateInputSchema: z.ZodType<Prisma.ReviewUncheckedCreateInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
+  status: z.lazy(() => ReviewStatusSchema).optional(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
   userId: z.string(),
@@ -1766,6 +1779,7 @@ export const ReviewUncheckedCreateInputSchema: z.ZodType<Prisma.ReviewUncheckedC
 export const ReviewUpdateInputSchema: z.ZodType<Prisma.ReviewUpdateInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  status: z.union([ z.lazy(() => ReviewStatusSchema),z.lazy(() => EnumReviewStatusFieldUpdateOperationsInputSchema) ]).optional(),
   startDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   endDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -1779,6 +1793,7 @@ export const ReviewUpdateInputSchema: z.ZodType<Prisma.ReviewUpdateInput> = z.ob
 export const ReviewUncheckedUpdateInputSchema: z.ZodType<Prisma.ReviewUncheckedUpdateInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  status: z.union([ z.lazy(() => ReviewStatusSchema),z.lazy(() => EnumReviewStatusFieldUpdateOperationsInputSchema) ]).optional(),
   startDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   endDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -1792,6 +1807,7 @@ export const ReviewUncheckedUpdateInputSchema: z.ZodType<Prisma.ReviewUncheckedU
 export const ReviewCreateManyInputSchema: z.ZodType<Prisma.ReviewCreateManyInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
+  status: z.lazy(() => ReviewStatusSchema).optional(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
   userId: z.string(),
@@ -1803,6 +1819,7 @@ export const ReviewCreateManyInputSchema: z.ZodType<Prisma.ReviewCreateManyInput
 export const ReviewUpdateManyMutationInputSchema: z.ZodType<Prisma.ReviewUpdateManyMutationInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  status: z.union([ z.lazy(() => ReviewStatusSchema),z.lazy(() => EnumReviewStatusFieldUpdateOperationsInputSchema) ]).optional(),
   startDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   endDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -1812,6 +1829,7 @@ export const ReviewUpdateManyMutationInputSchema: z.ZodType<Prisma.ReviewUpdateM
 export const ReviewUncheckedUpdateManyInputSchema: z.ZodType<Prisma.ReviewUncheckedUpdateManyInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  status: z.union([ z.lazy(() => ReviewStatusSchema),z.lazy(() => EnumReviewStatusFieldUpdateOperationsInputSchema) ]).optional(),
   startDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   endDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -2649,6 +2667,13 @@ export const ClientMinOrderByAggregateInputSchema: z.ZodType<Prisma.ClientMinOrd
   updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
+export const EnumReviewStatusFilterSchema: z.ZodType<Prisma.EnumReviewStatusFilter> = z.object({
+  equals: z.lazy(() => ReviewStatusSchema).optional(),
+  in: z.lazy(() => ReviewStatusSchema).array().optional(),
+  notIn: z.lazy(() => ReviewStatusSchema).array().optional(),
+  not: z.union([ z.lazy(() => ReviewStatusSchema),z.lazy(() => NestedEnumReviewStatusFilterSchema) ]).optional(),
+}).strict();
+
 export const UserRelationFilterSchema: z.ZodType<Prisma.UserRelationFilter> = z.object({
   is: z.lazy(() => UserWhereInputSchema).optional(),
   isNot: z.lazy(() => UserWhereInputSchema).optional()
@@ -2682,6 +2707,7 @@ export const BankStatementOrderByRelationAggregateInputSchema: z.ZodType<Prisma.
 export const ReviewCountOrderByAggregateInputSchema: z.ZodType<Prisma.ReviewCountOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
+  status: z.lazy(() => SortOrderSchema).optional(),
   startDate: z.lazy(() => SortOrderSchema).optional(),
   endDate: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
@@ -2693,6 +2719,7 @@ export const ReviewCountOrderByAggregateInputSchema: z.ZodType<Prisma.ReviewCoun
 export const ReviewMaxOrderByAggregateInputSchema: z.ZodType<Prisma.ReviewMaxOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
+  status: z.lazy(() => SortOrderSchema).optional(),
   startDate: z.lazy(() => SortOrderSchema).optional(),
   endDate: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
@@ -2704,12 +2731,23 @@ export const ReviewMaxOrderByAggregateInputSchema: z.ZodType<Prisma.ReviewMaxOrd
 export const ReviewMinOrderByAggregateInputSchema: z.ZodType<Prisma.ReviewMinOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
+  status: z.lazy(() => SortOrderSchema).optional(),
   startDate: z.lazy(() => SortOrderSchema).optional(),
   endDate: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
   clientId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const EnumReviewStatusWithAggregatesFilterSchema: z.ZodType<Prisma.EnumReviewStatusWithAggregatesFilter> = z.object({
+  equals: z.lazy(() => ReviewStatusSchema).optional(),
+  in: z.lazy(() => ReviewStatusSchema).array().optional(),
+  notIn: z.lazy(() => ReviewStatusSchema).array().optional(),
+  not: z.union([ z.lazy(() => ReviewStatusSchema),z.lazy(() => NestedEnumReviewStatusWithAggregatesFilterSchema) ]).optional(),
+  _count: z.lazy(() => NestedIntFilterSchema).optional(),
+  _min: z.lazy(() => NestedEnumReviewStatusFilterSchema).optional(),
+  _max: z.lazy(() => NestedEnumReviewStatusFilterSchema).optional()
 }).strict();
 
 export const FloatFilterSchema: z.ZodType<Prisma.FloatFilter> = z.object({
@@ -3312,6 +3350,10 @@ export const BankStatementUncheckedCreateNestedManyWithoutReviewInputSchema: z.Z
   connect: z.union([ z.lazy(() => BankStatementWhereUniqueInputSchema),z.lazy(() => BankStatementWhereUniqueInputSchema).array() ]).optional(),
 }).strict();
 
+export const EnumReviewStatusFieldUpdateOperationsInputSchema: z.ZodType<Prisma.EnumReviewStatusFieldUpdateOperationsInput> = z.object({
+  set: z.lazy(() => ReviewStatusSchema).optional()
+}).strict();
+
 export const UserUpdateOneRequiredWithoutReviewsNestedInputSchema: z.ZodType<Prisma.UserUpdateOneRequiredWithoutReviewsNestedInput> = z.object({
   create: z.union([ z.lazy(() => UserCreateWithoutReviewsInputSchema),z.lazy(() => UserUncheckedCreateWithoutReviewsInputSchema) ]).optional(),
   connectOrCreate: z.lazy(() => UserCreateOrConnectWithoutReviewsInputSchema).optional(),
@@ -3723,6 +3765,23 @@ export const NestedDateTimeNullableWithAggregatesFilterSchema: z.ZodType<Prisma.
   _max: z.lazy(() => NestedDateTimeNullableFilterSchema).optional()
 }).strict();
 
+export const NestedEnumReviewStatusFilterSchema: z.ZodType<Prisma.NestedEnumReviewStatusFilter> = z.object({
+  equals: z.lazy(() => ReviewStatusSchema).optional(),
+  in: z.lazy(() => ReviewStatusSchema).array().optional(),
+  notIn: z.lazy(() => ReviewStatusSchema).array().optional(),
+  not: z.union([ z.lazy(() => ReviewStatusSchema),z.lazy(() => NestedEnumReviewStatusFilterSchema) ]).optional(),
+}).strict();
+
+export const NestedEnumReviewStatusWithAggregatesFilterSchema: z.ZodType<Prisma.NestedEnumReviewStatusWithAggregatesFilter> = z.object({
+  equals: z.lazy(() => ReviewStatusSchema).optional(),
+  in: z.lazy(() => ReviewStatusSchema).array().optional(),
+  notIn: z.lazy(() => ReviewStatusSchema).array().optional(),
+  not: z.union([ z.lazy(() => ReviewStatusSchema),z.lazy(() => NestedEnumReviewStatusWithAggregatesFilterSchema) ]).optional(),
+  _count: z.lazy(() => NestedIntFilterSchema).optional(),
+  _min: z.lazy(() => NestedEnumReviewStatusFilterSchema).optional(),
+  _max: z.lazy(() => NestedEnumReviewStatusFilterSchema).optional()
+}).strict();
+
 export const NestedFloatFilterSchema: z.ZodType<Prisma.NestedFloatFilter> = z.object({
   equals: z.number().optional(),
   in: z.number().array().optional(),
@@ -3874,6 +3933,7 @@ export const SessionCreateManyUserInputEnvelopeSchema: z.ZodType<Prisma.SessionC
 export const ReviewCreateWithoutUserInputSchema: z.ZodType<Prisma.ReviewCreateWithoutUserInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
+  status: z.lazy(() => ReviewStatusSchema).optional(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
   createdAt: z.coerce.date().optional(),
@@ -3886,6 +3946,7 @@ export const ReviewCreateWithoutUserInputSchema: z.ZodType<Prisma.ReviewCreateWi
 export const ReviewUncheckedCreateWithoutUserInputSchema: z.ZodType<Prisma.ReviewUncheckedCreateWithoutUserInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
+  status: z.lazy(() => ReviewStatusSchema).optional(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
   clientId: z.string(),
@@ -3987,6 +4048,7 @@ export const ReviewScalarWhereInputSchema: z.ZodType<Prisma.ReviewScalarWhereInp
   NOT: z.union([ z.lazy(() => ReviewScalarWhereInputSchema),z.lazy(() => ReviewScalarWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  status: z.union([ z.lazy(() => EnumReviewStatusFilterSchema),z.lazy(() => ReviewStatusSchema) ]).optional(),
   startDate: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   endDate: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   userId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
@@ -3998,6 +4060,7 @@ export const ReviewScalarWhereInputSchema: z.ZodType<Prisma.ReviewScalarWhereInp
 export const ReviewCreateWithoutClientInputSchema: z.ZodType<Prisma.ReviewCreateWithoutClientInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
+  status: z.lazy(() => ReviewStatusSchema).optional(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
   createdAt: z.coerce.date().optional(),
@@ -4010,6 +4073,7 @@ export const ReviewCreateWithoutClientInputSchema: z.ZodType<Prisma.ReviewCreate
 export const ReviewUncheckedCreateWithoutClientInputSchema: z.ZodType<Prisma.ReviewUncheckedCreateWithoutClientInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
+  status: z.lazy(() => ReviewStatusSchema).optional(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
   userId: z.string(),
@@ -4301,6 +4365,7 @@ export const BankStatementScalarWhereInputSchema: z.ZodType<Prisma.BankStatement
 export const ReviewCreateWithoutTransactionsInputSchema: z.ZodType<Prisma.ReviewCreateWithoutTransactionsInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
+  status: z.lazy(() => ReviewStatusSchema).optional(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
   createdAt: z.coerce.date().optional(),
@@ -4313,6 +4378,7 @@ export const ReviewCreateWithoutTransactionsInputSchema: z.ZodType<Prisma.Review
 export const ReviewUncheckedCreateWithoutTransactionsInputSchema: z.ZodType<Prisma.ReviewUncheckedCreateWithoutTransactionsInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
+  status: z.lazy(() => ReviewStatusSchema).optional(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
   userId: z.string(),
@@ -4360,6 +4426,7 @@ export const ReviewUpdateToOneWithWhereWithoutTransactionsInputSchema: z.ZodType
 export const ReviewUpdateWithoutTransactionsInputSchema: z.ZodType<Prisma.ReviewUpdateWithoutTransactionsInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  status: z.union([ z.lazy(() => ReviewStatusSchema),z.lazy(() => EnumReviewStatusFieldUpdateOperationsInputSchema) ]).optional(),
   startDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   endDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -4372,6 +4439,7 @@ export const ReviewUpdateWithoutTransactionsInputSchema: z.ZodType<Prisma.Review
 export const ReviewUncheckedUpdateWithoutTransactionsInputSchema: z.ZodType<Prisma.ReviewUncheckedUpdateWithoutTransactionsInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  status: z.union([ z.lazy(() => ReviewStatusSchema),z.lazy(() => EnumReviewStatusFieldUpdateOperationsInputSchema) ]).optional(),
   startDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   endDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -4453,6 +4521,7 @@ export const BankStatementUpdateManyWithWhereWithoutBankTypeInputSchema: z.ZodTy
 export const ReviewCreateWithoutBankStatementsInputSchema: z.ZodType<Prisma.ReviewCreateWithoutBankStatementsInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
+  status: z.lazy(() => ReviewStatusSchema).optional(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
   createdAt: z.coerce.date().optional(),
@@ -4465,6 +4534,7 @@ export const ReviewCreateWithoutBankStatementsInputSchema: z.ZodType<Prisma.Revi
 export const ReviewUncheckedCreateWithoutBankStatementsInputSchema: z.ZodType<Prisma.ReviewUncheckedCreateWithoutBankStatementsInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
+  status: z.lazy(() => ReviewStatusSchema).optional(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
   userId: z.string(),
@@ -4512,6 +4582,7 @@ export const ReviewUpdateToOneWithWhereWithoutBankStatementsInputSchema: z.ZodTy
 export const ReviewUpdateWithoutBankStatementsInputSchema: z.ZodType<Prisma.ReviewUpdateWithoutBankStatementsInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  status: z.union([ z.lazy(() => ReviewStatusSchema),z.lazy(() => EnumReviewStatusFieldUpdateOperationsInputSchema) ]).optional(),
   startDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   endDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -4524,6 +4595,7 @@ export const ReviewUpdateWithoutBankStatementsInputSchema: z.ZodType<Prisma.Revi
 export const ReviewUncheckedUpdateWithoutBankStatementsInputSchema: z.ZodType<Prisma.ReviewUncheckedUpdateWithoutBankStatementsInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  status: z.union([ z.lazy(() => ReviewStatusSchema),z.lazy(() => EnumReviewStatusFieldUpdateOperationsInputSchema) ]).optional(),
   startDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   endDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -4739,6 +4811,7 @@ export const SessionCreateManyUserInputSchema: z.ZodType<Prisma.SessionCreateMan
 export const ReviewCreateManyUserInputSchema: z.ZodType<Prisma.ReviewCreateManyUserInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
+  status: z.lazy(() => ReviewStatusSchema).optional(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
   clientId: z.string(),
@@ -4809,6 +4882,7 @@ export const SessionUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<Prisma.
 export const ReviewUpdateWithoutUserInputSchema: z.ZodType<Prisma.ReviewUpdateWithoutUserInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  status: z.union([ z.lazy(() => ReviewStatusSchema),z.lazy(() => EnumReviewStatusFieldUpdateOperationsInputSchema) ]).optional(),
   startDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   endDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -4821,6 +4895,7 @@ export const ReviewUpdateWithoutUserInputSchema: z.ZodType<Prisma.ReviewUpdateWi
 export const ReviewUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma.ReviewUncheckedUpdateWithoutUserInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  status: z.union([ z.lazy(() => ReviewStatusSchema),z.lazy(() => EnumReviewStatusFieldUpdateOperationsInputSchema) ]).optional(),
   startDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   endDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   clientId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -4833,6 +4908,7 @@ export const ReviewUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma.Revie
 export const ReviewUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<Prisma.ReviewUncheckedUpdateManyWithoutUserInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  status: z.union([ z.lazy(() => ReviewStatusSchema),z.lazy(() => EnumReviewStatusFieldUpdateOperationsInputSchema) ]).optional(),
   startDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   endDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   clientId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -4843,6 +4919,7 @@ export const ReviewUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<Prisma.R
 export const ReviewCreateManyClientInputSchema: z.ZodType<Prisma.ReviewCreateManyClientInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string().min(1, { message: "Name cannot be empty." }),
+  status: z.lazy(() => ReviewStatusSchema).optional(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
   userId: z.string(),
@@ -4853,6 +4930,7 @@ export const ReviewCreateManyClientInputSchema: z.ZodType<Prisma.ReviewCreateMan
 export const ReviewUpdateWithoutClientInputSchema: z.ZodType<Prisma.ReviewUpdateWithoutClientInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  status: z.union([ z.lazy(() => ReviewStatusSchema),z.lazy(() => EnumReviewStatusFieldUpdateOperationsInputSchema) ]).optional(),
   startDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   endDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -4865,6 +4943,7 @@ export const ReviewUpdateWithoutClientInputSchema: z.ZodType<Prisma.ReviewUpdate
 export const ReviewUncheckedUpdateWithoutClientInputSchema: z.ZodType<Prisma.ReviewUncheckedUpdateWithoutClientInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  status: z.union([ z.lazy(() => ReviewStatusSchema),z.lazy(() => EnumReviewStatusFieldUpdateOperationsInputSchema) ]).optional(),
   startDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   endDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -4877,6 +4956,7 @@ export const ReviewUncheckedUpdateWithoutClientInputSchema: z.ZodType<Prisma.Rev
 export const ReviewUncheckedUpdateManyWithoutClientInputSchema: z.ZodType<Prisma.ReviewUncheckedUpdateManyWithoutClientInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string().min(1, { message: "Name cannot be empty." }),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  status: z.union([ z.lazy(() => ReviewStatusSchema),z.lazy(() => EnumReviewStatusFieldUpdateOperationsInputSchema) ]).optional(),
   startDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   endDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),

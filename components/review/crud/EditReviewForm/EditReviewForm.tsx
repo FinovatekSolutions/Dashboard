@@ -93,7 +93,7 @@ export function EditReviewForm({ setOpened, reviewId }: EditReviewFormProps) {
             mt={10}
             type="submit"
           >
-            Update Client
+            Update Review
           </Button>
         </Flex>
       </Stack>
