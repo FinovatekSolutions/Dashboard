@@ -27,6 +27,12 @@ const mockdata = [
     icon: IconUsersGroup,
   },
   {
+    title: 'Reviews',
+    link: '/reviews',
+    description: 'Select a document to visualize its timeline.',
+    icon: IconSearch,
+  },
+  {
     title: 'My Reviews',
     link: '/my-reviews',
     description: 'Select a document to visualize its timeline.',
@@ -79,7 +85,7 @@ export function FeaturesCards() {
         visualizations.
       </Text>
 
-      <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="xl" mt={50}>
+      <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="xl" mt={50}>
         {features}
       </SimpleGrid>
     </Container>
