@@ -54,10 +54,11 @@ export function BankStatementsDragAndDrop({
   const [isDropzoneEmpty, setIsDropzoneEmpty] = useState(true);
   const { data: session } = useSession();
   const router = useRouter();
+  const [myData, setMyData] = useState<FormData | null>(null);
 
   const createReviewMutation = useCreateReview(
     // onSuccess callback
-    (data) => {
+    async (data) => {
       form.reset();
       notifications.update({
         id: 'review-create',
@@ -69,6 +70,15 @@ export function BankStatementsDragAndDrop({
         autoClose: 2000,
       });
       router.push(`/reviews/${data.id}`);
+      const response = await fetch(
+        `${process.env.STARLETTE_API_URL}/process-csv?reviewId=${data.id}`,
+        {
+          method: 'POST',
+          body: myData,
+        }
+      );
+      const result = await response.json();
+      console.log(result); // Handle the response based on your requirements
     },
     // onError callback
     () => {
@@ -142,6 +152,8 @@ export function BankStatementsDragAndDrop({
       }
     });
 
+    setMyData(formData);
+
     try {
       notifications.show({
         id: 'review-create',
@@ -153,12 +165,7 @@ export function BankStatementsDragAndDrop({
       });
 
       console.log(formData);
-      const response = await fetch(`${process.env.STARLETTE_API_URL}/process-csv`, {
-        method: 'POST',
-        body: formData,
-      });
-      const result = await response.json();
-      console.log(result); // Handle the response based on your requirements
+
       await createReviewMutation.mutate({
         name: generateUniqueFileName(),
         startDate: new Date(),
