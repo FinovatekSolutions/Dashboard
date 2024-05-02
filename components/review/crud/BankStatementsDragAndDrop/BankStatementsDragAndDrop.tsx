@@ -198,7 +198,7 @@ export function BankStatementsDragAndDrop() {
           onReject={handleRejectedFiles}
           className={classes.dropzone}
           radius="sm"
-          accept={[MIME_TYPES.csv, MIME_TYPES.xls]}
+          accept={[MIME_TYPES.csv]}
           maxSize={30 * 1024 ** 2}
           style={{ borderStyle: 'dashed', borderWidth: 2, borderRadius: 10, color: 'dimgray' }}
         >
