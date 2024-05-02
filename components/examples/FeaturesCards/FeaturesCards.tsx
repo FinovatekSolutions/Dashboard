@@ -10,33 +10,33 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import Link from 'next/link';
-import { IconSearch, IconMapPin, IconCalendarMonth, IconGraph } from '@tabler/icons-react';
+import { IconSearch, IconFileTypeCsv, IconUsersGroup } from '@tabler/icons-react';
 import classes from './FeaturesCards.module.css';
 
 const mockdata = [
   {
-    title: 'Browse',
-    link: '/browse',
+    title: 'Classification',
+    link: '/',
     description: 'Search case studies in the database and apply different filters.',
+    icon: IconFileTypeCsv,
+  },
+  {
+    title: 'Clients',
+    link: '/clients',
+    description: 'Select filters for the documents and show the locations of it in a map.',
+    icon: IconUsersGroup,
+  },
+  {
+    title: 'Reviews',
+    link: '/reviews',
+    description: 'Select a document to visualize its timeline.',
     icon: IconSearch,
   },
   {
-    title: 'Map',
-    link: '/map',
-    description: 'Select filters for the documents and show the locations of it in a map.',
-    icon: IconMapPin,
-  },
-  {
-    title: 'Timeline',
-    link: '/timeline',
+    title: 'My Reviews',
+    link: '/my-reviews',
     description: 'Select a document to visualize its timeline.',
-    icon: IconCalendarMonth,
-  },
-  {
-    title: 'Graph',
-    link: '/graph',
-    description: 'Select filters and view a X vs Y plot to visualize the correlation.',
-    icon: IconGraph,
+    icon: IconSearch,
   },
 ];
 
@@ -52,11 +52,7 @@ export function FeaturesCards() {
       className={classes.card}
       padding="xl"
     >
-      <feature.icon
-        style={{ width: rem(50), height: rem(50) }}
-        stroke={2}
-        color={theme.colors.orange[8]}
-      />
+      <feature.icon style={{ width: rem(50), height: rem(50) }} stroke={2} color="#44c5f8" />
       <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
         {feature.title}
       </Text>
@@ -71,15 +67,16 @@ export function FeaturesCards() {
       <Group justify="center">
         <Badge
           variant="filled"
-          color={theme.colors.orange[7]}
+          color="#07A6CF"
           size="lg"
-          style={{ color: theme.colors.blue[9] }}
+          c="white"
+          // style={{ color: theme.colors.dark[0] }}
         >
           Feature Spotlight
         </Badge>
       </Group>
 
-      <Title order={2} c="white" ta="center" mt="sm">
+      <Title order={2} c="black" ta="center" mt="sm">
         Explore the Impact of Natural Disasters Through Interactive Features
       </Title>
 

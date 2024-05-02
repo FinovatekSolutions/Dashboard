@@ -153,13 +153,12 @@ export function BankStatementsDragAndDrop({
       });
 
       console.log(formData);
-      // const response = await fetch('http://localhost:8000/process-csv?reviewId=...', {
-      //   method: 'POST',
-      //   body: formData,
-      // });
-      // const result = await response.json();
-      // console.log(result); // Handle the response based on your requirements
-
+      const response = await fetch(`${process.env.STARLETTE_API_URL}/process-csv`, {
+        method: 'POST',
+        body: formData,
+      });
+      const result = await response.json();
+      console.log(result); // Handle the response based on your requirements
       await createReviewMutation.mutate({
         name: generateUniqueFileName(),
         startDate: new Date(),
@@ -167,7 +166,6 @@ export function BankStatementsDragAndDrop({
         client: { connect: { id: selectedClient?.id || '' } },
         user: { connect: { email: session?.user?.email || '' } },
       });
-
       setIsSubmitting(false);
     } catch (error) {
       console.error('Failed to submit:', error);
@@ -259,7 +257,7 @@ export function BankStatementsDragAndDrop({
           onReject={handleRejectedFiles}
           className={classes.dropzone}
           radius="sm"
-          accept={[MIME_TYPES.csv]}
+          accept={[MIME_TYPES.csv, MIME_TYPES.xls]}
           maxSize={30 * 1024 ** 2}
           style={{ borderStyle: 'dashed', borderWidth: 2, borderRadius: 10, color: 'dimgray' }}
         >
