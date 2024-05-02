@@ -11,14 +11,18 @@ import { IconEdit, IconTrash, IconX } from '@tabler/icons-react';
 
 import { EditTransactionForm } from '@/components/transaction/crud/EditTransactionForm/EditTransactionForm';
 import { DeleteTransactionForm } from '@/components/transaction/crud/DeleteTransactionForm/DeleteTransactionForm';
-import { useGetAllTransactions } from '@/lib/actions/transaction';
+import { useGetAllTransactionsByReviewId } from '@/lib/actions/transaction';
 import { formatDate, formatMoney } from '@/lib/utils/helpers';
 import { TransactionWithCategory } from '@/lib/utils/types';
 
-export const TransactionsTable = () => {
+type TransactionsTableProps = {
+  reviewId: string;
+};
+
+export const TransactionsTable = ({ reviewId }: TransactionsTableProps) => {
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
-  const getAllTransactionsQuery = useGetAllTransactions();
+  const getAllTransactionsQuery = useGetAllTransactionsByReviewId(reviewId);
   const [openedEdit, setOpenedEdit] = useState(false);
   const [openedDelete, setOpenedDelete] = useState(false);
   const [selectedTransactionId, setSelectedTransactionId] = useState('');
@@ -54,6 +58,7 @@ export const TransactionsTable = () => {
         header: 'Category',
       },
       {
+        accessorKey: 'amount',
         header: 'Amount',
         Cell: ({ cell }) => {
           const { amount } = cell.row.original;

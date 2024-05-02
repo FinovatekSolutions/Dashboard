@@ -1,12 +1,22 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Button, TextInput, Group, Box, useMantineTheme, Stack, Flex } from '@mantine/core';
+import {
+  Button,
+  TextInput,
+  Group,
+  Box,
+  useMantineTheme,
+  Stack,
+  Flex,
+  NumberInput,
+} from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useForm } from '@mantine/form';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { IconCheck, IconX } from '@tabler/icons-react';
 import type { Prisma } from '@prisma/client';
+import { DateInput, DatePicker } from '@mantine/dates';
 
 import { TransactionUpdateInputSchema } from '@prisma/zod';
 import { useGetAllTransactions, useUpdateTransaction } from '@/lib/actions/transaction';
@@ -94,10 +104,23 @@ export function EditTransactionForm({ setOpened, transactionId }: EditTransactio
   return (
     <Box component="form" onSubmit={form.onSubmit(handleSubmit)}>
       <Stack>
-        <Group grow>
-          <TextInput label="First Name" placeholder="John" {...form.getInputProps('firstName')} />
-          <TextInput label="Last Name" placeholder="Doe" {...form.getInputProps('lastName')} />
-        </Group>
+        <DateInput
+          label="Date"
+          placeholder="Select date"
+          value={form.values.date}
+          onChange={(date) => {
+            if (!date) return;
+
+            form.setFieldValue('date', date);
+          }}
+          locale="en"
+        />
+        <TextInput
+          label="Description"
+          placeholder="Description"
+          {...form.getInputProps('description')}
+        />
+        <NumberInput label="Amount" placeholder="0.00" {...form.getInputProps('amount')} />
         <Flex direction={{ base: 'column', sm: 'row' }} justify="flex-end">
           <Button
             size="md"

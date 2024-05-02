@@ -4,6 +4,7 @@ import type { Prisma, Transaction } from '@prisma/client';
 
 import {
   getAllTransactions,
+  getAllTransactionsbyReviewId,
   getTransactionById,
   createTransaction,
   updateTransaction,
@@ -19,6 +20,16 @@ export function useGetAllTransactions(): UseQueryResult<TransactionWithCategory[
   return useQuery<TransactionWithCategory[]>({
     queryKey: [getAllTransactionsQueryKey],
     queryFn: () => getAllTransactions(),
+  } satisfies UseQueryOptions<TransactionWithCategory[]>);
+}
+
+export function useGetAllTransactionsByReviewId(
+  reviewId: string
+): UseQueryResult<TransactionWithCategory[]> {
+  return useQuery<TransactionWithCategory[]>({
+    queryKey: [getAllTransactionsQueryKey, reviewId],
+    queryFn: () => getAllTransactionsbyReviewId(reviewId),
+    enabled: !!reviewId,
   } satisfies UseQueryOptions<TransactionWithCategory[]>);
 }
 

@@ -26,6 +26,7 @@ import { PageContainer } from '@/components/global/PageContainer/PageContainer';
 import { useGetReviewById } from '@/lib/actions/review';
 import EditReviewButton from '@/components/review/crud/EditReviewButton/EditReviewButton';
 import { ReviewInfo } from '@/components/review/general/ReviewInfo/ReviewInfo';
+import { TransactionsTable } from '@/components/transaction/general/TransactionsTable/TransactionsTable';
 
 export function ViewReviewByIDClient({ params }: { params: { reviewId: string } }) {
   const theme = useMantineTheme();
@@ -140,7 +141,7 @@ export function ViewReviewByIDClient({ params }: { params: { reviewId: string } 
               </Stack>
             </Center>
           ) : (
-            <>Loading</>
+            <TransactionsTable reviewId={params.reviewId} />
           )}
         </Skeleton>
       </Box>

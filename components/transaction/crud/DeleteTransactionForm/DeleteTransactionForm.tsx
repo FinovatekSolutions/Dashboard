@@ -1,12 +1,23 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Button, TextInput, Group, Box, useMantineTheme, Stack, Flex, Text } from '@mantine/core';
+import {
+  Button,
+  TextInput,
+  Group,
+  Box,
+  useMantineTheme,
+  Stack,
+  Flex,
+  Text,
+  NumberInput,
+} from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useForm } from '@mantine/form';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { IconCheck, IconX } from '@tabler/icons-react';
 import type { Transaction } from '@prisma/client';
+import { DateInput } from '@mantine/dates';
 
 import { TransactionUpdateInputSchema } from '@prisma/zod';
 import { useGetAllTransactions, useRemoveTransaction } from '@/lib/actions/transaction';
@@ -31,8 +42,9 @@ export function DeleteTransactionForm({ setOpened, transactionId }: DeleteTransa
 
   const form = useForm({
     initialValues: {
-      firstName: transaction?.firstName || '',
-      lastName: transaction?.lastName || '',
+      date: new Date(),
+      description: '',
+      amount: 0,
     },
     validate: zodResolver(TransactionUpdateInputSchema),
   });
@@ -41,8 +53,9 @@ export function DeleteTransactionForm({ setOpened, transactionId }: DeleteTransa
   useEffect(() => {
     if (transaction && !hasLoaded) {
       form.setValues({
-        firstName: transaction.firstName,
-        lastName: transaction.lastName,
+        date: transaction.date,
+        description: transaction.description,
+        amount: transaction.amount,
       });
       setHasLoaded(true);
     }
@@ -97,22 +110,26 @@ export function DeleteTransactionForm({ setOpened, transactionId }: DeleteTransa
         <Text c="darkred">
           Are you sure you want to delete the following transaction? This action cannot be undone.
         </Text>
-        <Group grow>
-          <TextInput
-            readOnly
-            label="First Name"
-            placeholder="John"
-            pointer
-            {...form.getInputProps('firstName')}
-          />
-          <TextInput
-            readOnly
-            label="Last Name"
-            placeholder="Doe"
-            pointer
-            {...form.getInputProps('lastName')}
-          />
-        </Group>
+        <DateInput
+          readOnly
+          label="Date"
+          placeholder="Select date"
+          value={form.values.date}
+          onChange={(date) => {
+            if (!date) return;
+
+            form.setFieldValue('date', date);
+          }}
+          locale="en"
+        />
+        <TextInput
+          readOnly
+          label="Description"
+          placeholder="Description"
+          {...form.getInputProps('description')}
+        />
+        <NumberInput readOnly label="Amount" placeholder="0.00" {...form.getInputProps('amount')} />
+
         <Flex direction={{ base: 'column', sm: 'row' }} justify="flex-end">
           <Button
             size="md"

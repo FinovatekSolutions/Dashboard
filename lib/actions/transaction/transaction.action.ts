@@ -13,7 +13,23 @@ export async function getAllTransactions(): Promise<TransactionWithCategory[]> {
       category: true,
     },
     orderBy: {
-      createdAt: 'desc', // Use 'desc' for descending order (newest first)
+      date: 'desc', // Use 'desc' for descending order (newest first)
+    },
+  });
+}
+
+export async function getAllTransactionsbyReviewId(
+  reviewId: string
+): Promise<TransactionWithCategory[]> {
+  return prisma.transaction.findMany({
+    include: {
+      category: true,
+    },
+    where: {
+      reviewId,
+    },
+    orderBy: {
+      date: 'desc', // Use 'desc' for descending order (newest first)
     },
   });
 }
