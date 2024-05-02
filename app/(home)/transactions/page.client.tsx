@@ -43,7 +43,7 @@ export function TransactionsClient(): ReactElement {
       <Divider my="md" color={theme.colors.dark[3]} />
       <Box style={{ marginTop: '16px' }}>
         {/* Adjust the margin as needed */}
-        <TransactionsTable />
+        <TransactionsTable reviewId={''} />
       </Box>
     </PageContainer>
   );
