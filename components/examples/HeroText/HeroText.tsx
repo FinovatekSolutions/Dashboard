@@ -24,7 +24,7 @@ export default function HeroText() {
       <Dots className={classes.dots} style={{ right: 0, top: 60 }} />
 
       <div className={classes.inner}>
-        <Title c="white" style={{ textAlign: 'center' }}>
+        <Title c="black" style={{ textAlign: 'center' }}>
           Lorem{' '}
           <Text
             component="span"
@@ -32,8 +32,8 @@ export default function HeroText() {
             inherit
             variant="gradient"
             gradient={{
-              from: theme.colors.orange[4],
-              to: theme.colors.yellow[6],
+              from: '#1A1C27',
+              to: '#44c5f8',
             }}
           >
             Ipsum
@@ -43,14 +43,14 @@ export default function HeroText() {
         <Space h="xl" />
         <Space h="xl" />
         <Space h="sm" />
-        <Text c="white" size="24px" mb={5} style={{ textAlign: 'center' }}>
+        <Text c="black" size="24px" mb={5} style={{ textAlign: 'center' }}>
           Welcome to{' '}
           <Group
             component="span"
             gap={0}
             style={{ display: 'inline-flex', alignItems: 'baseline' }}
           >
-            <Text component="span" inherit c="white">
+            <Text component="span" inherit c="black">
               Fi
             </Text>
             <Text
@@ -58,21 +58,21 @@ export default function HeroText() {
               inherit
               variant="gradient"
               gradient={{
-                from: theme.colors.orange[4],
-                to: theme.colors.yellow[6],
+                from: '#1A1C27',
+                to: '#44c5f8',
               }}
             >
               nova
             </Text>
-            <Text component="span" inherit c="white">
+            <Text component="span" inherit c="black">
               tek
             </Text>
           </Group>
         </Text>
 
         <Container p={0} size={600}>
-          <Divider my="md" color={theme.colors.dark[3]} />
-          <Text size="lg" c={theme.colors.gray[3]} fw={500} className={classes.description}>
+          <Divider my="md" color={theme.colors.dark[9]} />
+          <Text size="lg" c={theme.colors.dark[9]} fw={500} className={classes.description}>
             This is a dasboard. This is a dasboard. This is a dasboard. This is a dasboard. This is
             a dasboard. This is a dasboard. This is a dasboard. This is a dasboard. This is a
             dasboard. This is a dasboard. This is a dasboard. This is a dasboard. This is a
@@ -87,12 +87,15 @@ export default function HeroText() {
             target="_blank" // Open in a new tab
             rel="noopener noreferrer" // For security reasons
             className={classes.control}
+            bg={'#44c5f8'}
             size="lg"
             variant="default"
-            color="gray"
-            rightSection={<IconExternalLink size={20} />}
+            color="red"
+            rightSection={<IconExternalLink size={20} color="white" />}
           >
-            Click this if you dare...
+            <Text fw={500} c={'white'}>
+              Click this if you dare...
+            </Text>
           </Button>
         </div>
       </div>

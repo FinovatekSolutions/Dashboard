@@ -9,10 +9,11 @@ import { PageContainer } from '@/components/global/PageContainer/PageContainer';
 export function MainPage(): ReactElement {
   return (
     <PageContainer
-      withBorder={false}
       shadow="none"
+      mb="sm"
+      p="md"
       style={{
-        backgroundColor: '#f8f9fa',
+        backgroundColor: 'white',
       }}
     >
       <Space h="md" />
