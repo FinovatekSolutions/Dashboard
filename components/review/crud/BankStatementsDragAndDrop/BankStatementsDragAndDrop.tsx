@@ -100,7 +100,7 @@ export function BankStatementsDragAndDrop() {
 
     try {
       console.log(formData);
-      const response = await fetch('http://localhost:8000/process-csv', {
+      const response = await fetch(`${process.env.STARLETTE_API_URL}/process-csv`, {
         method: 'POST',
         body: formData,
       });
