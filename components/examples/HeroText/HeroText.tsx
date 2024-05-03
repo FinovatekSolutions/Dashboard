@@ -7,11 +7,10 @@ import {
   Group,
   Space,
   Divider,
-  Center,
 } from '@mantine/core';
-import { IconExternalLink } from '@tabler/icons-react';
 import { Dots } from './Dots';
 import classes from './HeroText.module.css';
+import Link from 'next/link';
 
 export default function HeroText() {
   const theme = useMantineTheme();
@@ -78,16 +77,12 @@ export default function HeroText() {
 
         <div className={classes.controls}>
           <Button
-            component="a"
-            href="https://www.youtube.com/watch?v=dQw4w9WgXcQ/" // Your external link
-            target="_blank" // Open in a new tab
-            rel="noopener noreferrer" // For security reasons
+            component={Link}
+            href="/classification" // Your external link
             className={classes.control}
             bg={'#44c5f8'}
             size="lg"
             variant="default"
-            color="red"
-            // rightSection={<IconExternalLink size={20} color="white" />}
           >
             <Text fw={500} c={'white'}>
               Start Classifying...

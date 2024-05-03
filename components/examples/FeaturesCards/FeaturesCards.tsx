@@ -16,7 +16,7 @@ import classes from './FeaturesCards.module.css';
 const mockdata = [
   {
     title: 'Classification',
-    link: '/',
+    link: '/classification',
     description: 'Select Bank Statements in CSV format for automatic Classificaton.',
     icon: IconFileTypeCsv,
   },
@@ -77,7 +77,7 @@ export function FeaturesCards() {
       </Group>
 
       <Title order={2} c="black" ta="center" mt="sm">
-        Explore the Interactive Features of the Web Appplication
+        Explore the Interactive Features of the Web Application
       </Title>
 
       <Text c="dimmed" className={classes.description} ta="center" mt="md">
