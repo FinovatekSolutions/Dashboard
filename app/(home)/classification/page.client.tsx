@@ -24,7 +24,7 @@ export function MainPage(): ReactElement {
         maw={`${theme.breakpoints.lg}`}
       >
         <Title m={1} order={1}>
-          Home
+          Classification
         </Title>
         <Divider my="sm" />
         <Paper

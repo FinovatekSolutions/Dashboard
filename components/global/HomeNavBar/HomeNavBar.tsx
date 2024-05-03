@@ -24,6 +24,7 @@ export function HomeNavBar({ children }: { children: any }) {
 
   const navLinks = [
     { href: '/', label: 'Home' },
+    { href: '/classification', label: 'Classification' },
     { href: '/clients', label: 'Clients' },
     { href: '/reviews', label: 'Reviews' },
   ];
