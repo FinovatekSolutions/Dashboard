@@ -25,7 +25,7 @@ export default function HeroText() {
 
       <div className={classes.inner}>
         <Title c="black" style={{ textAlign: 'center' }}>
-          Financial Radiographies
+          Financial Analysis
         </Title>
         <Title c="black" style={{ textAlign: 'center' }}>
           <Text
@@ -45,13 +45,9 @@ export default function HeroText() {
         <Space h="sm" />
         <Text c="black" size="24px" mb={5} style={{ textAlign: 'center' }}>
           Welcome to{' '}
-          <Group
-            component="span"
-            gap={0}
-            style={{ display: 'inline-flex', alignItems: 'baseline' }}
-          >
+          <Group component="span" gap={0} style={{ display: 'inline-flex' }}>
             <Text component="span" inherit c="black">
-              Fi
+              Finova
             </Text>
             <Text
               component="span"
@@ -62,10 +58,10 @@ export default function HeroText() {
                 to: '#44c5f8',
               }}
             >
-              nova
+              tek's{'\u00A0'}
             </Text>
             <Text component="span" inherit c="black">
-              tek
+              BSC Software
             </Text>
           </Group>
         </Text>
@@ -73,8 +69,10 @@ export default function HeroText() {
         <Container p={0} size={600}>
           <Divider my="md" color={theme.colors.dark[9]} />
           <Text size="lg" c={theme.colors.dark[9]} fw={500} className={classes.description}>
-            This is an software that takes all of your clients bank statements and categorizes them
-            using state of the art Machine Learning technology in order to agilize the
+            This Bank Statement Classification (BSC) software takes all of your client's bank
+            statements and categorizes them using state of the art Machine Learning technology. With
+            an easy to use interface that streamlines the process, increasing categorization
+            efficiency, allowing for faster Financial Analysis.
           </Text>
         </Container>
 
@@ -89,10 +87,10 @@ export default function HeroText() {
             size="lg"
             variant="default"
             color="red"
-            rightSection={<IconExternalLink size={20} color="white" />}
+            // rightSection={<IconExternalLink size={20} color="white" />}
           >
             <Text fw={500} c={'white'}>
-              Click this if you dare...
+              Start Classifying...
             </Text>
           </Button>
         </div>

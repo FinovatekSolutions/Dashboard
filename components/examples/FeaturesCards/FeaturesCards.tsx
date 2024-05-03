@@ -10,33 +10,33 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import Link from 'next/link';
-import { IconSearch, IconFileTypeCsv, IconUsersGroup } from '@tabler/icons-react';
+import { IconSearch, IconFileTypeCsv, IconUsersGroup, IconFileCheck } from '@tabler/icons-react';
 import classes from './FeaturesCards.module.css';
 
 const mockdata = [
   {
     title: 'Classification',
     link: '/',
-    description: 'Search case studies in the database and apply different filters.',
+    description: 'Select Bank Statements in CSV format for automatic Classificaton.',
     icon: IconFileTypeCsv,
   },
   {
     title: 'Clients',
     link: '/clients',
-    description: 'Select filters for the documents and show the locations of it in a map.',
+    description: 'View all current clients and relevant contact information.',
     icon: IconUsersGroup,
   },
   {
     title: 'Reviews',
     link: '/reviews',
-    description: 'Select a document to visualize its timeline.',
+    description: 'View all reviews realized with their respective details.',
     icon: IconSearch,
   },
   {
     title: 'My Reviews',
     link: '/my-reviews',
-    description: 'Select a document to visualize its timeline.',
-    icon: IconSearch,
+    description: 'Look at the reviews you have realized to a variety of clients.',
+    icon: IconFileCheck,
   },
 ];
 
@@ -72,17 +72,17 @@ export function FeaturesCards() {
           c="white"
           // style={{ color: theme.colors.dark[0] }}
         >
-          Feature Spotlight
+          Key Features
         </Badge>
       </Group>
 
       <Title order={2} c="black" ta="center" mt="sm">
-        Explore the Impact of Natural Disasters Through Interactive Features
+        Explore the Interactive Features of the Web Appplication
       </Title>
 
       <Text c="dimmed" className={classes.description} ta="center" mt="md">
-        Delve into comprehensive case studies with our intuitive browsing tools and dynamic
-        visualizations.
+        Delve into financial analysis with our intuitive machine learning model for classifications
+        and web implementations for client bank statement reviews.
       </Text>
 
       <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="xl" mt={50}>
