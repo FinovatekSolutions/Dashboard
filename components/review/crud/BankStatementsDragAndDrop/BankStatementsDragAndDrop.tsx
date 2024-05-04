@@ -71,26 +71,11 @@ export function BankStatementsDragAndDrop({
       });
       router.push(`/reviews/${data.id}`);
 
-    const headers = {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer YourAccessTokenHere",
-    };
-
-    const requestOptions: RequestInit = {
-      method: "GET", // or "POST", "PUT", etc.
-      headers: headers,
-      mode: "cors", // Add this line to enable CORS
-    };
-
-      const response = await fetch(
-        `http://localhost:8000?reviewId=${data.id}`,
-        {
-          method: 'POST',
-          body: myData,
-          headers, 
-          mode: "cors"
-        }
-      );
+      const response = await fetch(`http://localhost:8000?reviewId=${data.id}`, {
+        method: 'POST',
+        body: myData,
+        mode: 'cors',
+      });
       const result = await response.json();
       console.log(result); // Handle the response based on your requirements
     },
