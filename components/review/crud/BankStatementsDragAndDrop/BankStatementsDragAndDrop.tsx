@@ -70,11 +70,25 @@ export function BankStatementsDragAndDrop({
         autoClose: 2000,
       });
       router.push(`/reviews/${data.id}`);
+
+    const headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer YourAccessTokenHere",
+    };
+
+    const requestOptions: RequestInit = {
+      method: "GET", // or "POST", "PUT", etc.
+      headers: headers,
+      mode: "cors", // Add this line to enable CORS
+    };
+
       const response = await fetch(
-        `${process.env.STARLETTE_API_URL}/process-csv?reviewId=${data.id}`,
+        `http://localhost:8000?reviewId=${data.id}`,
         {
           method: 'POST',
           body: myData,
+          headers, 
+          mode: "cors"
         }
       );
       const result = await response.json();
