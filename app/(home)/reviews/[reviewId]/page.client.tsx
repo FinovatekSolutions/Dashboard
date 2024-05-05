@@ -27,11 +27,13 @@ import { useGetReviewById } from '@/lib/actions/review';
 import EditReviewButton from '@/components/review/crud/EditReviewButton/EditReviewButton';
 import { ReviewInfo } from '@/components/review/general/ReviewInfo/ReviewInfo';
 import { TransactionsTable } from '@/components/transaction/general/TransactionsTable/TransactionsTable';
+import { useGetAllTransactionsByReviewId } from '@/lib/actions/transaction';
 
 export function ViewReviewByIDClient({ params }: { params: { reviewId: string } }) {
   const theme = useMantineTheme();
   const router = useRouter();
   const getReviewByIdQuery = useGetReviewById(params.reviewId);
+  const getAllTransactionsQuery = useGetAllTransactionsByReviewId(params.reviewId);
 
   const breadcrumbsItems = [
     <Anchor
@@ -94,7 +96,10 @@ export function ViewReviewByIDClient({ params }: { params: { reviewId: string } 
 
         {/* Component 2 */}
         <Button
-          onClick={() => getReviewByIdQuery.refetch()}
+          onClick={() => {
+            getReviewByIdQuery.refetch();
+            getAllTransactionsQuery.refetch();
+          }}
           leftSection={<IconRefresh size={14} />}
           variant="default"
           size="md"
