@@ -24,7 +24,10 @@ export default function HeroText() {
 
       <div className={classes.inner}>
         <Title c="black" style={{ textAlign: 'center' }}>
-          Financial Analysis
+          Financial Analysis &
+        </Title>
+        <Title c="black" style={{ textAlign: 'center' }}>
+          Categorization Tool (FACT)
         </Title>
         <Title c="black" style={{ textAlign: 'center' }}>
           <Text
@@ -43,12 +46,11 @@ export default function HeroText() {
         <Space h="xl" />
         <Space h="sm" />
         <Text c="black" size="24px" mb={5} style={{ textAlign: 'center' }}>
-          Welcome to{' '}
           <Group component="span" gap={0} style={{ display: 'inline-flex' }}>
             <Text component="span" inherit c="black">
-              Finova
+              What is{'\u00A0'}
             </Text>
-            <Text
+            {/* <Text
               component="span"
               inherit
               variant="gradient"
@@ -56,22 +58,21 @@ export default function HeroText() {
                 from: '#1A1C27',
                 to: '#44c5f8',
               }}
-            >
-              tek's{'\u00A0'}
+            ></Text> */}
+            <Text component="span" inherit c="black" fs={'italic'}>
+              FACT
             </Text>
-            <Text component="span" inherit c="black">
-              BSC Software
-            </Text>
+            {'\u00A0'}?
           </Group>
         </Text>
 
         <Container p={0} size={600}>
           <Divider my="md" color={theme.colors.dark[9]} />
           <Text size="lg" c={theme.colors.dark[9]} fw={500} className={classes.description}>
-            This Bank Statement Classification (BSC) software takes all of your client's bank
-            statements and categorizes them using state of the art Machine Learning technology. With
-            an easy to use interface that streamlines the process, increasing categorization
-            efficiency, allowing for faster Financial Analysis.
+            FACT takes all of your client's bank statements and categorizes all of its transactions
+            using state of the art Machine Learning technology. With an easy to use interface that
+            streamlines the process, increasing categorization efficiency, centralizing client
+            information, and allowing for faster Financial Analysis.
           </Text>
         </Container>
 
