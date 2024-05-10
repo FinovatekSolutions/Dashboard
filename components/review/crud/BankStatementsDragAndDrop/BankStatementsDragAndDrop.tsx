@@ -70,13 +70,11 @@ export function BankStatementsDragAndDrop({
         autoClose: 2000,
       });
       router.push(`/reviews/${data.id}`);
-      const response = await fetch(
-        `${process.env.STARLETTE_API_URL}/process-csv?reviewId=${data.id}`,
-        {
-          method: 'POST',
-          body: myData,
-        }
-      );
+      const response = await fetch(`${process.env.NEXT_PUBLIC_MODEL_URL}?reviewId=${data.id}`, {
+        method: 'POST',
+        body: myData,
+        mode: 'cors',
+      });
       const result = await response.json();
       console.log(result); // Handle the response based on your requirements
     },
@@ -148,7 +146,7 @@ export function BankStatementsDragAndDrop({
     // Assuming you keep track of files in a state variable
     form.values.bank_statements.forEach((statement) => {
       if (statement.file) {
-        formData.append('files[]', statement.file, `${statement.name}_${statement.type}`);
+        formData.append('files[]', statement.file, `${statement.type}_${statement.name}`);
       }
     });
 

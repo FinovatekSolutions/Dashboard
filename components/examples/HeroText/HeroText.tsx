@@ -7,11 +7,10 @@ import {
   Group,
   Space,
   Divider,
-  Center,
 } from '@mantine/core';
-import { IconExternalLink } from '@tabler/icons-react';
 import { Dots } from './Dots';
 import classes from './HeroText.module.css';
+import Link from 'next/link';
 
 export default function HeroText() {
   const theme = useMantineTheme();
@@ -25,7 +24,10 @@ export default function HeroText() {
 
       <div className={classes.inner}>
         <Title c="black" style={{ textAlign: 'center' }}>
-          Financial Radiographies
+          Financial Analysis &
+        </Title>
+        <Title c="black" style={{ textAlign: 'center' }}>
+          Categorization Tool (FACT)
         </Title>
         <Title c="black" style={{ textAlign: 'center' }}>
           <Text
@@ -44,16 +46,11 @@ export default function HeroText() {
         <Space h="xl" />
         <Space h="sm" />
         <Text c="black" size="24px" mb={5} style={{ textAlign: 'center' }}>
-          Welcome to{' '}
-          <Group
-            component="span"
-            gap={0}
-            style={{ display: 'inline-flex', alignItems: 'baseline' }}
-          >
+          <Group component="span" gap={0} style={{ display: 'inline-flex' }}>
             <Text component="span" inherit c="black">
-              Fi
+              What is{'\u00A0'}
             </Text>
-            <Text
+            {/* <Text
               component="span"
               inherit
               variant="gradient"
@@ -61,38 +58,35 @@ export default function HeroText() {
                 from: '#1A1C27',
                 to: '#44c5f8',
               }}
-            >
-              nova
+            ></Text> */}
+            <Text component="span" inherit c="black" fs={'italic'}>
+              FACT
             </Text>
-            <Text component="span" inherit c="black">
-              tek
-            </Text>
+            {'\u00A0'}?
           </Group>
         </Text>
 
         <Container p={0} size={600}>
           <Divider my="md" color={theme.colors.dark[9]} />
           <Text size="lg" c={theme.colors.dark[9]} fw={500} className={classes.description}>
-            This is an software that takes all of your clients bank statements and categorizes them
-            using state of the art Machine Learning technology in order to agilize the
+            FACT takes all of your client's bank statements and categorizes all of its transactions
+            using state of the art Machine Learning technology. With an easy to use interface that
+            streamlines the process, increasing categorization efficiency, centralizing client
+            information, and allowing for faster Financial Analysis.
           </Text>
         </Container>
 
         <div className={classes.controls}>
           <Button
-            component="a"
-            href="https://www.youtube.com/watch?v=dQw4w9WgXcQ/" // Your external link
-            target="_blank" // Open in a new tab
-            rel="noopener noreferrer" // For security reasons
+            component={Link}
+            href="/classification" // Your external link
             className={classes.control}
             bg={'#44c5f8'}
             size="lg"
             variant="default"
-            color="red"
-            rightSection={<IconExternalLink size={20} color="white" />}
           >
             <Text fw={500} c={'white'}>
-              Click this if you dare...
+              Start Classifying...
             </Text>
           </Button>
         </div>
