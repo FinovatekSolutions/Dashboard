@@ -70,8 +70,7 @@ export function BankStatementsDragAndDrop({
         autoClose: 2000,
       });
       router.push(`/reviews/${data.id}`);
-
-      const response = await fetch(`http://localhost:8000?reviewId=${data.id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_MODEL_URL}?reviewId=${data.id}`, {
         method: 'POST',
         body: myData,
         mode: 'cors',

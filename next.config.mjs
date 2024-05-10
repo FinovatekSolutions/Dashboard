@@ -30,4 +30,7 @@ export default withBundleAnalyzer({
   experimental: {
     optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
   },
+  env: {
+    NEXT_PUBLIC_MODEL_URL: process.env.NEXT_PUBLIC_MODEL_URL,
+  },
 });
