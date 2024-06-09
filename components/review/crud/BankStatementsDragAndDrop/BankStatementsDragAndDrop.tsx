@@ -73,7 +73,7 @@ export function BankStatementsDragAndDrop({
       const response = await fetch(`${process.env.NEXT_PUBLIC_MODEL_URL}?reviewId=${data.id}`, {
         method: 'POST',
         body: myData,
-        mode: 'cors',
+        mode: 'no-cors',
       });
       const result = await response.json();
       console.log(result); // Handle the response based on your requirements
