@@ -74,12 +74,6 @@ export function BankStatementsDragAndDrop({
         method: 'POST',
         body: myData,
         mode: 'cors',
-        headers: {
-          'Access-Control-Allow-Credentials': 'true',
-          'Access-Control-Allow-Origin': '*', // or specific origin
-          'Access-Control-Allow-Methods': 'POST, GET, OPTIONS', // specify the methods you need
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization', // specify the headers you need
-        },
       });
       const result = await response.json();
       console.log(result); // Handle the response based on your requirements
